@@ -5,6 +5,8 @@ using StudentManagementSystem.Client.Pages;
 using StudentManagementSystem.Components;
 using StudentManagementSystem.Components.Account;
 using StudentManagementSystem.Data;
+using StudentManagementSystem.Services;
+using StudentsManagementShared.StudentRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,14 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+ builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped(http => new HttpClient
+{
+    BaseAddress = new Uri(builder.Configuration.GetSection("BaseAddress").Value!)
+});
+
+
 
 var app = builder.Build();
 

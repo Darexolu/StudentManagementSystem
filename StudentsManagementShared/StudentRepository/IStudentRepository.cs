@@ -11,7 +11,8 @@ namespace StudentsManagementShared.StudentRepository
     {
         Task<Student> AddStudentAsync(Student student);
         Task<Student> UpdateStudentAsync(Student student);
-        Task<Student> DeleteStudentAsync(Student student);
-        Task<List<Student>> GetAllStudentsAsync(Student student);
+        Task<Student> DeleteStudentAsync(int studentId);
+        Task<List<Student>> GetAllStudentsAsync();
+        Task<Student> GetStudentByIdAsync(int studentId);
     }
 }
