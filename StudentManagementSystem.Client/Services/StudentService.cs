@@ -7,7 +7,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StudentsManagementShared.Services
+namespace StudentsManagementSystem.Client.Services
 {
     public class StudentService : IStudentRepository
     {
@@ -52,5 +52,7 @@ namespace StudentsManagementShared.Services
             var response = await updatestudent.Content.ReadFromJsonAsync<Student>();
             return response;
         }
+
+        
     }
 }
