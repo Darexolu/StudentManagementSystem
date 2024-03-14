@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentManagementSystem.Data;
+using StudentManagementSystem.Shared.Models;
 using StudentsManagementShared.Models;
 
 namespace StudentManagementSystem.Controllers
@@ -44,33 +45,12 @@ namespace StudentManagementSystem.Controllers
 
         // PUT: api/Countries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("UpdateCountry/{id}")]
-        public async Task<IActionResult> UpdateSingleCountry(int id, Country country)
+        [HttpPost("Update-Country")]
+        public async Task<ActionResult<Country>> UpdateStudentAsync(Country country)
         {
-            if (id != country.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(country).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CountryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+             _context.Update(country);
+            await _context.SaveChangesAsync();
+            return Ok(country);
         }
 
         // POST: api/Countries

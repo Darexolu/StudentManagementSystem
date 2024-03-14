@@ -24,9 +24,9 @@ namespace StudentsManagementSystem.Client.Services
             return response;
         }
 
-        public async Task<Student> DeleteStudentAsync(int studentId)
+        public async Task<Student> DeleteStudentAsync(int id)
         {
-            var deletestudent = await _httpClient.PostAsJsonAsync("api/Student/Delete-Student", studentId);
+            var deletestudent = await _httpClient.DeleteAsync($"api/Student/Delete-Student/{id}");
             var response = await deletestudent.Content.ReadFromJsonAsync<Student>();
             return response;
         }
@@ -39,9 +39,9 @@ namespace StudentsManagementSystem.Client.Services
             return response;
         }
 
-        public async Task<Student> GetStudentByIdAsync(int studentId)
+        public async Task<Student> GetStudentByIdAsync(int id)
         {
-            var singlestudent = await _httpClient.GetAsync("api/Student/Single-Student");
+            var singlestudent = await _httpClient.GetAsync($"api/Student/Single-Student/{id}");
             var response = await singlestudent.Content.ReadFromJsonAsync<Student>();
             return response;
         }

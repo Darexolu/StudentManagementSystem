@@ -39,10 +39,10 @@
                                         <td>@country.Name</td>
                                         
                                         <td>
-                                            <a class="btn btn-success" href="/student/edit/@country.Id"> Edit </a>
+                                            <a class="btn btn-success" href="/country/edit/@country.Id"> Edit </a>
                                         </td>
                                         <td>
-                                            <a class="btn btn-danger" href="/student/delete/@country.Id"> Delete </a>
+                                            <a class="btn btn-danger" href="/country/delete/@country.Id"> Delete </a>
                                         </td>
                                     </tr>
                                 }
@@ -59,7 +59,7 @@
         </div>
     </div>
 </div>
-
+   @*  Episode 7 16mins 33secs *@
 @code {
     public List<Country> AllCountries { get; set; } = new();
     protected override async Task OnInitializedAsync()
@@ -68,13 +68,12 @@
     }
     private async Task LoadAllCountries()
     {
-        // var students = await StudentService.GetAllStudentsAsync();
+        var countries = await CountryService.GetAllAsync();
+        if (countries is null) return;
+
         AllCountries.Clear();
-        // if (students is null) return;
-        // foreach (var student in students)
-        // {
-        //     AllStudents.Add(student);
-        // }
+        AllCountries.AddRange(countries);
+      
     }
    
 
