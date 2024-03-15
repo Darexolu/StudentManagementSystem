@@ -1,7 +1,6 @@
 ﻿@page "/add-country"﻿
 @using StudentsManagementShared.Models
 @inject NavigationManager navigation;
-@rendermode InteractiveServer
 
 <h3>Add Country</h3>
 
@@ -27,7 +26,7 @@
           </div>
 
                 <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-primary">Save Student</button>
+                    <button type="submit" class="btn btn-primary">Save Country</button>
                     <button type="button" @onclick="Cancel" class="btn btn-danger">Back to List</button>
                 </div>
           
@@ -35,7 +34,10 @@
               </div>
            </div>
 
-@code{
+  @*  Episode 7 16mins 33secs *@
+
+
+@code{    
     [SupplyParameterFromForm]
     public Country countryobj { get; set; } = new();
 

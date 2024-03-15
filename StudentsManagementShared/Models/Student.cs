@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using StudentsManagementShared.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentManagementSystem.Shared.Models
 {
@@ -21,6 +23,14 @@ namespace StudentManagementSystem.Shared.Models
         public string PhoneNumber { get; set; }
         [Required]
         public  string Country { get; set; }
+
+       
+        public int GenderId { get; set; }
+        public SystemCodeDetail Gender { get; set; }
+        [Required]
+        public DateTime DOB { get; set; }
+
+
         public Student()
         {
 

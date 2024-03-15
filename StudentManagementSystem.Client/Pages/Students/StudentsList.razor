@@ -28,7 +28,10 @@
                                 <th>MiddleName</th>
                                 <th>LastName</th>
                                 <th>Email</th>
-                                <th>PhoNo</th>
+                                <th>PhoneNo</th>
+                                <th>Country</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
                                </tr>
                            </thead>
                            <tbody>
@@ -40,8 +43,10 @@
                             <td>@student.LastName</td>
                             <td>@student.EmailAddress</td>
                             <td>@student.PhoneNumber</td>
+                           <td>@student.Country</td>
+
                             <td>
-                                            <a class="btn btn-success" href="/student/edit/@student.Id"> Edit </a>
+                                 <a class="btn btn-success" href="/student/edit/@student.Id"> Edit </a>
                             </td>
                             <td>
                                <a class="btn btn-danger" href="/student/delete/@student.Id"> Delete </a>

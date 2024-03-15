@@ -29,6 +29,15 @@ namespace StudentManagementSystem.Controllers
         }
 
         // GET: api/SystemCodeDetails/5
+        [HttpGet("AllByCode/{id}")]
+        public async Task<ActionResult<IEnumerable<SystemCodeDetail>>> GetSystemCodeDetailsByCode(string id)
+        {
+            var systemCodeDetail = await _context.SystemCodeDetails.Include(x => x.Code == id)
+                .ToListAsync();
+            return systemCodeDetail;
+        }
+
+        // GET: api/SystemCodeDetails/5
         [HttpGet("Single-SystemCodeDetail/{id}")]
         public async Task<ActionResult<SystemCodeDetail>> GetSingleSystemCodeDetail(int id)
         {
