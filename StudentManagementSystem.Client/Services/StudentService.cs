@@ -1,4 +1,4 @@
-﻿using StudentManagementSystem.Shared.Models;
+﻿using StudentManagementSystemShared.Models;
 using StudentsManagementShared.StudentRepository;
 using System;
 using System.Collections.Generic;

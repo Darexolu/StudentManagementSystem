@@ -1,6 +1,6 @@
 ﻿@page "/add-student"﻿
 @using StudentManagementSystem.Client.Services
-@using StudentManagementSystem.Shared.Models;
+@using StudentManagementSystemShared.Models;
 @using StudentsManagementShared.Models
 @inject NavigationManager navigation;
 
@@ -115,6 +115,7 @@
     List<Country> Countries = new List<Country>(); 
     List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
 
+    
 
     protected override async Task OnInitializedAsync()
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentManagementSystem.Data;
-using StudentManagementSystem.Shared.Models;
+using StudentManagementSystemShared.Models;
 using StudentsManagementShared.StudentRepository;
 
 namespace StudentManagementSystem.Services

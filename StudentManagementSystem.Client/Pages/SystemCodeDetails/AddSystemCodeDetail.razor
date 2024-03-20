@@ -1,6 +1,6 @@
 ﻿@page "/add-systemCodeDetail"
 @using StudentManagementSystem.Client.Services
-@using StudentManagementSystem.Shared.Models;
+@using StudentManagementSystemShared.Models;
 @using StudentsManagementShared.Models
 @inject NavigationManager navigation;
 
@@ -73,7 +73,7 @@
 
     protected async Task CreateSystemCodeDetail()
     {
-        var result = SystemCodeDetailsService.AddAsync(systemcodeDetailobj);
+        var result = await SystemCodeDetailsService.AddAsync(systemcodeDetailobj);
         navigation.NavigateTo("/systemcodesdetails-list");
     }
     public void Cancel()

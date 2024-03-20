@@ -1,5 +1,4 @@
-﻿using StudentManagementSystem.Shared.Models;
-using StudentsManagementShared.Models;
+﻿using StudentsManagementShared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

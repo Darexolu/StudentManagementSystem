@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace StudentManagementSystem.Shared.Models
+namespace StudentManagementSystemShared.Models
 {
     public class Student
     {
@@ -31,10 +31,7 @@ namespace StudentManagementSystem.Shared.Models
         public DateTime DOB { get; set; }
 
 
-        public Student()
-        {
-
-        }
+      
     }
     
 }

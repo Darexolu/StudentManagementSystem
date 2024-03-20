@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StudentManagementSystem.Shared.Models;
+using StudentManagementSystemShared.Models;
 using StudentsManagementShared.StudentRepository;
 
 namespace StudentManagementSystem.Controllers
