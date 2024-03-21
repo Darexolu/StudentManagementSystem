@@ -37,7 +37,7 @@
                            <tbody>
                             @foreach(var student in AllStudents)
                             {<tr>
-                            <td>@student.Id</td>
+                            <td>@student.StudentId</td>
                             <td>@student.FirstName</td>
                             <td>@student.MiddleName</td>
                             <td>@student.LastName</td>
@@ -46,10 +46,10 @@
                            <td>@student.Country</td>
 
                             <td>
-                                 <a class="btn btn-success" href="/student/edit/@student.Id"> Edit </a>
+                                            <a class="btn btn-success" href="/student/edit/@student.StudentId"> Edit </a>
                             </td>
                             <td>
-                               <a class="btn btn-danger" href="/student/delete/@student.Id"> Delete </a>
+                                            <a class="btn btn-danger" href="/student/delete/@student.StudentId"> Delete </a>
                             </td>
                             </tr>
                             }

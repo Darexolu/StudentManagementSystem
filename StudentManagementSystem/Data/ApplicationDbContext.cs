@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using StudentManagementSystemShared.Models;
-using StudentsManagementShared.Models;
 
 namespace StudentManagementSystem.Data
 {
@@ -20,6 +19,16 @@ namespace StudentManagementSystem.Data
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
             base.OnModelCreating(builder);
+            builder.Entity<Parent>()
+                        .HasOne(f => f.Student)
+                        .WithMany()
+                        .HasForeignKey(f => f.StudentId)
+                        .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Parent>()
+                      .HasOne(f => f.Gender)
+                      .WithMany()
+                      .HasForeignKey(f => f.GenderId)
+                      .OnDelete(DeleteBehavior.Restrict);
 
         }
 

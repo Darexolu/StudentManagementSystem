@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StudentsManagementShared\StudentsManagementShared.csproj" />
+    <ProjectReference Include="..\StudentsManagementShared\StudentManagementSystemShared.csproj" />
   </ItemGroup>
 
 </Project>

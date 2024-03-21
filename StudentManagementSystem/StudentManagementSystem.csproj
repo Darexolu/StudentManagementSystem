@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StudentManagementSystem.Client\StudentManagementSystem.Client.csproj" />
-    <ProjectReference Include="..\StudentsManagementShared\StudentsManagementShared.csproj" />
+    <ProjectReference Include="..\StudentsManagementShared\StudentManagementSystemShared.csproj" />
    
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.2" />
@@ -17,7 +17,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
   </ItemGroup>
 
 </Project>

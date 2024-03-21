@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentManagementSystem.Data;
 using StudentManagementSystemShared.Models;
-using StudentsManagementShared.Models;
 
 namespace StudentManagementSystem.Controllers
 {

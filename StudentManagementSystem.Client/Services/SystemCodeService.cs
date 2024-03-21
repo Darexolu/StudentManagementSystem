@@ -1,5 +1,5 @@
-﻿using StudentsManagementShared.Models;
-using StudentsManagementShared.StudentRepository;
+﻿using StudentManagementSystemShared.Models;
+using StudentManagementSystemShared.StudentRepository;
 using System.Net.Http;
 using System.Net.Http.Json;
 

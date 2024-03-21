@@ -8,7 +8,7 @@ using StudentManagementSystem.Components.Account;
 using StudentManagementSystem.Data;
 using StudentManagementSystem.Services;
 using StudentsManagement.Services;
-using StudentsManagementShared.StudentRepository;
+using StudentManagementSystemShared.StudentRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +45,9 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<ISystemCodeDetailRepository, SystemCodeDetailRepository>();
 builder.Services.AddScoped<ISystemCodeRepository, SystemCodeRepository>();
+builder.Services.AddScoped<IParentRepository, ParentRepository>();
+
+
 
 
 builder.Services.AddScoped(http => new HttpClient

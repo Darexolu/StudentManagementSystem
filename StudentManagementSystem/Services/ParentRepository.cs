@@ -1,11 +1,12 @@
-﻿using StudentManagementSystem.Data;
-using StudentsManagementShared.Models;
-using StudentsManagementShared.StudentRepository;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentManagementSystem.Data;
+using StudentManagementSystemShared.Models;
+using StudentManagementSystemShared.StudentRepository;
 
 namespace StudentManagementSystem.Services
 {
 
-    //Episode 9 24mins 54secs
+   
     public class ParentRepository : IParentRepository
     {
         private readonly ApplicationDbContext _context;
@@ -14,29 +15,46 @@ namespace StudentManagementSystem.Services
             this._context = context;
         }
 
-        public Task<Parent> AddAsync(Parent mod)
+        public async Task<Parent> AddParentAsync(Parent mod)
         {
-            throw new NotImplementedException();
+
+            if (mod == null) return null;
+
+            var newparent = _context.Parents.Add(mod).Entity;
+            await _context.SaveChangesAsync();
+            return newparent;
         }
 
-        public Task<Parent> DeleteAsync(int id)
+        public async Task<Parent> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var data = await _context.Parents.Where(x => x.Id == id).FirstOrDefaultAsync();
+            if (data == null) return null;
+
+            _context.Parents.Remove(data);
+            await _context.SaveChangesAsync();
+            return data;
         }
 
-        public Task<List<Parent>> GetAllAsync()
+        public async Task<List<Parent>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var data = await _context.Parents.Include(x=>x.Student).
+                ToListAsync();
+            return data;
         }
 
-        public Task<Parent> GetByIdAsync(int id)
+        public async Task<Parent> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var data = await _context.Parents.Where(x => x.Id == id).FirstOrDefaultAsync();
+            if (data == null) return null;
+            return data;
         }
 
-        public Task<Parent> UpdateAsync(Parent mod)
+        public async Task<Parent> UpdateAsync(Parent mod)
         {
-            throw new NotImplementedException();
+            if (mod == null) return null;
+            var data = _context.Parents.Update(mod).Entity;
+            await _context.SaveChangesAsync();
+            return data;
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StudentsManagementShared.Models
+namespace StudentManagementSystemShared.Models
 {
     public class Country
     {

@@ -12,8 +12,8 @@ using StudentManagementSystem.Data;
 namespace StudentManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240320112510_newdb")]
-    partial class newdb
+    [Migration("20240321145433_nonull")]
+    partial class nonull
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -223,56 +223,7 @@ namespace StudentManagementSystem.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("StudentManagementSystemShared.Models.Student", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DOB")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EmailAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("GenderId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MiddleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GenderId");
-
-                    b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("StudentsManagementShared.Models.Country", b =>
+            modelBuilder.Entity("StudentManagementSystemShared.Models.Country", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -293,7 +244,7 @@ namespace StudentManagementSystem.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("StudentsManagementShared.Models.Parent", b =>
+            modelBuilder.Entity("StudentManagementSystemShared.Models.Parent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -348,7 +299,56 @@ namespace StudentManagementSystem.Migrations
                     b.ToTable("Parents");
                 });
 
-            modelBuilder.Entity("StudentsManagementShared.Models.SystemCode", b =>
+            modelBuilder.Entity("StudentManagementSystemShared.Models.Student", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DOB")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GenderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StudentId");
+
+                    b.HasIndex("GenderId");
+
+                    b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("StudentManagementSystemShared.Models.SystemCode", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -369,7 +369,7 @@ namespace StudentManagementSystem.Migrations
                     b.ToTable("SystemCodes");
                 });
 
-            modelBuilder.Entity("StudentsManagementShared.Models.SystemCodeDetail", b =>
+            modelBuilder.Entity("StudentManagementSystemShared.Models.SystemCodeDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -449,26 +449,15 @@ namespace StudentManagementSystem.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("StudentManagementSystemShared.Models.Student", b =>
+            modelBuilder.Entity("StudentManagementSystemShared.Models.Parent", b =>
                 {
-                    b.HasOne("StudentsManagementShared.Models.SystemCodeDetail", "Gender")
+                    b.HasOne("StudentManagementSystemShared.Models.SystemCodeDetail", "Gender")
                         .WithMany()
                         .HasForeignKey("GenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Gender");
-                });
-
-            modelBuilder.Entity("StudentsManagementShared.Models.Parent", b =>
-                {
-                    b.HasOne("StudentsManagementShared.Models.SystemCodeDetail", "Gender")
-                        .WithMany()
-                        .HasForeignKey("GenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("StudentsManagementShared.Models.SystemCodeDetail", "ParentType")
+                    b.HasOne("StudentManagementSystemShared.Models.SystemCodeDetail", "ParentType")
                         .WithMany()
                         .HasForeignKey("ParentTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -487,9 +476,20 @@ namespace StudentManagementSystem.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("StudentsManagementShared.Models.SystemCodeDetail", b =>
+            modelBuilder.Entity("StudentManagementSystemShared.Models.Student", b =>
                 {
-                    b.HasOne("StudentsManagementShared.Models.SystemCode", "SystemCode")
+                    b.HasOne("StudentManagementSystemShared.Models.SystemCodeDetail", "Gender")
+                        .WithMany()
+                        .HasForeignKey("GenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Gender");
+                });
+
+            modelBuilder.Entity("StudentManagementSystemShared.Models.SystemCodeDetail", b =>
+                {
+                    b.HasOne("StudentManagementSystemShared.Models.SystemCode", "SystemCode")
                         .WithMany()
                         .HasForeignKey("SystemCodeId")
                         .OnDelete(DeleteBehavior.Restrict)

@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using StudentManagementSystem.Data;
-using StudentsManagementShared.Models;
-using StudentsManagementShared.StudentRepository;
+using StudentManagementSystemShared.Models;
+using StudentManagementSystemShared.StudentRepository;
+
 using System.Linq.Expressions;
 
 namespace StudentsManagement.Services

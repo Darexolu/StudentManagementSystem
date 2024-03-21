@@ -1,15 +1,15 @@
-﻿using StudentsManagementShared.Models;
+﻿using StudentManagementSystemShared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StudentsManagementShared.StudentRepository
+namespace StudentManagementSystemShared.StudentRepository
 {
     public interface IParentRepository
     {
-        Task<Parent> AddAsync(Parent mod);
+        Task<Parent> AddParentAsync(Parent mod);
         Task<Parent> UpdateAsync(Parent mod);
         Task<Parent> DeleteAsync(int id);
         Task<List<Parent>> GetAllAsync();

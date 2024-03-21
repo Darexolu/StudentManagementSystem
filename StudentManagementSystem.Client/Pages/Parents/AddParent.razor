@@ -1,11 +1,10 @@
 ﻿@page "/add-parent"﻿
 @using StudentManagementSystem.Client.Services
 @using StudentManagementSystemShared.Models;
-@using StudentsManagementShared.Models
 @inject NavigationManager navigation;
 
 
-<h3>Add New Student</h3>
+<h3>Add New Parent</h3>
 
 <hr />
 <div class="row">
@@ -45,7 +44,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">Student Address</label>
+                            <label class="control-label">Parent Address</label>
                             <InputText for="Address" class="form-control" @bind-Value="@parentobj.Address" />
                             <ValidationMessage For="()=>parentobj.Address" />
                         </div>
@@ -59,8 +58,8 @@
                     </div>
                      <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">Student</label>
-                            <InputSelect for="StudentId" class="form-control" @bind-Value="@parentobj.StudentId">
+                            <label class="control-label">Gender</label>
+                            <InputSelect for="GenderId" class="form-control" @bind-Value="@parentobj.GenderId">
                                 <option value="">Select Gender</option>
                                 @if(Gender != null && Gender.Any())
                                 {
@@ -73,7 +72,7 @@
                                 }
                                  </InputSelect>
 
-                            <ValidationMessage For="()=>parentobj.StudentId" />
+                            <ValidationMessage For="()=>parentobj.GenderId" />
                         </div>
                     </div>
                      <div class="col-md-6">
@@ -84,7 +83,7 @@
                                
                                 @foreach(var student in Students)
                                 {
-                                    <option value="@student.Id">@student.FirstName</option>
+                                    <option value="@student.StudentId">@student.FullName</option>
                                 }
                             </InputSelect>
 
@@ -95,7 +94,7 @@
                         <div class="form-group">
                             <label class="control-label">Parent Type</label>
                             <InputSelect for="ParentTypeId" class="form-control" @bind-Value="@parentobj.ParentTypeId">
-                                <option value="">Select Parent</option>
+                                <option value="">Select Parent Type</option>
                                
                                 @foreach(var type in ParentType)
                                 {
@@ -117,7 +116,7 @@
                     </div>
                     </div>
                      <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-primary">Save Student</button>
+                    <button type="submit" class="btn btn-primary">Save Parent</button>
                     <button type="button" @onclick="Cancel" class="btn btn-danger">Back to List</button>
                 </div>
 
@@ -136,19 +135,19 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ParentType = await SystemCodeDetailsService.GetByCodeAsync("ParentType");
+        ParentType = await SystemCodeDetailsService.GetByCodeAsync("Parent Type");
         Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
-        Students = await StudentService.GetAllStudentsAsync();
+         Students = await StudentService.GetAllStudentsAsync();
 
     }
 
     protected async Task CreateParent()
     {
-        // var result = await StudentService.AddStudentAsync(parentobj);
-        navigation.NavigateTo("/students-list");
+        var result = await ParentService.AddParentAsync(parentobj);
+        navigation.NavigateTo("/parents-list");
     }
     public void Cancel()
     {
-        navigation.NavigateTo("/students-list");
+        navigation.NavigateTo("/parents-list");
     }
 }
