@@ -5,7 +5,7 @@ using StudentManagementSystemShared.StudentRepository;
 
 
 
-namespace StudentsManagement.Services
+namespace StudentsManagement.Repository
 {
     public class SystemCodeDetailRepository : ISystemCodeDetailRepository
     {

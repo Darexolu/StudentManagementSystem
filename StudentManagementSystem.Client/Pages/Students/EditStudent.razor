@@ -1,7 +1,6 @@
 ﻿@page "/student/edit/{id:int}"
 @using StudentManagementSystemShared.Models;
 @inject NavigationManager navigation;
-@rendermode InteractiveServer
 
 
 <div class="row">
@@ -37,6 +36,25 @@
                                             <label class="control-label">Last Name</label>
                                             <InputText for="LastName" class="form-control" @bind-Value="@studobj.LastName" />
                                             <ValidationMessage For="()=>studobj.LastName" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Gender</label>
+                                            <InputSelect for="GenderId" class="form-control" @bind-Value="@studobj.GenderId">
+                                                <option value="">Select Gender</option>
+                                                @if (Gender != null && Gender.Any())
+                                                {
+                                                    @foreach (var sex in Gender)
+                                                    {
+                                                        <option value="@sex.Id">@sex.Description</option>
+                                                    }
+
+
+                                                }
+                                            </InputSelect>
+
+                                            <ValidationMessage For="()=>studobj.GenderId" />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -83,25 +101,37 @@
         </div>
     </div>
 </div>
+
 @code {
 
     [SupplyParameterFromForm]
-    public Student studobj { get; set; } = new();
+    public Student studobj { get; set; } = new Student();
+
 
 
     [Parameter]
     public int id { get; set; }
 
-    
+
+    List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadStudent();
-      
+        if (studobj.FirstName == null )
+        {
+            await LoadStudent();
+        }
+        else
+        {
+            studobj.Id = id;
+            UpdateStudent();
+        }
     }
     public async Task LoadStudent()
     {
+        Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
         studobj = await StudentService.GetStudentByIdAsync(id);
+        
     }
 
 

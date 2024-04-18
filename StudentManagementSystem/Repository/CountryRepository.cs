@@ -4,7 +4,7 @@ using StudentManagementSystemShared.Models;
 using StudentManagementSystemShared.StudentRepository;
 
 
-namespace StudentManagementSystem.Services
+namespace StudentManagementSystem.Repository
 {
     public class CountryRepository : ICountryRepository
     {

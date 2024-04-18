@@ -1,0 +1,77 @@
+﻿@page "/parent/delete/{id:int}"
+@using StudentManagementSystemShared.Models;
+@using StudentManagementSystem.Client
+@inject NavigationManager navigation;
+@rendermode InteractiveServer
+
+<h3>Delete Parent Details</h3>
+
+<div class="row">
+    <div class="col-md-12">
+        <EditForm Model="parentobj" OnValidSubmit="Delete" FormName="deleteparent">
+            <table class="table">
+                <tr>
+                    <th>First Name</th>
+                    <td>@parentobj.FirstName</td>
+                </tr>
+                <tr>
+                    <th>Middle Name</th>
+                    <td>@parentobj.MiddleName</td>
+                </tr>
+                <tr>
+                    <th>Last Name</th>
+                    <td>@parentobj.LastName</td>
+                </tr>
+                <tr>
+                    <th>Email Address</th>
+                    <td>@parentobj.EmailAddress</td>
+                </tr>
+                <tr>
+                    <th>Student Address</th>
+                    <td>@parentobj.Address</td>
+                </tr>
+                <tr>
+                    <th>Country</th>
+                    <td>@parentobj.DOB</td>
+                </tr>
+            </table>
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Delete Student</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+    public Parent parentobj { get; set; } = new();
+
+
+    [Parameter]
+    public int id { get; set; }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadParent();
+
+    }
+    public async Task LoadParent()
+    {
+        parentobj = await ParentService.GetByIdAsync(id);
+    }
+
+
+    protected async Task Delete()
+    {
+        var result = await ParentService.DeleteAsync(id);
+        navigation.NavigateTo("/parents-list");
+    }
+    public void Cancel()
+    {
+        navigation.NavigateTo("/parents-list");
+    }
+}

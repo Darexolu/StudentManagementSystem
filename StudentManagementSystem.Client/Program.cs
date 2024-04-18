@@ -11,10 +11,12 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
 
-builder.Services.AddScoped<IStudentRepository, StudentService>();
-builder.Services.AddScoped<ICountryRepository, CountryService>();
-builder.Services.AddScoped<ISystemCodeDetailRepository, SystemCodeDetailsService>();
-builder.Services.AddScoped<ISystemCodeRepository, SystemCodeService>();
+//builder.Services.AddScoped<IStudentRepository, StudentService>();
+//builder.Services.AddScoped<ICountryRepository, CountryService>();
+//builder.Services.AddScoped<ISystemCodeDetailRepository, SystemCodeDetailsService>();
+//builder.Services.AddScoped<ISystemCodeRepository, SystemCodeService>();
+//builder.Services.AddScoped<ITeacherRepository, TeacherService>();
+
 
 
 

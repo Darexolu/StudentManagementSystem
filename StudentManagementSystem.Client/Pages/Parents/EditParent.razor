@@ -1,15 +1,15 @@
-﻿@page "/add-parent"﻿
-@using StudentManagementSystem.Client.Services
+﻿@page "/parent/edit/{id:int}"
 @using StudentManagementSystemShared.Models;
 @inject NavigationManager navigation;
 
 
-<h3>Add New Parent</h3>
+
+<h3>Update Parent Details</h3>
 
 <hr />
 <div class="row">
     <div class="col-md-12">
- <EditForm Model="parentobj" OnValidSubmit="CreateParent" FormName="addparent">
+ <EditForm Model="parentobj" OnValidSubmit="UpdateParent" FormName="updateparent">
           
             <div class="col-md-12">
                 <div class="row">
@@ -129,21 +129,37 @@
     [SupplyParameterFromForm]
     public Parent parentobj { get; set; } = new();
 
+    [Parameter]
+    public int id { get; set; }
+
     List<SystemCodeDetail> ParentType = new List<SystemCodeDetail>(); 
     List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
     List<Student> Students = new List<Student>();
 
     protected override async Task OnInitializedAsync()
     {
-        ParentType = await SystemCodeDetailsService.GetByCodeAsync("Parent Type");
-        Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
-         Students = await StudentService.GetAllStudentsAsync();
+        if (parentobj.FirstName == null)
+        {
+            await LoadParent();
+        }
+        else
+        {
+            parentobj.Id = id;
+            UpdateParent();
+        }
 
     }
-    //Episode 10
-    protected async Task CreateParent()
+    public async Task LoadParent()
     {
-        var result = await ParentService.AddParentAsync(parentobj);
+        parentobj = await ParentService.GetByIdAsync(id);
+        ParentType = await SystemCodeDetailsService.GetByCodeAsync("Parent Type");
+        Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
+        Students = await StudentService.GetAllStudentsAsync();
+
+    }
+    protected async Task UpdateParent()
+    {
+        var result = await ParentService.UpdateAsync(parentobj);
         navigation.NavigateTo("/parents-list");
     }
     public void Cancel()

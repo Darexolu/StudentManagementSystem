@@ -3,7 +3,7 @@ using StudentManagementSystem.Data;
 using StudentManagementSystemShared.Models;
 using StudentManagementSystemShared.StudentRepository;
 
-namespace StudentManagementSystem.Services
+namespace StudentManagementSystem.Repository
 {
 
    
@@ -56,5 +56,7 @@ namespace StudentManagementSystem.Services
             await _context.SaveChangesAsync();
             return data;
         }
+
+        
     }
 }

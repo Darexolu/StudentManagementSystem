@@ -1,0 +1,181 @@
+﻿@page "/add-teacher"﻿
+@using StudentManagementSystem.Client.Services
+@using StudentManagementSystemShared.Models;
+@inject NavigationManager navigation;
+
+
+<h4>Add New Teacher Details</h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+ <EditForm Model="teacherobj" OnValidSubmit="CreateTeacher" FormName="addteacher">
+          
+            <div class="col-md-12">
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">First Name</label>
+                            <InputText for="FirstName" class="form-control" @bind-Value="@teacherobj.FirstName"/>
+                            <ValidationMessage For="()=>teacherobj.FirstName"/>
+                        </div>
+                    </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Middle Name</label>
+                            <InputText for="MiddleName" class="form-control" @bind-Value="@teacherobj.MiddleName" />
+                            <ValidationMessage For="()=>teacherobj.MiddleName" />
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Last Name</label>
+                            <InputText for="LastName" class="form-control" @bind-Value="@teacherobj.LastName" />
+                            <ValidationMessage For="()=>teacherobj.LastName" />
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Gender</label>
+                            <InputSelect for="GenderId" class="form-control" @bind-Value="@teacherobj.GenderId">
+                                <option value="">Select Gender</option>
+                                @if(Gender != null && Gender.Any())
+                                {
+                                 @foreach(var sex in Gender)
+                                {
+                                    <option value="@sex.Id">@sex.Description</option>
+                                }
+
+
+                                }
+                                 </InputSelect>
+
+                            <ValidationMessage For="()=>teacherobj.GenderId" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Marital Status</label>
+                            <InputSelect for="MaritalStatusId" class="form-control" @bind-Value="@teacherobj.MaritalStatusId">
+                                <option value="">Select Marital Status</option>
+                                @if(MaritalStatus != null && MaritalStatus.Any())
+                                {
+                                 @foreach(var status in MaritalStatus)
+                                {
+                                    <option value="@status.Id">@status.Description</option>
+                                }
+
+
+                                }
+                                 </InputSelect>
+
+                            <ValidationMessage For="()=>teacherobj.GenderId" />
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Email Address</label>
+                            <InputText for="EmailAddress" class="form-control" @bind-Value="@teacherobj.EmailAddress" />
+                            <ValidationMessage For="()=>teacherobj.EmailAddress" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Address</label>
+                            <InputText for="Address" class="form-control" @bind-Value="@teacherobj.Address" />
+                            <ValidationMessage For="()=>teacherobj.Address" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Phone Number</label>
+                            <InputText for="PhoneNumber" class="form-control" @bind-Value="@teacherobj.PhoneNumber" />
+                            <ValidationMessage For="()=>teacherobj.PhoneNumber" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Facebook Link</label>
+                            <InputText for="FacebookLink" class="form-control" @bind-Value="@teacherobj.FacebookLink" />
+                            <ValidationMessage For="()=>teacherobj.FacebookLink" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Twitter Link</label>
+                            <InputText for="TwitterLink" class="form-control" @bind-Value="@teacherobj.TwitterLink" />
+                            <ValidationMessage For="()=>teacherobj.TwitterLink" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">LinkedIn Link</label>
+                            <InputText for="LinkedInLink" class="form-control" @bind-Value="@teacherobj.LinkedInLink" />
+                            <ValidationMessage For="()=>teacherobj.LinkedInLink" />
+                        </div>
+                    </div>
+                    
+                   <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Designation</label>
+                            <InputSelect for="DesignationId" class="form-control" @bind-Value="@teacherobj.DesignationId">
+                                <option value="">Select Designation</option>
+                               
+                                @foreach(var type in Designations)
+                                {
+                                    <option value="@type.Id">@type.Description</option>
+                                }
+                            </InputSelect>
+
+                            <ValidationMessage For="()=>teacherobj.DesignationId" />
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Date of Birth</label>
+                            <InputDate for="DOB" class="form-control" @bind-Value="@teacherobj.DOB" />
+                            <ValidationMessage For="()=>teacherobj.DOB" />
+                        </div>
+                    </div>
+
+                    </div>
+                    </div>
+                     <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary">Save Parent</button>
+                    <button type="button" @onclick="Cancel" class="btn btn-danger">Back to List</button>
+                </div>
+
+                     </EditForm>
+    </div>
+     </div>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public Teacher teacherobj { get; set; } = new();
+
+    List<SystemCodeDetail> Designations = new List<SystemCodeDetail>(); 
+    List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
+     List<SystemCodeDetail> MaritalStatus = new List<SystemCodeDetail>();
+   
+    protected override async Task OnInitializedAsync()
+    {
+        Designations = await SystemCodeDetailsService.GetByCodeAsync("Designation");
+        Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
+        MaritalStatus= await SystemCodeDetailsService.GetByCodeAsync("Marital Status");
+
+    }
+    
+    protected async Task CreateTeacher()
+    {
+        var result = await TeacherService.AddTeacherAsync(teacherobj);
+        navigation.NavigateTo("/teachers-list");
+    }
+    public void Cancel()
+    {
+        navigation.NavigateTo("/teachers-list");
+    }
+}
+
+  

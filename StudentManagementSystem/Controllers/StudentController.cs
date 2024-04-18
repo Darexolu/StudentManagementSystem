@@ -17,6 +17,7 @@ namespace StudentManagementSystem.Controllers
         [HttpGet("All-Students")]
         public async Task<ActionResult<List<Student>>> GetAllStudentsAsync()
         {
+            Console.WriteLine("Calling GetAllStudentsAsync API...");
             var students = await _studentRepository.GetAllStudentsAsync();
             return Ok(students);
         }
@@ -42,13 +43,24 @@ namespace StudentManagementSystem.Controllers
             return Ok(deletestudent);
         }
 
-        [HttpPost("Update-Student")]
-        public async Task<ActionResult<Student>> UpdateStudentAsync(Student student)
+        [HttpPut("Update-Student/{id}")]
+        public async Task<ActionResult<Student>> UpdateStudentAsync(int id, Student student)
         {
-            var updatestudent = await _studentRepository.UpdateStudentAsync(student);
-            return Ok(updatestudent);
+            if (id != student.Id)
+            {
+                return BadRequest("Student ID mismatch");
+            }
+
+            var updatedStudent = await _studentRepository.UpdateStudentAsync(student);
+            if (updatedStudent == null)
+            {
+                return NotFound($"Student with ID {id} not found.");
+            }
+
+            return Ok(updatedStudent);
         }
 
-       
+
+
     }
 }

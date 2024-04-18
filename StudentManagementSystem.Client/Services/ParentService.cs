@@ -32,7 +32,7 @@ namespace StudentManagementSystem.Client.Services
         public async Task<Parent> GetByIdAsync(int id)
         {
 
-            var data = await _httpClient.GetAsync($"api/Countries/Single-Parent/{id}");
+            var data = await _httpClient.GetAsync($"api/Parent/Single-Parent/{id}");
             var response = await data.Content.ReadFromJsonAsync<Parent>();
             return response;
         }

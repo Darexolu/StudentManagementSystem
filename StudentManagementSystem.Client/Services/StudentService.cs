@@ -46,13 +46,21 @@ namespace StudentsManagementSystem.Client.Services
             return response;
         }
 
-        public async Task<Student> UpdateStudentAsync(Student student)
+        public async Task<bool> UpdateStudentAsync(Student student)
         {
-            var updatestudent = await _httpClient.PostAsJsonAsync("api/Student/Update-Student", student);
-            var response = await updatestudent.Content.ReadFromJsonAsync<Student>();
-            return response;
+            var updatestudent = await _httpClient.PutAsJsonAsync($"api/Student/Update-Student/{student.Id}", student);
+            if (updatestudent.IsSuccessStatusCode)
+            {
+                // The update was successful
+                return true;
+            }
+            else
+            {
+                // The update failed
+                return false;
+            }
         }
 
-        
+
     }
 }

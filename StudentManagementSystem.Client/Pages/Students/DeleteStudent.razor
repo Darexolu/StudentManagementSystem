@@ -2,12 +2,13 @@
 @using StudentManagementSystemShared.Models;
 @using StudentManagementSystem.Client
 @inject NavigationManager navigation;
-@inject IJSRuntime JsRuntime
 @rendermode InteractiveServer
 
 <h3>Delete Student Details</h3>
-<div class="row">
+
+      <div class="row">
     <div class="col-md-12">
+        <EditForm Model="studobj" OnValidSubmit="Delete" FormName="deletestudent">
         <table class="table">
             <tr>
                 <th>First Name</th>
@@ -34,10 +35,12 @@
                 <td>@studobj.Country</td>
             </tr>
         </table>
-    </div>
+       
+    
     <div class="form-group">
-        <button type="submit" class="btn btn-primary" @onclick="Delete">Delete Student</button>
-        <button type="button" class="btn btn-danger" @onclick="Cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Delete Student</button>
+    </div>
+        </EditForm>
     </div>
 </div>
 

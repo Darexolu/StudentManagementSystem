@@ -3,7 +3,7 @@ using StudentManagementSystem.Data;
 using StudentManagementSystemShared.Models;
 using StudentManagementSystemShared.StudentRepository;
 
-namespace StudentManagementSystem.Services
+namespace StudentManagementSystem.Repository
 {
     public class StudentRepository : IStudentRepository
     {
@@ -23,7 +23,7 @@ namespace StudentManagementSystem.Services
 
         public async Task<Student> DeleteStudentAsync(int studentId)
         {
-            var student = await _context.Students.Where(x => x.StudentId == studentId).FirstOrDefaultAsync();
+            var student = await _context.Students.Where(x => x.Id == studentId).FirstOrDefaultAsync();
             if (student == null) return null;
 
             _context.Students.Remove(student);
@@ -39,17 +39,38 @@ namespace StudentManagementSystem.Services
 
         public async Task<Student> GetStudentByIdAsync(int studentId)
         {
-            var singlestudent = await _context.Students.Where(x => x.StudentId == studentId).FirstOrDefaultAsync();
+            var singlestudent = await _context.Students.SingleOrDefaultAsync(x => x.Id == studentId);
             if (singlestudent == null) return null;
         return singlestudent;
         }
 
-        public async Task<Student> UpdateStudentAsync(Student student)
+        public async Task<bool> UpdateStudentAsync(Student student)
         {
-            if (student == null) return null;
-            var newstudent = _context.Students.Update(student).Entity;
-            await _context.SaveChangesAsync();
-            return newstudent;
+            if (student.Id <= 0)
+            {
+                // Log the error as needed
+                return false;
+            }
+
+            var existingStudent = await _context.Students.FindAsync(student.Id);
+            if (existingStudent == null)
+            {
+                // Log the error as needed
+                return false;
+            }
+
+            _context.Entry(existingStudent).CurrentValues.SetValues(student);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception as needed
+                return false;
+            }
         }
+
     }
 }

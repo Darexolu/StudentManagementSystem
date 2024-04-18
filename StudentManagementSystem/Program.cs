@@ -6,8 +6,8 @@ using StudentManagementSystem.Client.Services;
 using StudentManagementSystem.Components;
 using StudentManagementSystem.Components.Account;
 using StudentManagementSystem.Data;
-using StudentManagementSystem.Services;
-using StudentsManagement.Services;
+using StudentManagementSystem.Repository;
+using StudentsManagement.Repository;
 using StudentManagementSystemShared.StudentRepository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +46,8 @@ builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<ISystemCodeDetailRepository, SystemCodeDetailRepository>();
 builder.Services.AddScoped<ISystemCodeRepository, SystemCodeRepository>();
 builder.Services.AddScoped<IParentRepository, ParentRepository>();
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+
 
 
 

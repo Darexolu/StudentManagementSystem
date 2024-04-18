@@ -6,8 +6,13 @@
 
 @* <h3> Students List</h3>
 @rendermode InteractiveAuto *@
-
-<div class="container">
+    <div class="row">
+     <div class="col-12">
+          <div class="card">
+           <div class="card-header">
+               <h3 class="card-title">Students List</h3>
+               </div>
+               <div class="card-body">
     <div class="row">
         <p><a class="btn btn-success float-end" href="/add-student">Add New Student</a></p>
         <div class="col-md-12">
@@ -37,7 +42,7 @@
                            <tbody>
                             @foreach(var student in AllStudents)
                             {<tr>
-                            <td>@student.StudentId</td>
+                            <td>@student.Id</td>
                             <td>@student.FirstName</td>
                             <td>@student.MiddleName</td>
                             <td>@student.LastName</td>
@@ -46,10 +51,10 @@
                            <td>@student.Country</td>
 
                             <td>
-                                            <a class="btn btn-success" href="/student/edit/@student.StudentId"> Edit </a>
+                                            <a class="btn btn-success" href="/student/edit/@student.Id"> Edit </a>
                             </td>
                             <td>
-                                            <a class="btn btn-danger" href="/student/delete/@student.StudentId"> Delete </a>
+                                            <a class="btn btn-danger" href="/student/delete/@student.Id"> Delete </a>
                             </td>
                             </tr>
                             }
@@ -65,7 +70,11 @@
 
         </div>
     </div>
+  </div>
+    </div>
 </div>
+</div>
+
 
 @code {
     private List<Student> AllStudents { get; set; } = new();
@@ -94,3 +103,5 @@
     }
 
 }
+
+     

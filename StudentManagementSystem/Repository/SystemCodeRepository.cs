@@ -6,7 +6,7 @@ using StudentManagementSystemShared.StudentRepository;
 
 using System.Linq.Expressions;
 
-namespace StudentsManagement.Services
+namespace StudentsManagement.Repository
 {
     public class SystemCodeRepository : ISystemCodeRepository
     {
