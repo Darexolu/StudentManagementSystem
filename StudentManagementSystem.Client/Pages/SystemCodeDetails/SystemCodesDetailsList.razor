@@ -35,15 +35,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var country in AllSystemCodesDetails)
+                                            @foreach (var systemcodedetail in AllSystemCodesDetails)
                                             {
                                                 <tr>
-                                                    <td>@country.Id</td>
-                                                    <td>@country.Code</td>
-                                                    <td>@country.Description</td>
-                                                    <td>@country.SystemCode.Description</td>
+                                                    <td>@systemcodedetail.Id</td>
+                                                    <td>@systemcodedetail.Code</td>
+                                                    <td>@systemcodedetail.Description</td>
+                                                    <td>@systemcodedetail.SystemCode.Description</td>
                                                     <td>
-                                                        <a class="btn btn-success" href="/country/edit/@country.Id"> Edit </a>
+                                                        <a class="btn btn-success" href="/systemcodesdetails/edit/@systemcodedetail.Id"> Edit </a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-danger" href="/systemcodesdetails/delete/@systemcodedetail.Id"> Delete </a>
                                                     </td>
                                                 </tr>
                                             }

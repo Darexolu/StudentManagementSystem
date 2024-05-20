@@ -29,17 +29,21 @@
                                                 <th>Code</th>
                                                 <th>Description</th>
                                                 <th>Edit</th>
+                                                <th>Delete</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var country in AllSystemCodes)
+                                            @foreach (var systemcode in AllSystemCodes)
                                             {
                                                 <tr>
-                                                    <td>@country.Id</td>
-                                                    <td>@country.Code</td>
-                                                    <td>@country.Description</td>
+                                                    <td>@systemcode.Id</td>
+                                                    <td>@systemcode.Code</td>
+                                                    <td>@systemcode.Description</td>
                                                     <td>
-                                                        <a class="btn btn-success" href="/country/edit/@country.Id"> Edit </a>
+                                                        <a class="btn btn-success" href="/systemcodes/edit/@systemcode.Id"> Edit </a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-danger" href="/systemcodes/delete/@systemcode.Id"> Delete</a>
                                                     </td>
                                                 </tr>
                                             }

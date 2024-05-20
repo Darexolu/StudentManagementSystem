@@ -1,0 +1,63 @@
+﻿@page "/SystemCodes/delete/{id:int}"
+@using StudentManagementSystemShared.Models;
+@using StudentManagementSystem.Client
+@inject NavigationManager navigation;
+@inject IJSRuntime JsRuntime
+@rendermode InteractiveServer
+
+<h3>System Code</h3>
+<div class="row">
+    <div class="col-md-12">
+        <EditForm Model="systemcodeobj" OnValidSubmit="Delete" FormName="deletesystemcode">
+            <table class="table">
+                <tr>
+                    <th>Code</th>
+                    <td>@systemcodeobj.Code</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>@systemcodeobj.Description</td>
+                </tr>
+
+            </table>
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Delete System Code</button>
+                <button type="button" class="btn btn-danger" @onclick="Cancel">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+    public SystemCode systemcodeobj { get; set; } = new();
+
+
+    [Parameter]
+    public int id { get; set; }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSystemCode();
+
+    }
+    public async Task LoadSystemCode()
+    {
+        systemcodeobj = await SystemCodeService.GetByIdAsync(id);
+    }
+
+
+    protected async Task Delete()
+    {
+        var result = await SystemCodeService.DeleteAsync(id);
+        navigation.NavigateTo("/systemcodes-list");
+    }
+    public void Cancel()
+    {
+        navigation.NavigateTo("/systemcodes-list");
+    }
+}

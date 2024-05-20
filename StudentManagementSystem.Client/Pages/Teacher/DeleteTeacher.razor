@@ -1,0 +1,79 @@
+﻿@page "/teacher/delete/{id:int}"
+@using StudentManagementSystemShared.Models;
+@using StudentManagementSystem.Client;
+@inject NavigationManager navigation;
+@rendermode InteractiveServer
+
+
+<h3>Delete Student Details</h3>
+
+      <div class="row">
+    <div class="col-md-12">
+        <EditForm Model="teacherobj" OnValidSubmit="Delete" FormName="deletestudent">
+        <table class="table">
+            <tr>
+                <th>First Name</th>
+                <td>@teacherobj.FirstName</td>
+            </tr>
+            <tr>
+                <th>Middle Name</th>
+                <td>@teacherobj.MiddleName</td>
+            </tr>
+            <tr>
+                <th>Last Name</th>
+                <td>@teacherobj.LastName</td>
+            </tr>
+            <tr>
+                <th>Email Address</th>
+                <td>@teacherobj.EmailAddress</td>
+            </tr>
+            <tr>
+                <th>Student Address</th>
+                <td>@teacherobj.Address</td>
+            </tr>
+            <tr>
+                <th>Country</th>
+                <td>@teacherobj.DOB</td>
+            </tr>
+        </table>
+       
+    
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Delete Student</button>
+    </div>
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+    public Teacher teacherobj { get; set; } = new();
+
+
+    [Parameter]
+    public int id { get; set; }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTeacher();
+
+    }
+    public async Task LoadTeacher()
+    {
+        teacherobj = await TeacherService.GetTeacherByIdAsync(id);
+    }
+
+
+    protected async Task Delete()
+    {
+        var result = await TeacherService.DeleteAsync(id);
+        navigation.NavigateTo("/teachers-list");
+    }
+    public void Cancel()
+    {
+        navigation.NavigateTo("/teachers-list");
+    }
+}
+

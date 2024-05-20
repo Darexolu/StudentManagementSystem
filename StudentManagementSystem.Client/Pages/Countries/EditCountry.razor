@@ -61,8 +61,15 @@
 
     protected override async Task OnInitializedAsync()
     {
+         if (countryobj.Code == null)
+        {
         await LoadCountry();
-
+        }
+        else
+        {
+            countryobj.Id = id;
+            UpdateCountry();
+        }
     }
     public async Task LoadCountry()
     {

@@ -1,0 +1,67 @@
+﻿@page "/SystemCodesDetails/delete/{id:int}"
+@using StudentManagementSystemShared.Models;
+@using StudentManagementSystem.Client
+@inject NavigationManager navigation;
+@inject IJSRuntime JsRuntime
+@rendermode InteractiveServer
+
+<h3>System Code Details</h3>
+<div class="row">
+    <div class="col-md-12">
+        <EditForm Model="systemcodedetailsobj" OnValidSubmit="Delete" FormName="deletesystemcode">
+            <table class="table">
+                <tr>
+                    <th>Code</th>
+                    <td>@systemcodedetailsobj.Code</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>@systemcodedetailsobj.Description</td>
+                </tr>
+                @* <tr>
+                    <th>Description</th>
+                    <td>@systemcodedetailsobj.SystemCode.Description</td>
+                </tr> *@
+
+            </table>
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Delete System Code Details</button>
+                <button type="button" class="btn btn-danger" @onclick="Cancel">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+    public SystemCodeDetail systemcodedetailsobj { get; set; } = new();
+
+
+    [Parameter]
+    public int id { get; set; }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSystemCodeDetail();
+
+    }
+    public async Task LoadSystemCodeDetail()
+    {
+        systemcodedetailsobj = await SystemCodeDetailsService.GetByIdAsync(id);
+    }
+
+
+    protected async Task Delete()
+    {
+        var result = await SystemCodeDetailsService.DeleteAsync(id);
+        navigation.NavigateTo("/systemcodesdetails-list");
+    }
+    public void Cancel()
+    {
+        navigation.NavigateTo("/systemcodesdetails-list");
+    }
+}

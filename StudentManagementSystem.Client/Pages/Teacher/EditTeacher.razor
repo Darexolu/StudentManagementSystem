@@ -141,7 +141,7 @@
                     </div>
                     </div>
                      <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-primary">Save Teacher</button>
+                    <button type="submit" class="btn btn-primary">Update Teacher</button>
                     <button type="button" @onclick="Cancel" class="btn btn-danger">Back to List</button>
                 </div>
 
@@ -169,6 +169,7 @@
         }
         else
         {
+            teacherobj.Id = id;
             UpdateTeacher();
         }
 
