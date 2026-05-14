@@ -19,4 +19,8 @@
     <ProjectReference Include="..\StudentsManagementShared\StudentManagementSystemShared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Auth\" />
+  </ItemGroup>
+
 </Project>

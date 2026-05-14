@@ -9,6 +9,7 @@
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject UserManager<ApplicationUser> UserManager
 
 <PageTitle>Log in</PageTitle>
 
@@ -92,8 +93,39 @@
         var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
         if (result.Succeeded)
         {
-            Logger.LogInformation("User logged in.");
-            RedirectManager.RedirectTo(ReturnUrl);
+			if (result.Succeeded)
+			{
+				var user = await UserManager.FindByEmailAsync(Input.Email);
+
+				if (user != null)
+				{
+					if (await UserManager.IsInRoleAsync(user, "Admin"))
+					{
+						RedirectManager.RedirectTo("/");
+						return;
+					}
+
+					if (await UserManager.IsInRoleAsync(user, "Teacher"))
+					{
+						RedirectManager.RedirectTo("/teacher/dashboard");
+						return;
+					}
+
+					if (await UserManager.IsInRoleAsync(user, "Student"))
+					{
+						RedirectManager.RedirectTo("/student/dashboard");
+						return;
+					}
+
+					if (await UserManager.IsInRoleAsync(user, "Parent"))
+					{
+						RedirectManager.RedirectTo("/parent/dashboard");
+						return;
+					}
+				}
+
+				RedirectManager.RedirectTo("/");
+			}
         }
         else if (result.RequiresTwoFactor)
         {
