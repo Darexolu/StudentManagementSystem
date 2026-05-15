@@ -2,6 +2,8 @@
 @using StudentManagementSystemShared.Models;
 @using StudentManagementSystem.Client
 @inject NavigationManager navigation;
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin,Super Admin")]
 @rendermode InteractiveServer
 
 <h3>Delete Parent Details</h3>

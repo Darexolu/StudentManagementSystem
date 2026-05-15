@@ -1,6 +1,8 @@
 ﻿@page "/systemcodes/edit/{id:int}"
 @using StudentManagementSystem.Client.Services
 @using StudentManagementSystemShared.Models;
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin,Super Admin")]
 @inject NavigationManager navigation;
 
 

@@ -1,6 +1,8 @@
 ﻿@page "/students-list"
 @using StudentManagementSystemShared.Models;
 @inject NavigationManager navigation;
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin,Super Admin")]
 @inject IJSRuntime JsRuntime
 
 

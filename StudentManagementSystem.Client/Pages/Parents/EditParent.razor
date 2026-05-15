@@ -1,6 +1,8 @@
 ﻿@page "/parent/edit/{id:int}"
 @using StudentManagementSystemShared.Models;
 @inject NavigationManager navigation;
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin,Super Admin")]
 
 
 
