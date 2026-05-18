@@ -1,0 +1,235 @@
+﻿@page "/classes-list"
+
+@using Microsoft.AspNetCore.Authorization
+@using StudentManagementSystemShared.Models
+@rendermode InteractiveServer
+
+@attribute [Authorize(Roles = "Admin,Super Admin")]
+
+@inject ISchoolClassRepository SchoolClassRepository
+
+<PageTitle>Classes</PageTitle>
+
+<div class="content-wrapper">
+
+	<section class="content-header">
+		<div class="container-fluid">
+
+			<div class="row mb-2">
+
+				<div class="col-sm-6">
+					<h1>Classes Management</h1>
+				</div>
+
+			</div>
+
+		</div>
+	</section>
+
+	<section class="content">
+
+		<div class="container-fluid">
+
+			<div class="card card-primary">
+
+				<div class="card-header">
+					<h3 class="card-title">
+						@(isEdit ? "Edit Class" : "Create Class")
+					</h3>
+				</div>
+
+				<EditForm Model="model" FormName="class-form" OnValidSubmit="SaveClass">
+
+					<DataAnnotationsValidator />
+
+					<div class="card-body">
+
+						<div class="form-group">
+							<label>Class Name</label>
+
+							<InputText class="form-control"
+									   @bind-Value="model.Name"
+									   placeholder="e.g JSS1A" />
+
+							<ValidationMessage For="@(() => model.Name)" />
+						</div>
+
+						<div class="form-group">
+							<label>Level</label>
+
+							<InputText class="form-control"
+									   @bind-Value="model.Level"
+									   placeholder="e.g JSS1" />
+
+							<ValidationMessage For="@(() => model.Level)" />
+						</div>
+
+						<div class="form-group">
+							<label>Arm</label>
+
+							<InputText class="form-control"
+									   @bind-Value="model.Arm"
+									   placeholder="e.g A" />
+
+							<ValidationMessage For="@(() => model.Arm)" />
+						</div>
+
+					</div>
+
+					<div class="card-footer">
+
+						<button type="submit"
+								class="btn btn-primary">
+
+							@(isEdit ? "Update" : "Save")
+						</button>
+
+						@if (isEdit)
+						{
+							<button type="button"
+									class="btn btn-secondary ml-2"
+									@onclick="ResetForm">
+
+								Cancel
+							</button>
+						}
+
+					</div>
+
+				</EditForm>
+
+			</div>
+
+			<div class="card">
+
+				<div class="card-header">
+					<h3 class="card-title">Classes List</h3>
+				</div>
+
+				<div class="card-body table-responsive p-0">
+
+					<table class="table table-hover text-nowrap">
+
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Arm</th>
+								<th width="150">Actions</th>
+							</tr>
+						</thead>
+
+						<tbody>
+
+							@if (classes.Any())
+							{
+								@foreach (var item in classes)
+								{
+									<tr>
+
+										<td>@item.Name</td>
+										<td>@item.Level</td>
+										<td>@item.Arm</td>
+
+										<td>
+
+											<button type="button" class="btn btn-warning btn-sm"
+													@onclick="() => EditClass(item)">
+												Edit
+											</button>
+
+											<button type="button" class="btn btn-danger btn-sm ml-2"
+													@onclick="() => DeleteClass(item.Id)">
+												Delete
+											</button>
+
+										</td>
+
+									</tr>
+								}
+							}
+							else
+							{
+								<tr>
+									<td colspan="4" class="text-center">
+										No records found.
+									</td>
+								</tr>
+							}
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</section>
+
+</div>
+
+@code {
+
+	private List<SchoolClass> classes = new();
+
+	[SupplyParameterFromForm]
+	private SchoolClass model { get; set; } = new();
+
+	private bool isEdit = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await LoadData();
+	}
+
+	private async Task LoadData()
+	{
+		classes = await SchoolClassRepository.GetAllAsync();
+	}
+
+	private async Task SaveClass()
+	{
+		if (isEdit)
+		{
+			await SchoolClassRepository.UpdateAsync(model);
+		}
+		else
+		{
+			await SchoolClassRepository.AddAsync(model);
+		}
+
+		await LoadData();
+
+		ResetForm();
+	}
+
+	private void EditClass(SchoolClass item)
+	{
+		model = new SchoolClass
+			{
+				Id = item.Id,
+				Name = item.Name,
+				Level = item.Level,
+				Arm = item.Arm
+			};
+
+		isEdit = true;
+	}
+
+	private async Task DeleteClass(Guid id)
+	{
+		await SchoolClassRepository.DeleteAsync(id);
+
+		await LoadData();
+	}
+
+	private void ResetForm()
+	{
+		model = new SchoolClass();
+
+		isEdit = false;
+	}
+}

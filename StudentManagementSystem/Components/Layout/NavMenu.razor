@@ -133,6 +133,57 @@
                         </p>
                         </NavLink>
                 </li>
+					<li class="nav-item @(isAcademicMenuOpen ? "menu-open" : "")">
+
+						<a href="#"
+						   class="nav-link @(isAcademicMenuOpen ? "active" : "")"
+						   @onclick="ToggleAcademicMenu">
+
+							<i class="nav-icon fas fa-book"></i>
+
+							<p>
+								Class & Subject 
+
+								<i class="right fas @(isAcademicMenuOpen ? "fa-angle-down" : "fa-angle-right")"></i>
+							</p>
+
+						</a>
+
+						<ul class="nav nav-treeview" style="display:@(isAcademicMenuOpen ? "block" : "none")">
+
+							<li class="nav-item">
+								<NavLink href="classes-list" class="nav-link">
+
+									<i class="far fa-circle nav-icon"></i>
+
+									<p>Classes</p>
+
+								</NavLink>
+							</li>
+
+							<li class="nav-item">
+								<NavLink href="subjects-list" class="nav-link">
+
+									<i class="far fa-circle nav-icon"></i>
+
+									<p>Subjects</p>
+
+								</NavLink>
+							</li>
+
+							<li class="nav-item">
+								<NavLink href="classsubjects-list" class="nav-link">
+
+									<i class="far fa-circle nav-icon"></i>
+
+									<p>Class Subjects</p>
+
+								</NavLink>
+							</li>
+
+						</ul>
+
+					</li>
 				</AuthorizeView>
         </ul>
       </nav>
@@ -160,5 +211,11 @@
     {
         NavigationManager.LocationChanged -= OnLocationChanged;
     }
+	private bool isAcademicMenuOpen = false;
+
+	private void ToggleAcademicMenu()
+	{
+		isAcademicMenuOpen = !isAcademicMenuOpen;
+	}
 }
 
