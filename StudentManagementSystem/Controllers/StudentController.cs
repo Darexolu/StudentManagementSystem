@@ -23,7 +23,7 @@ namespace StudentManagementSystem.Controllers
         }
 
         [HttpGet("Single-Student/{id}")]
-        public async Task<ActionResult<Student>> GetSingleStudentAsync(int id)
+        public async Task<ActionResult<Student>> GetSingleStudentAsync(Guid id)
         {
             var student = await _studentRepository.GetStudentByIdAsync(id);
             return Ok(student);
@@ -37,14 +37,14 @@ namespace StudentManagementSystem.Controllers
         }
 
         [HttpDelete("Delete-Student/{id}")]
-        public async Task<ActionResult<Student>> DeleteStudentAsync(int id)
+        public async Task<ActionResult<Student>> DeleteStudentAsync(Guid id)
         {
             var deletestudent = await _studentRepository.DeleteStudentAsync(id);
             return Ok(deletestudent);
         }
 
         [HttpPut("Update-Student/{id}")]
-        public async Task<ActionResult<Student>> UpdateStudentAsync(int id, Student student)
+        public async Task<ActionResult<Student>> UpdateStudentAsync(Guid id, Student student)
         {
             if (id != student.Id)
             {

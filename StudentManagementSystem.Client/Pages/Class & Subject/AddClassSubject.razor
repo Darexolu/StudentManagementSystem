@@ -1,0 +1,238 @@
+﻿@page "/class-subjects"
+
+@using Microsoft.AspNetCore.Authorization
+@using StudentManagementSystemShared.Models
+@rendermode InteractiveServer
+
+@attribute [Authorize(Roles = "Admin,Super Admin")]
+
+@inject IClassSubjectRepository ClassSubjectRepository
+@inject ISchoolClassRepository ClassRepository
+@inject ISubjectRepository SubjectRepository
+@inject ITeacherRepository TeacherRepository
+
+<PageTitle>Class Subjects</PageTitle>
+
+<div class="content-wrapper">
+
+	<section class="content-header">
+		<div class="container-fluid">
+			<h1>Class Subject Assignment</h1>
+		</div>
+	</section>
+
+	<section class="content">
+
+		<div class="container-fluid">
+
+			<!-- FORM -->
+			<div class="card card-primary">
+
+				<div class="card-header">
+					<h3 class="card-title">
+						Assign Subject to Class
+					</h3>
+				</div>
+
+				<EditForm Model="model"
+						  OnValidSubmit="Save"
+						  FormName="class-subject-form">
+
+					<div class="card-body">
+
+						<div class="form-group">
+							<label>Class</label>
+							<InputSelect class="form-control" @bind-Value="model.SchoolClassId">
+								<option value="">Select Class</option>
+								@foreach (var c in classes)
+								{
+									<option value="@c.Id">@c.Name</option>
+								}
+							</InputSelect>
+						</div>
+
+						<div class="form-group">
+							<label>Subject</label>
+							<InputSelect class="form-control" @bind-Value="model.SubjectId">
+								<option value="">Select Subject</option>
+								@foreach (var s in subjects)
+								{
+									<option value="@s.Id">@s.Name</option>
+								}
+							</InputSelect>
+						</div>
+
+						<div class="form-group">
+							<label>Teacher</label>
+							<InputSelect class="form-control" @bind-Value="model.TeacherId">
+								<option value="">Select Teacher</option>
+								@foreach (var t in teachers)
+								{
+									<option value="@t.Id">@t.FirstName</option>
+								}
+							</InputSelect>
+						</div>
+
+					</div>
+
+					<div class="card-footer">
+						<button class="btn btn-primary" type="submit">
+							Assign
+						</button>
+					</div>
+
+				</EditForm>
+
+			</div>
+
+			<!-- TABLE -->
+			<div class="card">
+
+				<div class="card-header">
+					<h3 class="card-title">Assigned Subjects</h3>
+				</div>
+
+				<div class="card-body table-responsive">
+
+					<table class="table table-hover text-nowrap">
+
+						<thead>
+							<tr>
+								<th>Class</th>
+								<th>Subject</th>
+								<th>Teacher</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+
+						<tbody>
+
+							@foreach (var item in list)
+							{
+								<tr>
+									<td>@item.SchoolClass?.Name</td>
+									<td>@item.Subject?.Name</td>
+									<td>@item.Teacher?.FirstName</td>
+
+									<td>
+										<button type="button"
+												class="btn btn-warning btn-sm"
+												@onclick="() => EditClassSubject(item)">
+											Edit
+										</button>
+										<button type="button"
+												class="btn btn-danger btn-sm"
+												@onclick="() => Delete(item.Id)">
+											Delete
+										</button>
+									</td>
+								</tr>
+							}
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</section>
+
+</div>
+
+@code {
+
+	private ClassSubject model = new();
+
+	private List<ClassSubject> list = new();
+	private List<SchoolClass> classes = new();
+	private List<Subject> subjects = new();
+	private List<Teacher> teachers = new();
+	private bool isEdit = false;
+	protected override async Task OnInitializedAsync()
+	{
+		classes = await ClassRepository.GetAllAsync();
+		subjects = await SubjectRepository.GetAllAsync();
+		teachers = await TeacherRepository.GetAllAsync();
+
+		await Load();
+	}
+
+	private async Task Load()
+	{
+		list = await ClassSubjectRepository.GetAllAsync();
+	}
+
+	private async Task Save()
+	{
+		var mod = model.SchoolClassId;
+		var mod2 = model.SubjectId;
+		var mod3 = model.TeacherId;
+
+		// // Prevent empty save
+		// if (model.SchoolClassId == Guid.Empty ||
+		// 	model.SubjectId == Guid.Empty ||
+		// 	model.TeacherId == Guid.Empty)
+		// {
+		// 	return;
+		// }
+
+		// Prevent duplicate assignment
+		var exists = list.Any(x =>
+			x.SchoolClassId == model.SchoolClassId &&
+			x.SubjectId == model.SubjectId &&
+			x.TeacherId == model.TeacherId);
+
+		if (exists)
+		{
+			return;
+		}
+		if (isEdit)
+		{
+			await ClassSubjectRepository.UpdateAsync(model);
+		}
+
+		else
+		{
+			model.Id = Guid.NewGuid();
+			await ClassSubjectRepository.AddAsync(model);
+		}
+
+		// Reset form
+		model = new ClassSubject();
+
+		isEdit = false;
+
+		// Reload table
+		await Load();
+		ResetForm();
+	}
+	private void EditClassSubject(ClassSubject item)
+	{
+		model = new ClassSubject
+			{
+				Id = item.Id,
+				SchoolClassId = item.SchoolClassId,
+				SubjectId = item.SubjectId,
+				TeacherId = item.TeacherId
+			};
+
+
+		isEdit = true;
+	}
+
+	private async Task Delete(Guid id)
+	{
+		await ClassSubjectRepository.DeleteAsync(id);
+
+		await Load();
+	}
+	private void ResetForm()
+	{
+		model = new ClassSubject();
+		isEdit = false;
+	}
+}

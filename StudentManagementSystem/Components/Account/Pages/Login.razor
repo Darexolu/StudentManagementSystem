@@ -141,6 +141,8 @@
         else
         {
             errorMessage = "Error: Invalid login attempt.";
+			StateHasChanged();
+			return;
         }
     }
 

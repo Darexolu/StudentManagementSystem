@@ -34,7 +34,7 @@ namespace StudentManagementSystem.Controllers
 
         // GET: api/Parents/5
         [HttpGet("Single-Parent{id}")]
-        public async Task<ActionResult<Parent>> GetSingleParent(int id)
+        public async Task<ActionResult<Parent>> GetSingleParent(Guid id)
         {
             var parent = await _context.Parents.FindAsync(id);
 
@@ -67,7 +67,7 @@ namespace StudentManagementSystem.Controllers
 
         // DELETE: api/Parents/5
         [HttpDelete("Delete-Parent/{id}")]
-        public async Task<IActionResult> DeleteParent(int id)
+        public async Task<IActionResult> DeleteParent(Guid id)
         {
             var parent = await _context.Parents.FindAsync(id);
             if (parent == null)
@@ -81,7 +81,7 @@ namespace StudentManagementSystem.Controllers
             return NoContent();
         }
 
-        private bool ParentExists(int id)
+        private bool ParentExists(Guid id)
         {
             return _context.Parents.Any(e => e.Id == id);
         }

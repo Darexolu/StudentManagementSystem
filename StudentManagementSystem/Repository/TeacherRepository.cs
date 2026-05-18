@@ -24,7 +24,7 @@ namespace StudentManagementSystem.Repository
         }
 
 
-        public async Task<Teacher> DeleteAsync(int id)
+        public async Task<Teacher> DeleteAsync(Guid id)
         {
             var data = await _context.Teachers.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (data == null) return null;
@@ -36,14 +36,11 @@ namespace StudentManagementSystem.Repository
 
         public async Task<List<Teacher>> GetAllAsync()
         {
-            var data = await _context.Teachers
-                .Include(x => x.Designation).
-                Include(x => x.Gender).
-                ToListAsync();
+            var data = await _context.Teachers.ToListAsync();
             return data;
         }
 
-        public async Task<Teacher> GetTeacherByIdAsync(int id)
+        public async Task<Teacher> GetTeacherByIdAsync(Guid id)
         {
             var data = await _context.Teachers.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (data == null) return null;

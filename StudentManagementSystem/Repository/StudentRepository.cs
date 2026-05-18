@@ -21,7 +21,7 @@ namespace StudentManagementSystem.Repository
             return newstudent;
         }
 
-        public async Task<Student> DeleteStudentAsync(int studentId)
+        public async Task<Student> DeleteStudentAsync(Guid studentId)
         {
             var student = await _context.Students.Where(x => x.Id == studentId).FirstOrDefaultAsync();
             if (student == null) return null;
@@ -37,7 +37,7 @@ namespace StudentManagementSystem.Repository
             return students;
         }
 
-        public async Task<Student> GetStudentByIdAsync(int studentId)
+        public async Task<Student> GetStudentByIdAsync(Guid studentId)
         {
             var singlestudent = await _context.Students.SingleOrDefaultAsync(x => x.Id == studentId);
             if (singlestudent == null) return null;
@@ -46,7 +46,7 @@ namespace StudentManagementSystem.Repository
 
         public async Task<bool> UpdateStudentAsync(Student student)
         {
-            if (student.Id <= 0)
+            if (student.Id == null)
             {
                 // Log the error as needed
                 return false;

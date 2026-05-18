@@ -25,7 +25,7 @@ namespace StudentManagementSystem.Repository
             return newparent;
         }
 
-        public async Task<Parent> DeleteAsync(int id)
+        public async Task<Parent> DeleteAsync(Guid id)
         {
             var data = await _context.Parents.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (data == null) return null;
@@ -42,7 +42,7 @@ namespace StudentManagementSystem.Repository
             return data;
         }
 
-        public async Task<Parent> GetByIdAsync(int id)
+        public async Task<Parent> GetByIdAsync(Guid id)
         {
             var data = await _context.Parents.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (data == null) return null;

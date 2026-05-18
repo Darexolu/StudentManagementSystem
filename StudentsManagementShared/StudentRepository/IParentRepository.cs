@@ -11,8 +11,8 @@ namespace StudentManagementSystemShared.StudentRepository
     {
         Task<Parent> AddParentAsync(Parent mod);
         Task<Parent> UpdateAsync(Parent mod);
-        Task<Parent> DeleteAsync(int id);
+        Task<Parent> DeleteAsync(Guid id);
         Task<List<Parent>> GetAllAsync();
-        Task<Parent> GetByIdAsync(int id);
+        Task<Parent> GetByIdAsync(Guid id);
     }
 }

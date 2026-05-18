@@ -37,51 +37,65 @@
                             <ValidationMessage For="()=>teacherobj.LastName" />
                         </div>
                     </div>
-                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Gender</label>
-                            <InputSelect for="GenderId" class="form-control" @bind-Value="@teacherobj.GenderId">
-                                <option value="">Select Gender</option>
-                                @if(Gender != null && Gender.Any())
-                                {
-                                 @foreach(var sex in Gender)
-                                {
-                                    <option value="@sex.Id">@sex.Description</option>
-                                }
-
-
-                                }
-                                 </InputSelect>
-
-                            <ValidationMessage For="()=>teacherobj.GenderId" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Marital Status</label>
-                            <InputSelect for="MaritalStatusId" class="form-control" @bind-Value="@teacherobj.MaritalStatusId">
-                                <option value="">Select Marital Status</option>
-                                @if(MaritalStatus != null && MaritalStatus.Any())
-                                {
-                                 @foreach(var status in MaritalStatus)
-                                {
-                                    <option value="@status.Id">@status.Description</option>
-                                }
-
-
-                                }
-                                 </InputSelect>
-
-                            <ValidationMessage For="()=>teacherobj.GenderId" />
-                        </div>
-                    </div>
-                     <div class="col-md-6">
+					 <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Email Address</label>
                             <InputText for="EmailAddress" class="form-control" @bind-Value="@teacherobj.EmailAddress" />
                             <ValidationMessage For="()=>teacherobj.EmailAddress" />
                         </div>
                     </div>
+                      <div class="col-md-6">
+    <div class="form-group">
+
+        <label class="control-label">Gender</label>
+
+        <InputSelect class="form-control"
+                     @bind-Value="teacherobj.Gender">
+
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Others">Others Specify</option>
+
+        </InputSelect>
+
+        @if (teacherobj.Gender == "Others")
+        {
+            <InputText class="form-control mt-2"
+                       @bind-Value="teacherobj.OtherGender"
+                       placeholder="Specify Gender" />
+        }
+
+        <ValidationMessage For="()=>teacherobj.Gender" />
+
+    </div>
+</div>
+                    <div class="col-md-6">
+    <div class="form-group">
+
+        <label class="control-label">Marital Status</label>
+
+        <InputSelect class="form-control"
+                     @bind-Value="teacherobj.MaritalStatus">
+
+            <option value="">Select Marital Status</option>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+            <option value="Others">Others Specify</option>
+
+        </InputSelect>
+
+        @if (teacherobj.MaritalStatus == "Others")
+        {
+            <InputText class="form-control mt-2"
+                       @bind-Value="teacherobj.OtherMaritalStatus"
+                       placeholder="Specify Marital Status" />
+        }
+
+        <ValidationMessage For="()=>teacherobj.MaritalStatus" />
+
+    </div>
+</div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Address</label>
@@ -118,21 +132,41 @@
                         </div>
                     </div>
                     
-                   <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Designation</label>
-                            <InputSelect for="DesignationId" class="form-control" @bind-Value="@teacherobj.DesignationId">
-                                <option value="">Select Designation</option>
-                               
-                                @foreach(var type in Designations)
-                                {
-                                    <option value="@type.Id">@type.Description</option>
-                                }
-                            </InputSelect>
+                  <div class="col-md-6">
+    <div class="form-group">
 
-                            <ValidationMessage For="()=>teacherobj.DesignationId" />
-                        </div>
-                    </div>
+        <label class="control-label">Designation</label>
+
+        <InputSelect class="form-control"
+                     @bind-Value="teacherobj.Designation">
+
+            <option value="">Select Designation</option>
+
+            <option value="Principal">Principal</option>
+            <option value="Vice Principal">Vice Principal</option>
+            <option value="Head Teacher">Head Teacher</option>
+            <option value="Class Teacher">Class Teacher</option>
+            <option value="Subject Teacher">Subject Teacher</option>
+            <option value="ICT Administrator">ICT Administrator</option>
+            <option value="Guidance Counselor">Guidance Counselor</option>
+            <option value="Examination Officer">Examination Officer</option>
+            <option value="Sports Master">Sports Master</option>
+            <option value="Librarian">Librarian</option>
+            <option value="Others">Others Specify</option>
+
+        </InputSelect>
+
+        @if (teacherobj.Designation == "Others")
+        {
+            <InputText class="form-control mt-2"
+                       @bind-Value="teacherobj.OtherDesignation"
+                       placeholder="Specify Designation" />
+        }
+
+        <ValidationMessage For="()=>teacherobj.Designation" />
+
+    </div>
+</div>
                      <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Date of Birth</label>

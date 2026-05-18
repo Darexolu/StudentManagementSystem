@@ -50,7 +50,7 @@
                                                     <td>@teacher.LastName</td>
                                                     <td>@teacher.EmailAddress</td>
                                                     <td>@teacher.PhoneNumber</td>
-                                                    <td>@teacher.Gender.Description</td>
+                                                    <td>@teacher.Gender</td>
 
                                                     <td>
                                                         <a class="btn btn-success" href="/teacher/edit/@teacher.Id"> Edit </a>
@@ -97,7 +97,7 @@
     {
         navigation.NavigateTo($"/teacher/edit/{id}");
     }
-    private async Task DeleteTeacher(int Id)
+    private async Task DeleteTeacher(Guid Id)
     {
         var result = await TeacherService.DeleteAsync(Id);
         await LoadAllTeachers();

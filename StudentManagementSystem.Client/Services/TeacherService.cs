@@ -17,7 +17,7 @@ namespace StudentManagementSystem.Client.Services
             var response = await data.Content.ReadFromJsonAsync<Teacher>();
             return response;
         }
-        public async Task<Teacher> DeleteAsync(int id)
+        public async Task<Teacher> DeleteAsync(Guid id)
         {
             var data = await _httpClient.DeleteAsync($"api/Teacher/Delete-Teacher/{id}");
             var response = await data.Content.ReadFromJsonAsync<Teacher>();
@@ -29,7 +29,7 @@ namespace StudentManagementSystem.Client.Services
             var response = await data.Content.ReadFromJsonAsync<List<Teacher>>();
             return response;
         }
-        public async Task<Teacher> GetTeacherByIdAsync(int id)
+        public async Task<Teacher> GetTeacherByIdAsync(Guid id)
         {
 
             var data = await _httpClient.GetAsync($"api/Teacher/Single-Teacher/{id}");

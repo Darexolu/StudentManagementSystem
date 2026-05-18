@@ -10,6 +10,7 @@ using StudentManagementSystem.Repository;
 using StudentsManagement.Repository;
 using StudentManagementSystemShared.StudentRepository;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -53,6 +54,7 @@ builder.Services.AddScoped<IParentRepository, ParentRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<ISchoolClassRepository, SchoolClassRepository>();
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<IClassSubjectRepository, ClassSubjectRepository>();
 
 
 
@@ -69,6 +71,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
 	var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+	var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
 	string[] roles =
 	{
@@ -85,6 +88,24 @@ using (var scope = app.Services.CreateScope())
 		{
 			await roleManager.CreateAsync(new IdentityRole(role));
 		}
+	}
+	// ?? CREATE DEFAULT SUPER ADMIN USER
+	string email = "superadmin@smp.com";
+	string password = "Super@12345";
+
+	var superAdmin = await userManager.FindByEmailAsync(email);
+
+	if (superAdmin == null)
+	{
+		superAdmin = new ApplicationUser
+		{
+			UserName = email,
+			Email = email,
+			EmailConfirmed = true
+		};
+
+		await userManager.CreateAsync(superAdmin, password);
+		await userManager.AddToRoleAsync(superAdmin, "Super Admin");
 	}
 }
 

@@ -94,11 +94,11 @@
             AllStudents.Add(student);
         }
     }
-    private void EditStudent(int id)
+    private void EditStudent(Guid id)
     {
         navigation.NavigateTo($"/student/edit/{id}");
     }
-    private async Task DeleteStudent(int Id)
+    private async Task DeleteStudent(Guid Id)
     {
         var result = await StudentService.DeleteStudentAsync(Id);
         await LoadAllStudents();

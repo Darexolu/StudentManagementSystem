@@ -97,7 +97,7 @@
     {
         navigation.NavigateTo($"/parent/edit/{id}");
     }
-    private async Task DeleteParent(int Id)
+    private async Task DeleteParent(Guid Id)
     {
         var result = await ParentService.DeleteAsync(Id);
         await LoadAllParents();

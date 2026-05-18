@@ -29,7 +29,7 @@ namespace StudentManagementSystem.Controllers
 
         // GET: api/Teachers/5
         [HttpGet("Single-Teacher{id}")]
-            public async Task<ActionResult<Teacher>> GetSingleTeacher(int id)
+            public async Task<ActionResult<Teacher>> GetSingleTeacher(Guid id)
             {
                 var teacher = await _context.Teachers.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace StudentManagementSystem.Controllers
         // PUT: api/Teacher/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("Update-Teacher/{id}")]
-        public async Task<IActionResult> UpdateTeacherAsync(int id, Teacher teacher)
+        public async Task<IActionResult> UpdateTeacherAsync(Guid id, Teacher teacher)
         {
             if (id != teacher.Id)
             {
@@ -85,7 +85,7 @@ namespace StudentManagementSystem.Controllers
 
         // DELETE: api/Teachers/5
         [HttpDelete("Delete-Teacher/{id}")]
-            public async Task<IActionResult> DeleteTeacher(int id)
+            public async Task<IActionResult> DeleteTeacher(Guid id)
             {
                 var teacher = await _context.Teachers.FindAsync(id);
                 if (teacher == null)
@@ -99,7 +99,7 @@ namespace StudentManagementSystem.Controllers
                 return NoContent();
             }
 
-            private bool TeacherExists(int id)
+            private bool TeacherExists(Guid id)
             {
                 return _context.Teachers.Any(e => e.Id == id);
             }
