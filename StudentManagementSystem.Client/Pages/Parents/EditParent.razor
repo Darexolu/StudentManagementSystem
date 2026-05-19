@@ -1,7 +1,8 @@
-﻿@page "/parent/edit/{id:int}"
+﻿@page "/parent/edit/{id:guid}"
 @using StudentManagementSystemShared.Models;
 @inject NavigationManager navigation;
-@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Authorization;
+@using StudentManagementSystem.Utility;
 @attribute [Authorize(Roles = "Admin,Super Admin")]
 
 
@@ -58,25 +59,46 @@
                             <ValidationMessage For="()=>parentobj.PhoneNumber" />
                         </div>
                     </div>
-                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Gender</label>
-                            <InputSelect for="GenderId" class="form-control" @bind-Value="@parentobj.GenderId">
-                                <option value="">Select Gender</option>
-                                @if(Gender != null && Gender.Any())
-                                {
-                                 @foreach(var sex in Gender)
-                                {
-                                    <option value="@sex.Id">@sex.Description</option>
-                                }
+					<div class="col-md-6">
+						<div class="form-group">
 
+							<label class="control-label">Gender</label>
 
-                                }
-                                 </InputSelect>
+							<label class="control-label">Gender</label>
 
-                            <ValidationMessage For="()=>parentobj.GenderId" />
-                        </div>
-                    </div>
+							<InputSelect class="form-control" @bind-Value="parentobj.Gender">
+
+								<option value="">Select Gender</option>
+								<option value="@Gender.Male">Male</option>
+								<option value="@Gender.Female">Female</option>
+								<option value="@Gender.NonBinary">Non-binary</option>
+
+							</InputSelect>
+
+							<ValidationMessage For="()=>parentobj.Gender" />
+
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+
+							<label class="control-label">Marital Status</label>
+
+							<InputSelect class="form-control" @bind-Value="parentobj.MaritalStatus">
+
+								<option value="">Select Marital Status</option>
+
+								@foreach (var item in Enum.GetValues<MaritalStatus>())
+								{
+									<option value="@item">@item</option>
+								}
+
+							</InputSelect>
+
+							<ValidationMessage For="()=>parentobj.MaritalStatus" />
+
+						</div>
+					</div>
                      <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Student</label>
@@ -92,21 +114,16 @@
                             <ValidationMessage For="()=>parentobj.StudentId" />
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Relationship</label>
-                            <InputSelect for="ParentTypeId" class="form-control" @bind-Value="@parentobj.ParentTypeId">
-                                <option value="">Select Relationship Type</option>
-                               
-                                @foreach(var type in ParentType)
-                                {
-                                    <option value="@type.Id">@type.Description</option>
-                                }
-                            </InputSelect>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label">Relationship with student</label>
+							<InputText for="Relationship" class="form-control" @bind-Value="@parentobj.Relationship">
 
-                            <ValidationMessage For="()=>parentobj.ParentTypeId" />
-                        </div>
-                    </div>
+							</InputText>
+
+							<ValidationMessage For="()=>parentobj.Relationship" />
+						</div>
+					</div>
                      <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Date of Birth</label>
@@ -134,8 +151,8 @@
     [Parameter]
     public Guid id { get; set; }
 
-    List<SystemCodeDetail> ParentType = new List<SystemCodeDetail>(); 
-    List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
+    // List<SystemCodeDetail> ParentType = new List<SystemCodeDetail>(); 
+    // List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
     List<Student> Students = new List<Student>();
 
     protected override async Task OnInitializedAsync()
@@ -154,8 +171,8 @@
     public async Task LoadParent()
     {
         parentobj = await ParentService.GetByIdAsync(id);
-        ParentType = await SystemCodeDetailsService.GetByCodeAsync("Parent Type");
-        Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
+        // ParentType = await SystemCodeDetailsService.GetByCodeAsync("Parent Type");
+        // Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
         Students = await StudentService.GetAllStudentsAsync();
 
     }

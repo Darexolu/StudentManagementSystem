@@ -1,7 +1,8 @@
 ﻿@page "/add-student"﻿
 @using StudentManagementSystem.Client.Services
 @using StudentManagementSystemShared.Models;
-@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Authorization;
+@using StudentManagementSystem.Utility;
 @attribute [Authorize(Roles = "Admin,Super Admin")]
 @inject NavigationManager navigation;
 
@@ -74,21 +75,25 @@
                         </div>
                     </div>
                      <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Gender</label>
-                            <InputSelect for="GenderId" class="form-control" @bind-Value="@studobj.GenderId">
-                                <option value="">Select Gender</option>
-                                @if (Gender !=null && Gender.Any())
-                                {
-                                    @foreach (var sex in Gender)
-                                    {
-                                        <option value="@sex.Id">@sex.Description</option>
-                                    }
-                                }
-                            </InputSelect>
-                            <ValidationMessage For="()=>studobj.GenderId" />
-                        </div>
-                    </div>
+										<div class="form-group">
+
+											<label class="control-label">Gender</label>
+
+											<label class="control-label">Gender</label>
+
+											<InputSelect class="form-control" @bind-Value="studobj.Gender">
+
+												<option value="">Select Gender</option>
+												<option value="@Gender.Male">Male</option>
+												<option value="@Gender.Female">Female</option>
+												<option value="@Gender.NonBinary">Non-binary</option>
+
+											</InputSelect>
+
+											<ValidationMessage For="()=>studobj.Gender" />
+
+										</div>
+									</div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Date of Birth</label>
@@ -114,14 +119,14 @@
     public Student studobj { get; set; } = new();
 
     List<Country> Countries = new List<Country>(); 
-    List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
+    // List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
 
     
 
     protected override async Task OnInitializedAsync()
     {
         Countries = await CountryService.GetAllAsync();
-        Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
+        // Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
 
     }
 

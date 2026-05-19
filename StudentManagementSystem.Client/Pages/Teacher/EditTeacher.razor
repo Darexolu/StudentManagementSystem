@@ -1,7 +1,9 @@
-﻿@page "/teacher/edit/{id:int}"
+﻿@page "/teacher/edit/{id:guid}"
 @using StudentManagementSystem.Client.Services
 @using StudentManagementSystemShared.Models;
-@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Authorization;
+@using StudentManagementSystem.Utility;
+
 @attribute [Authorize(Roles = "Admin,Super Admin")]
 @inject NavigationManager navigation;
 
@@ -41,22 +43,16 @@
 
 							<label class="control-label">Gender</label>
 
-							<InputSelect class="form-control"
-										 @bind-Value="teacherobj.Gender">
+							<label class="control-label">Gender</label>
+
+							<InputSelect class="form-control" @bind-Value="teacherobj.Gender">
 
 								<option value="">Select Gender</option>
-								<option value="Male">Male</option>
-								<option value="Female">Female</option>
-								<option value="Others">Others Specify</option>
-
+								<option value="@Gender.Male">Male</option>
+								<option value="@Gender.Female">Female</option>
+								<option value="@Gender.NonBinary">Non-binary</option>
+							
 							</InputSelect>
-
-							@if (teacherobj.Gender == "Others")
-							{
-								<InputText class="form-control mt-2"
-										   @bind-Value="teacherobj.OtherGender"
-										   placeholder="Specify Gender" />
-							}
 
 							<ValidationMessage For="()=>teacherobj.Gender" />
 
@@ -67,22 +63,16 @@
 
 							<label class="control-label">Marital Status</label>
 
-							<InputSelect class="form-control"
-										 @bind-Value="teacherobj.MaritalStatus">
+							<InputSelect class="form-control" @bind-Value="teacherobj.MaritalStatus">
 
 								<option value="">Select Marital Status</option>
-								<option value="Single">Single</option>
-								<option value="Married">Married</option>
-								<option value="Others">Others Specify</option>
+
+								@foreach (var item in Enum.GetValues<MaritalStatus>())
+								{
+									<option value="@item">@item</option>
+								}
 
 							</InputSelect>
-
-							@if (teacherobj.MaritalStatus == "Others")
-							{
-								<InputText class="form-control mt-2"
-										   @bind-Value="teacherobj.OtherMaritalStatus"
-										   placeholder="Specify Marital Status" />
-							}
 
 							<ValidationMessage For="()=>teacherobj.MaritalStatus" />
 
@@ -193,9 +183,9 @@
    [Parameter]
     public Guid id { get; set; }
 
-    List<SystemCodeDetail> Designations = new List<SystemCodeDetail>(); 
-    List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
-    List<SystemCodeDetail> MaritalStatus = new List<SystemCodeDetail>();
+    // List<SystemCodeDetail> Designations = new List<SystemCodeDetail>(); 
+    // List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
+    // List<SystemCodeDetail> MaritalStatus = new List<SystemCodeDetail>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -213,9 +203,9 @@
     public async Task LoadTeacher()
     {
         teacherobj = await TeacherService.GetTeacherByIdAsync(id);
-        Designations = await SystemCodeDetailsService.GetByCodeAsync("Designation");
-        Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
-        MaritalStatus = await SystemCodeDetailsService.GetByCodeAsync("Marital Status");
+        // Designations = await SystemCodeDetailsService.GetByCodeAsync("Designation");
+        // Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
+        // MaritalStatus = await SystemCodeDetailsService.GetByCodeAsync("Marital Status");
     }
     protected async Task UpdateTeacher()
     {

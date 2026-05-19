@@ -28,13 +28,12 @@ namespace StudentManagementSystem.Data
                         .WithMany()
                         .HasForeignKey(f => f.StudentId)
                         .OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<Parent>()
-                      .HasOne(f => f.Gender)
-                      .WithMany()
-                      .HasForeignKey(f => f.GenderId)
-                      .OnDelete(DeleteBehavior.Restrict);
+			builder.Entity<Teacher>()
+	.Property(x => x.Gender)
+	.HasConversion<string>();
 
-        }
+
+		}
 
     }
 
