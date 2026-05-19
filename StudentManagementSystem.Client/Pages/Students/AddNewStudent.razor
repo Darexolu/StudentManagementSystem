@@ -59,7 +59,7 @@
                             <ValidationMessage For="()=>studobj.PhoneNumber" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    @* <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Student Country</label>
                             <InputSelect for="Country" class="form-control" @bind-Value="@studobj.Country">
@@ -73,11 +73,9 @@
 
                             <ValidationMessage For="()=>studobj.Country" />
                         </div>
-                    </div>
+                    </div> *@
                      <div class="col-md-6">
 										<div class="form-group">
-
-											<label class="control-label">Gender</label>
 
 											<label class="control-label">Gender</label>
 
@@ -126,6 +124,7 @@
     protected override async Task OnInitializedAsync()
     {
         Countries = await CountryService.GetAllAsync();
+		studobj.DOB = DateTime.Today;
         // Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
 
     }

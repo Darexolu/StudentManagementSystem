@@ -50,9 +50,31 @@ namespace StudentManagementSystem.Repository
         public async Task<Teacher> UpdateTeacherAsync(Teacher mod)
         {
             if (mod == null) return null;
-            var data = _context.Teachers.Update(mod).Entity;
-            await _context.SaveChangesAsync();
-            return data;
+			
+			var teachers = await _context.Teachers
+		.FirstOrDefaultAsync(x => x.Id == mod.Id);
+
+			if (teachers == null)
+				return null;
+
+			teachers.FirstName = mod.FirstName;
+			teachers.MiddleName = mod.MiddleName;
+			teachers.LastName = mod.LastName;
+			teachers.EmailAddress = mod.EmailAddress;
+			teachers.PhoneNumber = mod.PhoneNumber;
+			teachers.Address = mod.Address;
+			teachers.Gender = mod.Gender;
+			teachers.MaritalStatus = mod.MaritalStatus;
+			teachers.DOB = mod.DOB;
+			teachers.FacebookLink = mod.FacebookLink;
+			teachers.TwitterLink = mod.TwitterLink;
+			teachers.LinkedInLink = mod.LinkedInLink;
+			teachers.Designation = mod.Designation;
+
+
+			await _context.SaveChangesAsync();
+
+			return teachers;
         }
     }
 }

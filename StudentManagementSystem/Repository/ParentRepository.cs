@@ -51,11 +51,31 @@ namespace StudentManagementSystem.Repository
 
         public async Task<Parent> UpdateAsync(Parent mod)
         {
-            if (mod == null) return null;
-            var data = _context.Parents.Update(mod).Entity;
-            await _context.SaveChangesAsync();
-            return data;
-        }
+			if (mod == null)
+				return null;
+
+			var parent = await _context.Parents
+				.FirstOrDefaultAsync(x => x.Id == mod.Id);
+
+			if (parent == null)
+				return null;
+
+			parent.FirstName = mod.FirstName;
+			parent.MiddleName = mod.MiddleName;
+			parent.LastName = mod.LastName;
+			parent.EmailAddress = mod.EmailAddress;
+			parent.PhoneNumber = mod.PhoneNumber;
+			parent.Address = mod.Address;
+			parent.Gender = mod.Gender;
+			parent.MaritalStatus = mod.MaritalStatus;
+			parent.DOB = mod.DOB;
+			parent.StudentId = mod.StudentId;
+			parent.Relationship = mod.Relationship;
+
+			await _context.SaveChangesAsync();
+
+			return parent;
+		}
 
         
     }

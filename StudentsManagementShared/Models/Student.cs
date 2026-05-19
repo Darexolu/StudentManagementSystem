@@ -27,7 +27,7 @@ namespace StudentManagementSystemShared.Models
         [Required]
         public string PhoneNumber { get; set; }
        
-        public  string Country { get; set; }
+        public  string? Country { get; set; }
 
         public DateTime DOB { get; set; }
 

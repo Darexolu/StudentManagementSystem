@@ -65,8 +65,6 @@
 
 							<label class="control-label">Gender</label>
 
-							<label class="control-label">Gender</label>
-
 							<InputSelect class="form-control" @bind-Value="parentobj.Gender">
 
 								<option value="">Select Gender</option>
@@ -159,6 +157,7 @@
         // ParentType = await SystemCodeDetailsService.GetByCodeAsync("Parent Type");
         // Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
          Students = await StudentService.GetAllStudentsAsync();
+		 parentobj.DOB = DateTime.Today;
 
     }
     //Episode 10
