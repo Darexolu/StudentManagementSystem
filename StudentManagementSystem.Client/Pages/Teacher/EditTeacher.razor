@@ -152,35 +152,32 @@
 @code {
 
 	[SupplyParameterFromForm]
-    public Teacher teacherobj { get; set; } = new();
+	public Teacher teacherobj { get; set; } = new();
 
-   [Parameter]
-    public Guid id { get; set; }
+	[Parameter]
+	public Guid id { get; set; }
 
-    // List<SystemCodeDetail> Designations = new List<SystemCodeDetail>(); 
-    // List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
-    // List<SystemCodeDetail> MaritalStatus = new List<SystemCodeDetail>();
+	// List<SystemCodeDetail> Designations = new List<SystemCodeDetail>(); 
+	// List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
+	// List<SystemCodeDetail> MaritalStatus = new List<SystemCodeDetail>();
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (teacherobj.FirstName == null)
-        {
-            await LoadTeacher();
-        }
-        else
-        {
-            teacherobj.Id = id;
-            UpdateTeacher();
-        }
+	protected override async Task OnInitializedAsync()
+	{  
+		await LoadTeacher();
 
-    }
-    public async Task LoadTeacher()
-    {
-        teacherobj = await TeacherService.GetTeacherByIdAsync(id);
-        // Designations = await SystemCodeDetailsService.GetByCodeAsync("Designation");
-        // Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
-        // MaritalStatus = await SystemCodeDetailsService.GetByCodeAsync("Marital Status");
-    }
+
+	}
+	public async Task LoadTeacher()
+	{
+		if (id != Guid.Empty && teacherobj.FirstName == null)
+		{
+			teacherobj = await TeacherService.GetTeacherByIdAsync(id);
+		}
+		else
+		{
+			teacherobj.Id = id;
+		}
+	}
     protected async Task UpdateTeacher()
     {
         var result = await TeacherService.UpdateTeacherAsync(teacherobj);
