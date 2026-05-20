@@ -144,7 +144,7 @@
 							<p>
 								Class & Subject 
 
-								<i class="right fas @(isAcademicMenuOpen ? "fa-angle-up" : "fa-angle-right")"></i>
+								<i class="right fas @(isAcademicMenuOpen ? "fa-angle-down" : "fa-angle-left")"></i>
 							</p>
 
 						</a>
@@ -184,6 +184,43 @@
 						</ul>
 
 					</li>
+				</AuthorizeView>
+				<AuthorizeView Roles="Admin,Super Admin,Teacher">
+					<li class="nav-item has-treeview">
+						<a href="#" class="nav-link">
+							<i class="nav-icon fas fa-file-alt"></i>
+							<p>
+								Examination & Results
+								<i class="right fas fa-angle-left"></i>
+							</p>
+						</a>
+
+						<ul class="nav nav-treeview">
+
+							<li class="nav-item">
+								<NavLink href="/result-entry" class="nav-link">
+									<i class="far fa-circle nav-icon"></i>
+									<p>Result Entry</p>
+								</NavLink>
+							</li>
+
+							<li class="nav-item">
+								<NavLink href="/broadsheet" class="nav-link">
+									<i class="far fa-circle nav-icon"></i>
+									<p>Broadsheet</p>
+								</NavLink>
+							</li>
+
+							<li class="nav-item">
+								<NavLink href="/report-cards" class="nav-link">
+									<i class="far fa-circle nav-icon"></i>
+									<p>Report Cards</p>
+								</NavLink>
+							</li>
+
+						</ul>
+					</li>
+
 				</AuthorizeView>
         </ul>
       </nav>

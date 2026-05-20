@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentManagementSystem.Data;
 
@@ -11,9 +12,11 @@ using StudentManagementSystem.Data;
 namespace StudentManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260520100609_AddedExamResult")]
+    partial class AddedExamResult
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -332,7 +335,7 @@ namespace StudentManagementSystem.Migrations
                     b.Property<decimal>("Assignment")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("ClassAverage")
+                    b.Property<decimal>("ClassAverage")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Exam")
@@ -342,25 +345,28 @@ namespace StudentManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("HighestScore")
+                    b.Property<decimal>("HighestScore")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("LowestScore")
+                    b.Property<decimal>("LowestScore")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("Position")
+                    b.Property<int>("Position")
                         .HasColumnType("int");
 
                     b.Property<string>("PrincipalComment")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Remark")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SchoolClassId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Session")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("StudentId")
@@ -370,9 +376,11 @@ namespace StudentManagementSystem.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TeacherRemark")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Term")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Test1")

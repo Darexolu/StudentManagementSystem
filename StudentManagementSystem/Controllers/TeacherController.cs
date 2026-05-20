@@ -13,33 +13,27 @@ namespace StudentManagementSystem.Controllers
     {
         private readonly ITeacherRepository _teacherRepository;
 
-            private readonly ApplicationDbContext _context;
+		private readonly ITeacherRepository _repo;
 
-            public TeacherController(ApplicationDbContext context)
-            {
-                _context = context;
-            }
+		public TeacherController(ITeacherRepository repo)
+		{
+			_repo = repo;
+		}
 
-        // GET: api/Teachers
-        [HttpGet("All-Teachers")]
+		// GET: api/Teachers
+		[HttpGet("All-Teachers")]
             public async Task<ActionResult<IEnumerable<Teacher>>> GetAllTeachers()
             {
-                return await _context.Teachers.ToListAsync();
-            }
+                return Ok(await _repo.GetAllAsync());
+		}
 
         // GET: api/Teachers/5
         [HttpGet("Single-Teacher{id}")]
             public async Task<ActionResult<Teacher>> GetSingleTeacher(Guid id)
-            {
-                var teacher = await _context.Teachers.FindAsync(id);
+            {            
 
-                if (teacher == null)
-                {
-                    return NotFound();
-                }
-
-                return teacher;
-            }
+                return Ok(await _repo.GetTeacherByIdAsync(id));
+		   }
 
            
         // PUT: api/Teacher/5
@@ -47,35 +41,13 @@ namespace StudentManagementSystem.Controllers
         [HttpPut("Update-Teacher/{id}")]
         public async Task<IActionResult> UpdateTeacherAsync(Guid id, Teacher teacher)
         {
-            if (id != teacher.Id)
-            {
-                return BadRequest();
-            }
+			return Ok(await _repo.UpdateTeacherAsync(teacher));
 
-            _context.Entry(teacher).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TeacherExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+		}
 
 
 
-        [HttpPost("Add-Teacher")]
+		[HttpPost("Add-Teacher")]
             public async Task<ActionResult<Teacher>> AddNewTeacherAsync(Teacher teacher)
             {
             var newparent = await _teacherRepository.AddTeacherAsync(teacher);
@@ -87,21 +59,13 @@ namespace StudentManagementSystem.Controllers
         [HttpDelete("Delete-Teacher/{id}")]
             public async Task<IActionResult> DeleteTeacher(Guid id)
             {
-                var teacher = await _context.Teachers.FindAsync(id);
-                if (teacher == null)
-                {
-                    return NotFound();
-                }
 
-                _context.Teachers.Remove(teacher);
-                await _context.SaveChangesAsync();
+                return Ok(await _repo.DeleteAsync(id));
+	     	}
 
-                return NoContent();
-            }
-
-            private bool TeacherExists(Guid id)
-            {
-                return _context.Teachers.Any(e => e.Id == id);
-            }
+            //private bool TeacherExists(Guid id)
+            //{
+            //    return _context.Teachers.Any(e => e.Id == id);
+            //}
         }
 }

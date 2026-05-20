@@ -16,6 +16,8 @@ namespace StudentManagementSystem.Data
 		public DbSet<Subject> Subjects { get; set; }
 		public DbSet<ClassSubject> ClassSubjects { get; set; }
 
+		public DbSet<Result> Results { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder builder)
         {
             foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))

@@ -10,7 +10,7 @@ namespace StudentManagementSystem.Repository
         private readonly ApplicationDbContext _context;
         public TeacherRepository(ApplicationDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
         public async Task<Teacher> AddTeacherAsync(Teacher mod)

@@ -55,6 +55,7 @@ builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<ISchoolClassRepository, SchoolClassRepository>();
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 builder.Services.AddScoped<IClassSubjectRepository, ClassSubjectRepository>();
+builder.Services.AddScoped<IResultRepository, ResultRepository>();
 
 
 

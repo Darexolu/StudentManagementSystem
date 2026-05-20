@@ -1,0 +1,401 @@
+﻿@page "/result-entry"
+
+@using StudentManagementSystemShared.Models
+@using Microsoft.AspNetCore.Authorization
+@rendermode InteractiveServer
+
+@attribute [Authorize(Roles = "Admin,Super Admin,Teacher")]
+
+@inject IResultRepository ResultRepository
+@inject IStudentRepository StudentRepository
+@inject ISchoolClassRepository ClassRepository
+@inject ISubjectRepository SubjectRepository
+
+<PageTitle>Results Management</PageTitle>
+
+<div class="content-wrapper">
+
+	<section class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1>Examination & Results</h1>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="content">
+
+		<div class="container-fluid">
+
+			<div class="card card-primary">
+
+				<div class="card-header">
+					<h3 class="card-title">
+						@(isEdit ? "Edit Result" : "Add Result")
+					</h3>
+				</div>
+
+				<EditForm Model="model" OnValidSubmit="SaveResult" FormName="resultentry">
+
+					<DataAnnotationsValidator />
+
+					<div class="card-body">
+
+						<div class="row">
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Class</label>
+
+									<InputSelect required class="form-control"
+												 @bind-Value="model.SchoolClassId">
+
+										<option value="">Select Class</option>
+
+										@foreach (var item in classes)
+										{
+											<option value="@item.Id">
+												@item.Name
+											</option>
+										}
+
+									</InputSelect>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Subject</label>
+
+									<InputSelect required class="form-control"
+												 @bind-Value="model.SubjectId">
+
+										<option value="">Select Subject</option>
+
+										@foreach (var item in subjects)
+										{
+											<option value="@item.Id">
+												@item.Name
+											</option>
+										}
+
+									</InputSelect>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Student</label>
+
+									<InputSelect  required class="form-control"
+												 @bind-Value="model.StudentId">
+
+										<option value="">Select Student</option>
+
+										@foreach (var item in students)
+										{
+											<option value="@item.Id">
+												@item.FirstName @item.LastName
+											</option>
+										}
+
+									</InputSelect>
+								</div>
+							</div>
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Test 1 (10%)</label>
+									<InputNumber required class="form-control"
+												 @bind-Value="model.Test1" />
+								</div>
+							</div>
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Test 2 (10%)</label>
+									<InputNumber required class="form-control"
+												 @bind-Value="model.Test2" />
+								</div>
+							</div>
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Assignment (10%)</label>
+									<InputNumber required class="form-control"
+												 @bind-Value="model.Assignment" />
+								</div>
+							</div>
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Exam (70%)</label>
+									<InputNumber required class="form-control"
+												 @bind-Value="model.Exam" />
+								</div>
+							</div>
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Total</label>
+
+									<input class="form-control"
+										   value="@GetTotal()"
+										   disabled />
+								</div>
+							</div>
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Grade</label>
+
+									<input class="form-control"
+										   value="@GetGrade()"
+										   disabled />
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Teacher Remark</label>
+
+									<InputText  class="form-control"
+											   @bind-Value="model.TeacherRemark" />
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Principal Comment</label>
+
+									<InputText  class="form-control"
+											   @bind-Value="model.PrincipalComment" />
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+
+					<div class="card-footer">
+
+						<button type="submit"
+								class="btn btn-primary">
+
+							@(isEdit ? "Update" : "Save")
+						</button>
+
+						@if (isEdit)
+						{
+							<button type="button"
+									class="btn btn-secondary ml-2"
+									@onclick="ResetForm">
+
+								Cancel
+							</button>
+						}
+
+					</div>
+
+				</EditForm>
+
+			</div>
+
+			<div class="card">
+
+				<div class="card-header">
+					<h3 class="card-title">Results List</h3>
+				</div>
+
+				<div class="card-body table-responsive p-0">
+
+					<table class="table table-hover text-nowrap">
+
+						<thead>
+							<tr>
+								<th>Student</th>
+								<th>Class</th>
+								<th>Subject</th>
+								<th>Test1</th>
+								<th>Test2</th>
+								<th>Assignment</th>
+								<th>Exam</th>
+								<th>Total</th>
+								<th>Grade</th>
+								<th>Position</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+
+						<tbody>
+
+							@if (results.Any())
+							{
+								@foreach (var item in results)
+								{
+									<tr>
+
+										<td>
+											@item.Student?.FirstName
+											@item.Student?.LastName
+										</td>
+
+										<td>@item.SchoolClass?.Name</td>
+										<td>@item.Subject?.Name</td>
+										<td>@item.Test1</td>
+										<td>@item.Test2</td>
+										<td>@item.Assignment</td>
+										<td>@item.Exam</td>
+										<td>@item.Total</td>
+										<td>@item.Grade</td>
+										<td>@item.Position</td>
+
+										<td>
+
+											<button class="btn btn-warning btn-sm"
+													@onclick="() => EditResult(item)">
+												Edit
+											</button>
+
+											<button class="btn btn-danger btn-sm ml-2"
+													@onclick="() => DeleteResult(item.Id)">
+												Delete
+											</button>
+
+										</td>
+
+									</tr>
+								}
+							}
+							else
+							{
+								<tr>
+									<td colspan="11" class="text-center">
+										No records found.
+									</td>
+								</tr>
+							}
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</section>
+
+</div>
+
+@code {
+	[SupplyParameterFromForm]
+	private Result model { get; set; } = new();
+
+	private bool isEdit = false;
+
+	private List<Result> results = new();
+	private List<Student> students = new();
+	private List<SchoolClass> classes = new();
+	private List<Subject> subjects = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		students = await StudentRepository.GetAllStudentsAsync();
+		classes = await ClassRepository.GetAllAsync();
+		subjects = await SubjectRepository.GetAllAsync();
+
+		await Load();
+	}
+
+	private async Task Load()
+	{
+		results = await ResultRepository.GetAllAsync();
+	}
+
+	private async Task SaveResult()
+	{
+		model.Total = GetTotal();
+		model.Grade = GetGrade();
+
+		if (isEdit)
+		{
+			await ResultRepository.UpdateAsync(model);
+		}
+		else
+		{
+			await ResultRepository.AddAsync(model);
+		}
+
+		await Load();
+
+		ResetForm();
+	}
+
+	private void EditResult(Result item)
+	{
+		model = new Result
+			{
+				Id = item.Id,
+				StudentId = item.StudentId,
+				SubjectId = item.SubjectId,
+				SchoolClassId = item.SchoolClassId,
+				Test1 = item.Test1,
+				Test2 = item.Test2,
+				Assignment = item.Assignment,
+				Exam = item.Exam,
+				TeacherRemark = item.TeacherRemark,
+				PrincipalComment = item.PrincipalComment
+			};
+
+		isEdit = true;
+	}
+
+	private async Task DeleteResult(Guid id)
+	{
+		await ResultRepository.DeleteAsync(id);
+
+		await Load();
+	}
+
+	private decimal GetTotal()
+	{
+		return model.Test1 +
+						model.Test2 +
+						model.Assignment +
+						model.Exam;
+	}
+
+	private string GetGrade()
+	{
+		var total = GetTotal();
+
+		if (total >= 70)
+			return "A";
+
+		if (total >= 60)
+			return "B";
+
+		if (total >= 50)
+			return "C";
+
+		if (total >= 45)
+			return "D";
+
+		if (total >= 40)
+			return "E";
+
+		return "";
+	}
+
+	private void ResetForm()
+	{
+		model = new Result();
+
+		isEdit = false;
+	}
+}
