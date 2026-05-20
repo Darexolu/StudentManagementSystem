@@ -20,7 +20,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">First Name</label>
-                            <InputText for="FirstName" class="form-control" @bind-Value="@teacherobj.FirstName"/>
+                            <InputText for="FirstName" required class="form-control" @bind-Value="@teacherobj.FirstName"/>
                             <ValidationMessage For="()=>teacherobj.FirstName"/>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                      <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Last Name</label>
-                            <InputText for="LastName" class="form-control" @bind-Value="@teacherobj.LastName" />
+                            <InputText for="LastName" required class="form-control" @bind-Value="@teacherobj.LastName" />
                             <ValidationMessage For="()=>teacherobj.LastName" />
                         </div>
                     </div>
