@@ -20,7 +20,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">First Name</label>
-                            <InputText for="FirstName" class="form-control" @bind-Value="@parentobj.FirstName"/>
+                            <InputText for="FirstName" required class="form-control" @bind-Value="@parentobj.FirstName"/>
                             <ValidationMessage For="()=>parentobj.FirstName"/>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                      <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Last Name</label>
-                            <InputText for="LastName" class="form-control" @bind-Value="@parentobj.LastName" />
+							<InputText for="LastName" required class="form-control" @bind-Value="@parentobj.LastName" />
                             <ValidationMessage For="()=>parentobj.LastName" />
                         </div>
                     </div>
@@ -152,27 +152,26 @@
     public Guid id { get; set; }
 
     // List<SystemCodeDetail> ParentType = new List<SystemCodeDetail>(); 
-    // List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
+    
     List<Student> Students = new List<Student>();
 
     protected override async Task OnInitializedAsync()
     {
-        if (parentobj.FirstName == null)
-        {
+       
             await LoadParent();
-        }
-        else
-        {
-            parentobj.Id = id;
-            UpdateParent();
-        }
 
     }
     public async Task LoadParent()
-    {
-        parentobj = await ParentService.GetByIdAsync(id);
+	{
+		if (id != Guid.Empty && parentobj.FirstName == null)
+		{
+			parentobj = await ParentService.GetByIdAsync(id);
+		}
+		else
+		{
+			parentobj.Id = id;
+		}  
         // ParentType = await SystemCodeDetailsService.GetByCodeAsync("Parent Type");
-        // Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
         Students = await StudentService.GetAllStudentsAsync();
 
     }

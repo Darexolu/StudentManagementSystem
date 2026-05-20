@@ -23,7 +23,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">First Name</label>
-                                            <InputText for="FirstName" class="form-control" @bind-Value="@studobj.FirstName" />
+											<InputText for="FirstName" required class="form-control" @bind-Value="@studobj.FirstName" />
                                             <ValidationMessage For="()=>studobj.FirstName" />
                                         </div>
                                     </div>
@@ -37,14 +37,14 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Last Name</label>
-                                            <InputText for="LastName" class="form-control" @bind-Value="@studobj.LastName" />
+											<InputText for="LastName" required class="form-control" @bind-Value="@studobj.LastName" />
                                             <ValidationMessage For="()=>studobj.LastName" />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Email Address</label>
-                                            <InputText for="EmailAddress" class="form-control" @bind-Value="@studobj.EmailAddress" />
+											<InputText for="EmailAddress" class="form-control" @bind-Value="@studobj.EmailAddress" />
                                             <ValidationMessage For="()=>studobj.EmailAddress" />
                                         </div>
                                     </div>
@@ -122,25 +122,21 @@
     public Guid id { get; set; }
 
 
-    // List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
-
     protected override async Task OnInitializedAsync()
-    {
-        if (studobj.FirstName == null )
-        {
+    {  
             await LoadStudent();
-        }
-        else
-        {
-            studobj.Id = id;
-            UpdateStudent();
-        }
+        
     }
     public async Task LoadStudent()
     {
-        // Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
-        studobj = await StudentService.GetStudentByIdAsync(id);
-        
+		if (id != Guid.Empty && studobj.FirstName == null)
+		{
+			studobj = await StudentService.GetStudentByIdAsync(id);
+		}
+		else
+		{
+			studobj.Id = id;
+		}            
     }
 
 
