@@ -222,6 +222,28 @@
 					</li>
 
 				</AuthorizeView>
+				<AuthorizeView Roles="Admin,Super Admin,Teacher">
+				<li class="nav-item has-treeview">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-file-alt"></i>
+						<p>
+							Timetable Management
+							<i class="right fas fa-angle-left"></i>
+						</p>
+					</a>
+
+					<ul class="nav nav-treeview">
+
+						<li class="nav-item">
+							<NavLink href="/add-timetable" class="nav-link">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Class Timetable</p>
+							</NavLink>
+						</li>
+
+					</ul>
+				</li>
+				</AuthorizeView>
         </ul>
       </nav>
     </div>
