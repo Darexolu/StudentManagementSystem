@@ -244,6 +244,7 @@ else
 
 	private async Task Save()
 	{
+		validationMessage = null;
 		if (model.EndTime <= model.StartTime)
 		{
 			
@@ -260,7 +261,7 @@ else
 		}
 
 		await Load();
-
+		isEdit = false;
 		ClearForm();
 	}
 

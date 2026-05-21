@@ -16,5 +16,6 @@ namespace StudentManagementSystemShared.StudentRepository
 
 		Task<List<ClassTimeTable>> GetTeacherTimeTable(Guid teacherId);
 		Task<List<ClassTimeTable>> GetStudentTimeTable(Guid classId);
+		Task<List<ClassTimeTable>> GetByClassIdAsync(Guid classId);
 	}
 }

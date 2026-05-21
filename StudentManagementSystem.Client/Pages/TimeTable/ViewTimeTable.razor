@@ -1,0 +1,193 @@
+﻿@page "/weekly-timetable"
+@using Microsoft.AspNetCore.Authorization
+@using StudentManagementSystemShared.Models
+@using StudentManagementSystemShared.StudentRepository
+
+@rendermode InteractiveServer
+@attribute [Authorize(Roles = "Admin,Super Admin,Teacher,Student")]
+@inject ITimeTableRepository TimeTableRepository
+@inject ISchoolClassRepository ClassRepository
+
+<h3>Class Weekly Timetable</h3>
+
+<hr />
+
+<!-- CLASS SELECTOR -->
+<div class="row mb-3">
+
+	<div class="col-md-4">
+		<label>Select Class</label>
+
+		<InputSelect class="form-control"
+					 @bind-Value="selectedClassId">
+			<option value="">Select Class</option>
+
+			@foreach (var c in classes)
+			{
+				<option value="@c.Id">@c.Name</option>
+			}
+
+		</InputSelect>
+	</div>
+
+</div>
+
+@if (isLoading)
+{
+	<div class="alert alert-info">
+		Loading timetable...
+	</div>
+}
+else if (selectedClassId == null)
+{
+	<div class="alert alert-info">
+		Please select a class to view timetable.
+	</div>
+}
+else if (!slots.Any())
+{
+	<div class="alert alert-warning">
+		No timetable found for this class.
+	</div>
+}
+else
+{
+	<!-- TIMETABLE GRID -->
+	<table class="table table-bordered text-center">
+
+		<thead class="table-dark">
+			<tr>
+				<th>Time</th>
+				<th>Monday</th>
+				<th>Tuesday</th>
+				<th>Wednesday</th>
+				<th>Thursday</th>
+				<th>Friday</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+			@foreach (var slot in slots)
+			{
+				<tr>
+
+					<!-- TIME COLUMN -->
+					<td>
+						<b>
+							@slot.Start.ToString(@"hh\:mm")
+							-
+							@slot.End.ToString(@"hh\:mm")
+						</b>
+					</td>
+
+					<!-- DAYS -->
+					@foreach (var day in weekdays)
+					{
+						<td>
+
+							@{
+								var item = GetCell(day, slot.Start, slot.End);
+							}
+
+							@if (item != null)
+							{
+								<div class="p-2 border rounded bg-light">
+
+									<div><b>@item.Subject?.Name</b></div>
+
+									<div>@item.Teacher?.FullName</div>
+
+									<small>@item.Room</small>
+
+								</div>
+							}
+
+						</td>
+					}
+
+				</tr>
+			}
+
+		</tbody>
+
+	</table>
+}
+
+@code {
+	private bool isLoading = false;
+	private Guid? _selectedClassId;
+
+	private Guid? selectedClassId
+	{
+		get => _selectedClassId;
+		set
+		{
+			_selectedClassId = value;
+
+			if (value != null)
+			{
+				_ = LoadClassTimetable();
+			}
+		}
+	}
+
+	private List<SchoolClass> classes = new();
+
+	private List<ClassTimeTable> classTimetable = new();
+
+	private List<(TimeSpan Start, TimeSpan End)> slots = new();
+
+	private List<DayOfWeek> weekdays = new()
+	{
+		DayOfWeek.Monday,
+		DayOfWeek.Tuesday,
+		DayOfWeek.Wednesday,
+		DayOfWeek.Thursday,
+		DayOfWeek.Friday
+	};
+
+	protected override async Task OnInitializedAsync()
+	{
+		classes = await ClassRepository.GetAllAsync();
+	}
+
+	private async Task LoadClassTimetable()
+	{
+		if (selectedClassId == null)
+			return;
+
+		isLoading = true;
+		slots.Clear();
+		classTimetable.Clear();
+
+		StateHasChanged();
+
+		classTimetable = await TimeTableRepository
+			.GetByClassIdAsync(selectedClassId.Value);
+
+		BuildSlots();
+
+		isLoading = false;
+
+		StateHasChanged();
+	}
+
+	private void BuildSlots()
+	{
+		slots = classTimetable
+			.Select(x => (x.StartTime, x.EndTime))
+			.Distinct()
+			.OrderBy(x => x.StartTime)
+			.ToList();
+	}
+
+	private ClassTimeTable? GetCell(DayOfWeek day, TimeSpan start, TimeSpan end)
+	{
+		return classTimetable.FirstOrDefault(x =>
+			x.Day == day &&
+			x.StartTime == start &&
+			x.EndTime == end
+		);
+	}
+}

@@ -81,5 +81,15 @@ namespace StudentManagementSystem.Repository
 				.Include(x => x.Teacher)
 				.ToListAsync();
 		}
+
+		public async Task<List<ClassTimeTable>> GetByClassIdAsync(Guid classId)
+		{
+			return await _context.ClassTimeTables
+				.Include(x => x.Subject)
+				.Include(x => x.Teacher)
+				.Include(x => x.SchoolClass)
+				.Where(x => x.SchoolClassId == classId)
+				.ToListAsync();
+		}
 	}
 }
