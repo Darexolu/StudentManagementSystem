@@ -91,5 +91,16 @@ namespace StudentManagementSystem.Repository
 				.Where(x => x.SchoolClassId == classId)
 				.ToListAsync();
 		}
+		public async Task<ClassTimeTable?> FindByClassDayPeriod(
+	Guid classId,
+	DayOfWeek? day,
+	int periodNumber)
+		{
+			return await _context.ClassTimeTables
+				.FirstOrDefaultAsync(x =>
+					x.SchoolClassId == classId &&
+					x.Day == day &&
+					x.PeriodNumber == periodNumber);
+		}
 	}
 }

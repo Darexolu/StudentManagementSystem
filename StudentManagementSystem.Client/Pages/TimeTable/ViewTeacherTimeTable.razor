@@ -1,33 +1,38 @@
-﻿@page "/weekly-timetable"
+﻿@page "/teacher-timetable"
+
 @using Microsoft.AspNetCore.Authorization
 @using StudentManagementSystemShared.Models
 @using StudentManagementSystemShared.StudentRepository
-
 @rendermode InteractiveServer
-@attribute [Authorize(Roles = "Admin,Super Admin,Teacher,Student")]
-@inject ITimeTableRepository TimeTableRepository
-@inject ISchoolClassRepository ClassRepository
+@attribute [Authorize(Roles = "Admin,Super Admin,Teacher")]
 
-<h3>Class Weekly Timetable</h3>
+@inject ITeacherRepository TeacherRepository
+@inject ITimeTableRepository TimeTableRepository
+
+<h3>Teacher Timetable</h3>
 
 <hr />
 
-<!-- CLASS SELECTOR -->
-<div class="row mb-3">
+<div class="row mb-4">
 
 	<div class="col-md-4">
-		<label>Select Class</label>
+
+		<label>Select Teacher</label>
 
 		<InputSelect class="form-control"
-					 @bind-Value="selectedClassId">
-			<option value="">Select Class</option>
+					 @bind-Value="selectedTeacherId">
 
-			@foreach (var c in classes)
+			<option value="">Select Teacher</option>
+
+			@foreach (var teacher in teachers)
 			{
-				<option value="@c.Id">@c.Name</option>
+				<option value="@teacher.Id">
+					@teacher.FullName
+				</option>
 			}
 
 		</InputSelect>
+
 	</div>
 
 </div>
@@ -38,24 +43,24 @@
 		Loading timetable...
 	</div>
 }
-else if (selectedClassId == null)
+else if (selectedTeacherId == null)
 {
 	<div class="alert alert-info">
-		Please select a class to view timetable.
+		Please select a teacher.
 	</div>
 }
 else if (!slots.Any())
 {
 	<div class="alert alert-warning">
-		No timetable found for this class.
+		No timetable found for this teacher.
 	</div>
 }
 else
 {
-	<!-- TIMETABLE GRID -->
 	<table class="table table-bordered text-center">
 
 		<thead class="table-dark">
+
 			<tr>
 				<th>Time</th>
 				<th>Monday</th>
@@ -64,6 +69,7 @@ else
 				<th>Thursday</th>
 				<th>Friday</th>
 			</tr>
+
 		</thead>
 
 		<tbody>
@@ -72,7 +78,7 @@ else
 			{
 				<tr>
 
-					<!-- TIME COLUMN -->
+					<!-- TIME -->
 					<td>
 						<b>
 							@DateTime.Today.Add(slot.Start).ToString("hh:mm tt")
@@ -94,11 +100,17 @@ else
 							{
 								<div class="p-2 border rounded bg-light">
 
-									<div><b>@item.Subject?.Name</b></div>
+									<div>
+										<b>@item.Subject?.Name</b>
+									</div>
 
-									<div>@item.Teacher?.FullName</div>
+									<div>
+										@item.SchoolClass?.Name
+									</div>
 
-									@* <small>@item.Room</small> *@
+									@* <small>
+										Room: @item.Room
+									</small> *@
 
 								</div>
 							}
@@ -115,26 +127,28 @@ else
 }
 
 @code {
-	private bool isLoading = false;
-	private Guid? _selectedClassId;
 
-	private Guid? selectedClassId
+	private Guid? _selectedTeacherId;
+
+	private Guid? selectedTeacherId
 	{
-		get => _selectedClassId;
+		get => _selectedTeacherId;
 		set
 		{
-			_selectedClassId = value;
+			_selectedTeacherId = value;
 
 			if (value != null)
 			{
-				_ = LoadClassTimetable();
+				_ = LoadTeacherTimetable();
 			}
 		}
 	}
 
-	private List<SchoolClass> classes = new();
+	private bool isLoading = false;
 
-	private List<ClassTimeTable> classTimetable = new();
+	private List<Teacher> teachers = new();
+
+	private List<ClassTimeTable> teacherTimetable = new();
 
 	private List<(TimeSpan Start, TimeSpan End)> slots = new();
 
@@ -149,22 +163,24 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		classes = await ClassRepository.GetAllAsync();
+		teachers = await TeacherRepository.GetAllAsync();
 	}
 
-	private async Task LoadClassTimetable()
+	private async Task LoadTeacherTimetable()
 	{
-		if (selectedClassId == null)
+		if (selectedTeacherId == null)
 			return;
 
 		isLoading = true;
+
+		teacherTimetable.Clear();
+
 		slots.Clear();
-		classTimetable.Clear();
 
 		StateHasChanged();
 
-		classTimetable = await TimeTableRepository
-			.GetByClassIdAsync(selectedClassId.Value);
+		teacherTimetable = await TimeTableRepository
+			.GetTeacherTimeTable(selectedTeacherId.Value);
 
 		BuildSlots();
 
@@ -175,7 +191,7 @@ else
 
 	private void BuildSlots()
 	{
-		slots = classTimetable
+		slots = teacherTimetable
 			.Where(x => x.StartTime.HasValue && x.EndTime.HasValue)
 			.Select(x => (Start: x.StartTime.Value, End: x.EndTime.Value))
 			.Distinct()
@@ -183,9 +199,12 @@ else
 			.ToList();
 	}
 
-	private ClassTimeTable? GetCell(DayOfWeek day, TimeSpan start, TimeSpan end)
+	private ClassTimeTable? GetCell(
+		DayOfWeek day,
+		TimeSpan start,
+		TimeSpan end)
 	{
-		return classTimetable.FirstOrDefault(x =>
+		return teacherTimetable.FirstOrDefault(x =>
 			x.Day == day &&
 			x.StartTime == start &&
 			x.EndTime == end

@@ -10,125 +10,135 @@
 @inject ISchoolClassRepository ClassRepository
 @inject ISubjectRepository SubjectRepository
 @inject ITeacherRepository TeacherRepository
+@inject IJSRuntime JS
 
 <h3>Create Timetable</h3>
 
 <hr />
 
-<EditForm Model="model" OnValidSubmit="Save" FormName="addtimetable">
+<EditForm Model="this" OnValidSubmit="SaveAll">
 
 	<DataAnnotationsValidator />
 	<ValidationSummary />
+
 	@if (!string.IsNullOrEmpty(validationMessage))
 	{
 		<div class="alert alert-danger">
 			@validationMessage
 		</div>
 	}
-	<div class="row">
+	@if (!string.IsNullOrEmpty(successMessage))
+	{
+		<div class="alert alert-success">
+			@successMessage
+		</div>
+	}
+
+	<!-- CLASS -->
+	<div class="row mb-3">
 
 		<div class="col-md-6">
-			<label>Class</label>
+			<label>Select Class</label>
 
-			<InputSelect class="form-control"
-						 @bind-Value="model.SchoolClassId">
+			<InputSelect required class="form-control"
+						 @bind-Value="selectedClassId">
 
 				<option value="">Select Class</option>
 
-				@foreach (var item in classes)
+				@foreach (var c in classes)
 				{
-					<option value="@item.Id">@item.Name</option>
+					<option value="@c.Id">@c.Name</option>
 				}
 
 			</InputSelect>
-		</div>
-
-		<div class="col-md-6">
-			<label>Subject</label>
-
-			<InputSelect class="form-control"
-						 @bind-Value="model.SubjectId">
-
-				<option value="">Select Subject</option>
-
-				@foreach (var item in subjects)
-				{
-					<option value="@item.Id">@item.Name</option>
-				}
-
-			</InputSelect>
-		</div>
-
-		<div class="col-md-6 mt-3">
-			<label>Teacher</label>
-
-			<InputSelect class="form-control"
-						 @bind-Value="model.TeacherId">
-
-				<option value="">Select Teacher</option>
-
-				@foreach (var item in teachers)
-				{
-					<option value="@item.Id">@item.FullName</option>
-				}
-
-			</InputSelect>
-		</div>
-
-		<div class="col-md-6 mt-3">
-			<label>Day</label>
-
-			<InputSelect class="form-control"
-						 @bind-Value="model.Day">
-
-				<option value="">Select Day</option>
-				@foreach (var day in Enum.GetValues<DayOfWeek>().Where(d => d != DayOfWeek.Sunday && d != DayOfWeek.Saturday))
-				{
-					<option value="@day">@day</option>
-				}
-
-			</InputSelect>
-		</div>
-
-		<div class="col-md-6 mt-3">
-			<label>Start Time</label>
-
-			<InputText class="form-control"
-					   type="time"
-					   @bind-Value="startTimeString" />
-			<ValidationMessage For="() => model.StartTime" class="text-danger" />
-		</div>
-
-		<div class="col-md-6 mt-3">
-			<label>End Time</label>
-			<InputText class="form-control"
-					   type="time"
-					   @bind-Value="endTimeString" />
-			<ValidationMessage For="() => model.EndTime" class="text-danger" />
-		</div>
-
-		<div class="col-md-6 mt-3">
-			<label>Room</label>
-
-			<InputText class="form-control"
-					   @bind-Value="model.Room" />
 		</div>
 
 	</div>
 
-	<div class="mt-4">
+	<hr />
 
-		<button type="submit" class="btn btn-primary">
-			@(isEdit ? "Update Timetable" : "Save Timetable")
-		</button>
+	<!-- GRID -->
+	<table class="table table-bordered text-center">
 
-		<button type="button"
-				class="btn btn-secondary ms-2"
-				@onclick="ClearForm">
-			Clear
-		</button>
+		<thead class="table-dark">
+			<tr>
+				<th>Day</th>
+				<th>Period</th>
+				<th>Subject</th>
+				<th>Teacher</th>
+				<th>Start</th>
+				<th>End</th>
+				<th>Room</th>
+			</tr>
+		</thead>
 
-	</div>
+		<tbody>
+
+			@foreach (var item in entries)
+			{
+				<tr id="row-@item.Day-@item.PeriodNumber">
+
+					<td>@item.Day</td>
+
+					<td>@item.PeriodNumber</td>
+
+					<td>
+						<InputSelect class="form-control"
+									 @bind-Value="item.SubjectId">
+
+							<option value="">Select</option>
+
+							@foreach (var s in subjects)
+							{
+								<option value="@s.Id">@s.Name</option>
+							}
+
+						</InputSelect>
+					</td>
+
+					<td>
+						<InputSelect class="form-control"
+									 @bind-Value="item.TeacherId">
+
+							<option value="">Select</option>
+
+							@foreach (var t in teachers)
+							{
+								<option value="@t.Id">@t.FullName</option>
+							}
+
+						</InputSelect>
+					</td>
+
+					<td>
+						<input type="time"
+							   class="form-control"
+							   value="@GetStartTime(item)"
+							   @onchange="e => SetStartTime(item, e.Value?.ToString())" />
+					</td>
+
+					<td>
+						<input type="time"
+							   class="form-control"
+							   value="@GetEndTime(item)"
+							   @onchange="e => SetEndTime(item, e.Value?.ToString())" />
+					</td>
+
+					<td>
+						<InputText class="form-control"
+								   @bind-Value="item.Room" />
+					</td>
+
+				</tr>
+			}
+
+		</tbody>
+
+	</table>
+
+	<button class="btn btn-primary mt-3" type="submit">
+		Save Weekly Timetable
+	</button>
 
 </EditForm>
 
@@ -167,9 +177,17 @@
 
 					<td>@item.Day</td>
 
-					<td>@DateTime.Today.Add(item.StartTime).ToString("hh:mm tt")</td>
+					<td>
+						@(item.StartTime.HasValue
+										? DateTime.Today.Add(item.StartTime.Value).ToString("hh:mm tt")
+										: "")
+					</td>
 
-					<td>@DateTime.Today.Add(item.EndTime).ToString("hh:mm tt")</td>
+					<td>
+						@(item.EndTime.HasValue
+										? DateTime.Today.Add(item.EndTime.Value).ToString("hh:mm tt")
+										: "")
+					</td>
 
 					<td>@item.Room</td>
 
@@ -204,36 +222,58 @@ else
 }
 
 @code {
-	[SupplyParameterFromForm]
-	private ClassTimeTable model { get; set; } = new ();
-
+	private Guid selectedClassId;
 	private string? validationMessage;
+	private string? successMessage;
+	private bool isEdit = false;
 
+	private List<ClassTimeTable> entries = new();
 	private List<ClassTimeTable> list = new();
 
 	private List<SchoolClass> classes = new();
-
 	private List<Subject> subjects = new();
-
 	private List<Teacher> teachers = new();
-
-	private bool isEdit = false;
-
-	
 
 	protected override async Task OnInitializedAsync()
 	{
 		await LoadDropdowns();
-
 		await Load();
+
+		GenerateRows();
+	}
+
+	private void GenerateRows()
+	{
+		entries.Clear();
+
+		var days = new[]
+		{
+			DayOfWeek.Monday,
+			DayOfWeek.Tuesday,
+			DayOfWeek.Wednesday,
+			DayOfWeek.Thursday,
+			DayOfWeek.Friday
+		};
+
+		foreach (var day in days)
+		{
+			for (int i = 1; i <= 8; i++)
+			{
+				entries.Add(new ClassTimeTable
+					{
+						Day = day,
+						PeriodNumber = i,
+						StartTime = TimeSpan.Zero,
+						EndTime = TimeSpan.Zero
+					});
+			}
+		}
 	}
 
 	private async Task LoadDropdowns()
 	{
 		classes = await ClassRepository.GetAllAsync();
-
 		subjects = await SubjectRepository.GetAllAsync();
-
 		teachers = await TeacherRepository.GetAllAsync();
 	}
 
@@ -242,42 +282,79 @@ else
 		list = await TimeTableRepository.GetAllAsync();
 	}
 
-	private async Task Save()
+	private async Task SaveAll()
 	{
-		validationMessage = null;
-		if (model.EndTime <= model.StartTime)
+		if (selectedClassId == Guid.Empty)
 		{
-			
-			validationMessage = "End time must be greater than start time.";
+			validationMessage = "Please select a class.";
 			return;
 		}
-		if (isEdit)
+
+		foreach (var item in entries)
 		{
-			await TimeTableRepository.UpdateAsync(model);
-		}
-		else
-		{
-			await TimeTableRepository.AddAsync(model);
+			if (item.SubjectId == null || item.TeacherId == null)
+				continue;
+			if (isEdit)
+			{
+				var existing = await TimeTableRepository
+		.FindByClassDayPeriod(selectedClassId, item.Day, item.PeriodNumber);
+
+				if (existing != null)
+				{
+					existing.SubjectId = item.SubjectId;
+					existing.TeacherId = item.TeacherId;
+					existing.StartTime = item.StartTime;
+					existing.EndTime = item.EndTime;
+					existing.Room = item.Room;
+					selectedClassId = item.SchoolClassId;
+					await TimeTableRepository.UpdateAsync(existing);
+				}
+			}
+			else
+			{
+				await TimeTableRepository.AddAsync(new ClassTimeTable
+					{
+						SchoolClassId = selectedClassId,
+						Day = item.Day,
+						PeriodNumber = item.PeriodNumber,
+						SubjectId = item.SubjectId,
+						TeacherId = item.TeacherId,
+						StartTime = item.StartTime,
+						EndTime = item.EndTime,
+						Room = item.Room
+					});
+			}
 		}
 
-		await Load();
+		validationMessage = null;
+		successMessage = null;
 		isEdit = false;
-		ClearForm();
+		await Load();
+
+		GenerateRows(); // reset grid
+		successMessage = "Timetable saved successfully!";
 	}
 
-	private void Edit(ClassTimeTable item)
+	private async Task Edit(ClassTimeTable item)
 	{
-		model = new ClassTimeTable
-			{
-				Id = item.Id,
-				SchoolClassId = item.SchoolClassId,
-				SubjectId = item.SubjectId,
-				TeacherId = item.TeacherId,
-				Day = item.Day,
-				StartTime = item.StartTime,
-				EndTime = item.EndTime,
-				Room = item.Room
-			};
+		selectedClassId = item.SchoolClassId;
+		var existing = entries.FirstOrDefault(x =>
+			x.Day == item.Day &&
+			x.PeriodNumber == item.PeriodNumber);
+
+		if (existing != null)
+		{
+			existing.SubjectId = item.SubjectId;
+			existing.TeacherId = item.TeacherId;
+			existing.StartTime = item.StartTime;
+			existing.EndTime = item.EndTime;
+			existing.Room = item.Room;
+			existing.SchoolClassId = item.SchoolClassId;
+
+			var rowId = $"row-{item.Day}-{item.PeriodNumber}";
+
+			await JS.InvokeVoidAsync("scrollToRow", rowId);
+		}
 
 		isEdit = true;
 	}
@@ -289,38 +366,44 @@ else
 		await Load();
 	}
 
-	private void ClearForm()
+	// private void ClearForm()
+	// {
+	// 	model = new ClassTimeTable();
+
+	// 	startTimeString = "";
+
+	// 	endTimeString = "";
+
+	// 	isEdit = false;
+	// }
+
+	private string GetStartTime(ClassTimeTable item)
 	{
-		model = new ClassTimeTable();
-
-		startTimeString = "";
-
-		endTimeString = "";
-
-		isEdit = false;
+		return item.StartTime.HasValue
+		? item.StartTime.Value.ToString(@"hh\:mm")
+		: "";
 	}
 
-	private string startTimeString
+	private void SetStartTime(ClassTimeTable item, string value)
 	{
-		get => model.StartTime.ToString(@"hh\:mm");
-		set
+		if (TimeSpan.TryParse(value, out var result))
 		{
-			if (TimeSpan.TryParse(value, out var result))
-			{
-				model.StartTime = result;
-			}
+			item.StartTime = result;
 		}
 	}
 
-	private string endTimeString
+	private string GetEndTime(ClassTimeTable item)
 	{
-		get => model.EndTime.ToString(@"hh\:mm");
-		set
+		return item.EndTime.HasValue
+				? item.EndTime.Value.ToString(@"hh\:mm")
+				: "";
+	}
+
+	private void SetEndTime(ClassTimeTable item, string value)
+	{
+		if (TimeSpan.TryParse(value, out var result))
 		{
-			if (TimeSpan.TryParse(value, out var result))
-			{
-				model.EndTime = result;
-			}
+			item.EndTime = result;
 		}
 	}
 }
