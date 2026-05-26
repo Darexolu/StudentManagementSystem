@@ -1,6 +1,7 @@
 ﻿@page "/add-timetable"
 
 @using Microsoft.AspNetCore.Authorization
+@using StudentManagementSystem.Utility
 @using StudentManagementSystemShared.Models
 @using StudentManagementSystemShared.StudentRepository
 @rendermode InteractiveServer
@@ -51,6 +52,22 @@
 				}
 
 			</InputSelect>
+		</div>
+
+		<div class="col-md-6">
+
+			<label>Timetable Type</label>
+
+			<InputSelect class="form-control"
+						 @bind-Value="selectedTimeTableType">
+
+				@foreach (var type in Enum.GetValues<TimeTableType>())
+				{
+					<option value="@type">@type</option>
+				}
+
+			</InputSelect>
+
 		</div>
 
 	</div>
@@ -158,6 +175,7 @@
 				<th>Day</th>
 				<th>Start</th>
 				<th>End</th>
+				<th>Type</th>
 				<th>Room</th>
 				<th>Action</th>
 			</tr>
@@ -171,7 +189,11 @@
 
 					<td>@item.SchoolClass?.Name</td>
 
-					<td>@item.Subject?.Name</td>
+					<td>
+						@item.Subject?.Name
+						<br />
+						<small>Period: @item.PeriodNumber</small>
+					</td>
 
 					<td>@item.Teacher?.FullName</td>
 
@@ -188,7 +210,7 @@
 										? DateTime.Today.Add(item.EndTime.Value).ToString("hh:mm tt")
 										: "")
 					</td>
-
+					<td>@item.TimeTableType</td>
 					<td>@item.Room</td>
 
 					<td>
@@ -226,6 +248,7 @@ else
 	private string? validationMessage;
 	private string? successMessage;
 	private bool isEdit = false;
+	private TimeTableType selectedTimeTableType = TimeTableType.Class;
 
 	private List<ClassTimeTable> entries = new();
 	private List<ClassTimeTable> list = new();
@@ -307,6 +330,8 @@ else
 					existing.EndTime = item.EndTime;
 					existing.Room = item.Room;
 					selectedClassId = item.SchoolClassId;
+					existing.TimeTableType = selectedTimeTableType;
+
 					await TimeTableRepository.UpdateAsync(existing);
 				}
 			}
@@ -321,7 +346,8 @@ else
 						TeacherId = item.TeacherId,
 						StartTime = item.StartTime,
 						EndTime = item.EndTime,
-						Room = item.Room
+						Room = item.Room,
+						TimeTableType = selectedTimeTableType
 					});
 			}
 		}
@@ -338,6 +364,7 @@ else
 	private async Task Edit(ClassTimeTable item)
 	{
 		selectedClassId = item.SchoolClassId;
+		selectedTimeTableType = item.TimeTableType;
 		var existing = entries.FirstOrDefault(x =>
 			x.Day == item.Day &&
 			x.PeriodNumber == item.PeriodNumber);

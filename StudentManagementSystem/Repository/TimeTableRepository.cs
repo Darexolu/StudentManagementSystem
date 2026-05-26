@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentManagementSystem.Data;
+using StudentManagementSystem.Utility;
 using StudentManagementSystemShared.Models;
 using StudentManagementSystemShared.StudentRepository;
 
@@ -82,13 +83,17 @@ namespace StudentManagementSystem.Repository
 				.ToListAsync();
 		}
 
-		public async Task<List<ClassTimeTable>> GetByClassIdAsync(Guid classId)
+		public async Task<List<ClassTimeTable>> GetByClassIdAsync(
+     	Guid classId,
+	    TimeTableType timeTableType)
 		{
 			return await _context.ClassTimeTables
 				.Include(x => x.Subject)
 				.Include(x => x.Teacher)
 				.Include(x => x.SchoolClass)
-				.Where(x => x.SchoolClassId == classId)
+				.Where(x =>
+					x.SchoolClassId == classId &&
+					x.TimeTableType == timeTableType)
 				.ToListAsync();
 		}
 		public async Task<ClassTimeTable?> FindByClassDayPeriod(

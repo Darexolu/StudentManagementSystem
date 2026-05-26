@@ -5,13 +5,13 @@
 namespace StudentManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedPeriodNumberToTimeTable : Migration
+    public partial class AddedExamTimeTableOption : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "PeriodNumber",
+                name: "TimeTableType",
                 table: "ClassTimeTables",
                 type: "int",
                 nullable: false,
@@ -22,7 +22,7 @@ namespace StudentManagementSystem.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "PeriodNumber",
+                name: "TimeTableType",
                 table: "ClassTimeTables");
         }
     }

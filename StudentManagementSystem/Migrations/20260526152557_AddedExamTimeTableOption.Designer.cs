@@ -12,8 +12,8 @@ using StudentManagementSystem.Data;
 namespace StudentManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260525111958_AddedPeriodNumberToTimeTablenullable")]
-    partial class AddedPeriodNumberToTimeTablenullable
+    [Migration("20260526152557_AddedExamTimeTableOption")]
+    partial class AddedExamTimeTableOption
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -281,6 +281,9 @@ namespace StudentManagementSystem.Migrations
 
                     b.Property<Guid?>("TeacherId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TimeTableType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

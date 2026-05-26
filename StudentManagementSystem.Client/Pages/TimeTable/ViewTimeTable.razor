@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using StudentManagementSystemShared.Models
 @using StudentManagementSystemShared.StudentRepository
+@using StudentManagementSystem.Utility
 
 @rendermode InteractiveServer
 @attribute [Authorize(Roles = "Admin,Super Admin,Teacher,Student")]
@@ -19,7 +20,8 @@
 		<label>Select Class</label>
 
 		<InputSelect class="form-control"
-					 @bind-Value="selectedClassId">
+					 @bind-Value="selectedClassId"
+					 @bind-Value:after="LoadClassTimetable">
 			<option value="">Select Class</option>
 
 			@foreach (var c in classes)
@@ -29,7 +31,22 @@
 
 		</InputSelect>
 	</div>
+	<div class="col-md-4">
 
+		<label>Timetable Type</label>
+
+		<InputSelect class="form-control"
+					 @bind-Value="selectedTimeTableType"
+					 @bind-Value:after="LoadClassTimetable">
+
+			@foreach (var type in Enum.GetValues<TimeTableType>())
+			{
+				<option value="@type">@type</option>
+			}
+
+		</InputSelect>
+
+</div>
 </div>
 
 @if (isLoading)
@@ -97,7 +114,7 @@ else
 									<div><b>@item.Subject?.Name</b></div>
 
 									<div>@item.Teacher?.FullName</div>
-
+									<small>Period: @item.PeriodNumber</small>
 									@* <small>@item.Room</small> *@
 
 								</div>
@@ -131,6 +148,7 @@ else
 			}
 		}
 	}
+	private TimeTableType selectedTimeTableType = TimeTableType.Class;
 
 	private List<SchoolClass> classes = new();
 
@@ -164,7 +182,9 @@ else
 		StateHasChanged();
 
 		classTimetable = await TimeTableRepository
-			.GetByClassIdAsync(selectedClassId.Value);
+        .GetByClassIdAsync(
+        selectedClassId.Value,
+        selectedTimeTableType);
 
 		BuildSlots();
 

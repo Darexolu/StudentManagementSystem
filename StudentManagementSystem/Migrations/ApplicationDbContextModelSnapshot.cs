@@ -279,6 +279,9 @@ namespace StudentManagementSystem.Migrations
                     b.Property<Guid?>("TeacherId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("TimeTableType")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SchoolClassId");

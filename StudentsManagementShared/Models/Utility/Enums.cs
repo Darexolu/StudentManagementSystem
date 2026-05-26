@@ -23,4 +23,10 @@ namespace StudentManagementSystem.Utility
 
 		Engaged = 6
 	}
+
+	public enum TimeTableType
+	{
+		Class = 1,
+		Exam = 2
+	}
 }
