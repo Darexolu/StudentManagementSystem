@@ -85,45 +85,66 @@ else
 
 		<tbody>
 
-			@foreach (var slot in slots)
+			@foreach (var period in periods)
 			{
 				<tr>
 
-					<!-- TIME COLUMN -->
 					<td>
-						<b>
-							@DateTime.Today.Add(slot.Start).ToString("hh:mm tt")
-							-
-							@DateTime.Today.Add(slot.End).ToString("hh:mm tt")
-						</b>
+						@{
+							var firstItem = classTimetable
+							.FirstOrDefault(x => x.PeriodNumber == period);
+						}
+
+						@if (firstItem?.StartTime != null && firstItem?.EndTime != null)
+						{
+							<div>
+								@DateTime.Today.Add(firstItem.StartTime.Value).ToString("hh:mm tt")
+								-
+								@DateTime.Today.Add(firstItem.EndTime.Value).ToString("hh:mm tt")
+							</div>
+						}
+
+						<small>Period: @period</small>
 					</td>
 
-					<!-- DAYS -->
 					@foreach (var day in weekdays)
 					{
+						var item = GetPeriodItem(day, period);
+
 						<td>
-
-							@{
-								var item = GetCell(day, slot.Start, slot.End);
-							}
-
 							@if (item != null)
 							{
-								<div class="p-2 border rounded bg-light">
-
-									<div><b>@item.Subject?.Name</b></div>
-
-									<div>@item.Teacher?.FullName</div>
-									<small>Period: @item.PeriodNumber</small>
-									@* <small>@item.Room</small> *@
-
+								<div>
+									<b>@item.Subject?.Name</b><br />
+									@item.Teacher?.FullName
 								</div>
 							}
-
+							else
+							{
+								<span class="text-muted">Free Period</span>
+							}
 						</td>
 					}
 
 				</tr>
+
+				@if (period == 2)
+				{
+					<tr class="table-warning">
+						<td colspan="6">
+							<strong>SHORT BREAK</strong>
+						</td>
+					</tr>
+				}
+
+				@if (period == 5)
+				{
+					<tr class="table-info">
+						<td colspan="6">
+							<strong>LONG BREAK</strong>
+						</td>
+					</tr>
+				}
 			}
 
 		</tbody>
@@ -134,6 +155,7 @@ else
 @code {
 	private bool isLoading = false;
 	private Guid? _selectedClassId;
+	private List<int> periods = Enumerable.Range(1, 8).ToList();
 
 	private Guid? selectedClassId
 	{
@@ -169,7 +191,12 @@ else
 	{
 		classes = await ClassRepository.GetAllAsync();
 	}
-
+	private ClassTimeTable? GetPeriodItem(DayOfWeek day, int period)
+	{
+		return classTimetable.FirstOrDefault(x =>
+			x.Day == day &&
+			x.PeriodNumber == period);
+	}
 	private async Task LoadClassTimetable()
 	{
 		if (selectedClassId == null)

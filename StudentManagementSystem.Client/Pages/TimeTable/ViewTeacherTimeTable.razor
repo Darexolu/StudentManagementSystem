@@ -80,11 +80,24 @@ else
 
 					<!-- TIME -->
 					<td>
+						@{
+							var period = teacherTimetable.FirstOrDefault(x =>
+							x.StartTime == slot.Start &&
+							x.EndTime == slot.End)?.PeriodNumber;
+						}
+
 						<b>
 							@DateTime.Today.Add(slot.Start).ToString("hh:mm tt")
 							-
 							@DateTime.Today.Add(slot.End).ToString("hh:mm tt")
 						</b>
+						<br />
+						@if (period != null)
+						{
+							<small>
+								Period: @period
+							</small>
+						}
 					</td>
 
 					<!-- DAYS -->
