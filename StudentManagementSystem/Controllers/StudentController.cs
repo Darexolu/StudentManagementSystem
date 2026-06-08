@@ -27,16 +27,22 @@ namespace StudentManagementSystem.Controllers
         {
             var student = await _studentRepository.GetStudentByIdAsync(id);
             return Ok(student);
-        }
+		}
 
-        [HttpPost("Add-Student")]
-        public async Task<ActionResult<Student>> AddNewStudentAsync(Student student)
-        {
-            var newstudent = await _studentRepository.AddStudentAsync(student);
-            return Ok(newstudent);
-        }
+		[HttpPost("Add-Student")]
+		public async Task<ActionResult<Student>> AddNewStudentAsync(Student student)
+		{
+			var newstudent = await _studentRepository.AddStudentAsync(student);
+			return Ok(newstudent);
+		}
 
-        [HttpDelete("Delete-Student/{id}")]
+		[HttpGet("Students-By-Class/{classId}")]
+		public async Task<IActionResult> GetByClassId(Guid classId)
+		{
+			var students = await _studentRepository.GetByClassIdAsync(classId);
+			return Ok(students);
+		}
+		[HttpDelete("Delete-Student/{id}")]
         public async Task<ActionResult<Student>> DeleteStudentAsync(Guid id)
         {
             var deletestudent = await _studentRepository.DeleteStudentAsync(id);

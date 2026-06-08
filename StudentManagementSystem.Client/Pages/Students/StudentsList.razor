@@ -36,7 +36,8 @@
                                 <th>LastName</th>
                                 <th>Email</th>
                                 <th>PhoneNo</th>
-                                <th>Country</th>
+                               @*  <th>Country</th> *@
+								<th>Class</th>
 								<th>Gender</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
@@ -51,7 +52,7 @@
                             <td>@student.LastName</td>
                             <td>@student.EmailAddress</td>
                             <td>@student.PhoneNumber</td>
-                           <td>@student.Country</td>
+                          @*  <td>@student.Country</td> *@
 							<td style="white-space: nowrap;">
 							 @student.Gender?.ToString().Replace("NonBinary", "Non-binary")
 							</td>

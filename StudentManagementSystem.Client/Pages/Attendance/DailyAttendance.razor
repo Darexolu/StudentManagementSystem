@@ -1,0 +1,210 @@
+﻿@page "/daily-attendance"
+
+@using Microsoft.AspNetCore.Authorization
+@using StudentManagementSystem.Utility
+@using StudentManagementSystemShared.Models
+
+@rendermode InteractiveServer
+@attribute [Authorize(Roles = "Admin,Super Admin,Teacher")]
+
+@inject ISchoolClassRepository SchoolClassRepository
+@inject IStudentRepository StudentRepository
+@inject IAttendanceRepository AttendanceRepository
+
+<h3>Daily Attendance</h3>
+
+<hr />
+
+<div class="row">
+
+	<div class="col-md-4">
+
+		<label>Class</label>
+
+		<InputSelect class="form-control"
+					 @bind-Value="selectedClassId"
+					 @bind-Value:after="LoadStudents">
+
+			<option value="">Select Class</option>
+
+			@foreach (var item in classes)
+			{
+				<option value="@item.Id">@item.Name</option>
+			}
+
+		</InputSelect>
+
+	</div>
+
+	<div class="col-md-4">
+
+		<label>Date</label>
+
+		<InputDate class="form-control"
+				   @bind-Value="attendanceDate" />
+
+	</div>
+
+</div>
+
+<br />
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+	<div class="alert alert-success">
+		@successMessage
+	</div>
+}
+
+@if (students.Any())
+{
+	<table class="table table-bordered">
+
+		<thead>
+			<tr>
+				<th>Student</th>
+				<th>Status</th>
+				<th>Remarks</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+			@foreach (var student in students)
+			{
+				attendanceEntries.TryGetValue(student.Id, out var entry);
+
+				if (entry == null)
+				{
+					entry = new StudentAttendance
+						{
+							StudentId = student.Id,
+							SchoolClassId = selectedClassId!.Value,
+							AttendanceDate = attendanceDate,
+							Status = AttendanceStatus.Present
+						};
+
+					attendanceEntries[student.Id] = entry;
+				}
+
+				<tr>
+					<td>@student.FullName</td>
+
+					<td>
+						<InputSelect class="form-control"
+									 @bind-Value="entry.Status">
+
+							@foreach (var status in Enum.GetValues<AttendanceStatus>())
+							{
+								<option value="@status">@status</option>
+							}
+
+						</InputSelect>
+					</td>
+
+					<td>
+						<InputText class="form-control"
+								   @bind-Value="entry.Remarks" />
+					</td>
+				</tr>
+			}
+
+		</tbody>
+
+	</table>
+
+	<button class="btn btn-primary"
+			@onclick="SaveAttendance">
+		Save Attendance
+	</button>
+}
+
+@code {
+	private Guid? _selectedClassId;
+
+	private Guid? selectedClassId
+	{
+		get => _selectedClassId;
+		set
+		{
+			_selectedClassId = value;
+
+			if (value != null)
+			{
+				_ = LoadStudents();
+			}
+		}
+	}
+
+	private DateTime attendanceDate = DateTime.Today;
+
+	private string? successMessage;
+
+	private List<SchoolClass> classes = new();
+
+	private List<Student> students = new();
+
+	private Dictionary<Guid, StudentAttendance> attendanceEntries = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		classes = await SchoolClassRepository.GetAllAsync();
+
+	}
+
+	private async Task LoadStudents()
+	{
+		if (selectedClassId == null)
+			return;
+
+		students = await StudentRepository
+			.GetByClassIdAsync(selectedClassId.Value);
+
+		attendanceEntries.Clear();
+
+		foreach (var student in students)
+		{
+			var existingAttendance =
+				await AttendanceRepository.GetAttendanceAsync(
+					student.Id,
+					attendanceDate);
+
+			attendanceEntries[student.Id] =
+				existingAttendance ??
+				new StudentAttendance
+					{
+						StudentId = student.Id,
+						SchoolClassId = selectedClassId.Value,
+						AttendanceDate = attendanceDate,
+						Status = AttendanceStatus.Present
+					};
+		}
+
+		StateHasChanged();
+	}
+	private async Task SaveAttendance()
+	{
+		foreach (var attendance in attendanceEntries.Values)
+		{
+			var existing =
+				await AttendanceRepository.GetAttendanceAsync(
+					attendance.StudentId,
+					attendanceDate);
+
+			if (existing == null)
+			{
+				await AttendanceRepository.AddAsync(attendance);
+			}
+			else
+			{
+				existing.Status = attendance.Status;
+				existing.Remarks = attendance.Remarks;
+
+				await AttendanceRepository.UpdateAsync(existing);
+			}
+		}
+
+		successMessage = "Attendance saved successfully.";
+	}
+
+}

@@ -19,6 +19,9 @@ namespace StudentManagementSystemShared.Models
         public string FullName => $"{FirstName} {MiddleName} {LastName}";
 
 		public Gender? Gender { get; set; }
+		public Guid? SchoolClassId { get; set; }
+
+		public SchoolClass SchoolClass { get; set; }
 
 
 		public string EmailAddress { get; set; }

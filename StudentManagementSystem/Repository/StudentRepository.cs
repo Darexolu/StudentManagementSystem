@@ -71,6 +71,18 @@ namespace StudentManagementSystem.Repository
                 return false;
             }
         }
+		public async Task<List<Student>> GetByClassIdAsync(Guid classId)
+		{
+			if (classId == Guid.Empty)
+				return new List<Student>();
 
-    }
+			return await _context.Students
+	.Include(x => x.SchoolClass)
+	.Where(x => x.SchoolClassId == classId)
+	.OrderBy(x => x.FirstName)
+	.ThenBy(x => x.MiddleName)
+	.ThenBy(x => x.LastName)
+	.ToListAsync();
+		}
+	}
 }

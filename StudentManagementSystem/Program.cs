@@ -57,6 +57,7 @@ builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 builder.Services.AddScoped<IClassSubjectRepository, ClassSubjectRepository>();
 builder.Services.AddScoped<IResultRepository, ResultRepository>();
 builder.Services.AddScoped<ITimeTableRepository, TimeTableRepository>();
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 
 
 

@@ -60,7 +60,14 @@ namespace StudentsManagementSystem.Client.Services
                 return false;
             }
         }
+		public async Task<List<Student>> GetByClassIdAsync(Guid classId)
+		{
+			var result = await _httpClient.GetAsync($"api/Student/Students-By-Class/{classId}");
 
+			var response = await result.Content.ReadFromJsonAsync<List<Student>>();
 
-    }
+			return response ?? new List<Student>();
+		}
+
+	}
 }

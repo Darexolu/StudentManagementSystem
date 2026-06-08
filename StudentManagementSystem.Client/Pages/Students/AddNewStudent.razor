@@ -6,7 +6,7 @@
 @attribute [Authorize(Roles = "Admin,Super Admin")]
 @inject NavigationManager navigation;
 
-
+@inject ISchoolClassRepository ClassRepository
 <h3>Add New Student</h3>
 
 <hr />
@@ -99,6 +99,26 @@
                             <ValidationMessage For="()=>studobj.DOB" />
                         </div>
                     </div>
+
+					<div class="col-md-6">
+    <div class="form-group">
+        <label class="control-label">Class</label>
+
+        <InputSelect class="form-control"
+                     @bind-Value="studobj.SchoolClassId">
+
+            <option value="">Select Class</option>
+
+            @foreach (var c in Classes)
+            {
+                <option value="@c.Id">@c.Name</option>
+            }
+
+        </InputSelect>
+
+        <ValidationMessage For="()=>studobj.SchoolClassId" />
+    </div>
+</div>
                 </div>
                 </div>
 
@@ -115,7 +135,7 @@
 
     [SupplyParameterFromForm]
     public Student studobj { get; set; } = new();
-
+	List<SchoolClass> Classes = new();
     List<Country> Countries = new List<Country>(); 
     // List<SystemCodeDetail> Gender = new List<SystemCodeDetail>();
 
@@ -124,6 +144,8 @@
     protected override async Task OnInitializedAsync()
     {
         Countries = await CountryService.GetAllAsync();
+		Classes = await ClassRepository.GetAllAsync();
+
 		studobj.DOB = DateTime.Today;
         // Gender = await SystemCodeDetailsService.GetByCodeAsync("Gender");
 

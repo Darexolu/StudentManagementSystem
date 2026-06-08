@@ -13,6 +13,7 @@ namespace StudentManagementSystemShared.StudentRepository
         Task<bool> UpdateStudentAsync(Student student);
         Task<Student> DeleteStudentAsync(Guid studentId);
         Task<List<Student>> GetAllStudentsAsync();
-        Task<Student> GetStudentByIdAsync(Guid studentId);
-    }
+		Task<Student> GetStudentByIdAsync(Guid studentId);
+		Task<List<Student>> GetByClassIdAsync(Guid classId);
+	}
 }

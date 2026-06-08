@@ -29,4 +29,11 @@ namespace StudentManagementSystem.Utility
 		Class = 1,
 		Exam = 2
 	}
+	public enum AttendanceStatus
+	{
+		Present = 1,
+		Absent = 2,
+		Late = 3,
+		Excused = 4
+	}
 }

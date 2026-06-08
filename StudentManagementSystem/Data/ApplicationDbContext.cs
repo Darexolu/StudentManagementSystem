@@ -17,6 +17,7 @@ namespace StudentManagementSystem.Data
 		public DbSet<ClassSubject> ClassSubjects { get; set; }
 		public DbSet<Result> Results { get; set; }
 		public DbSet<ClassTimeTable> ClassTimeTables { get; set; }
+		public DbSet<StudentAttendance> StudentAttendances { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
         {
