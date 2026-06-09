@@ -17,7 +17,9 @@ namespace StudentManagementSystemShared.Models
         [Required]
         public string LastName { get; set; }
         public string FullName => $"{FirstName} {MiddleName} {LastName}";
-
+		[Required]
+		[Display(Name = "Admission No.")]
+		public string AdmissionNumber { get; set; }
 		public Gender? Gender { get; set; }
 		public Guid? SchoolClassId { get; set; }
 

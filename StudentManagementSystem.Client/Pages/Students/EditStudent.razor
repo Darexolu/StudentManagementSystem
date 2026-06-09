@@ -42,6 +42,13 @@
                                             <ValidationMessage For="()=>studobj.LastName" />
                                         </div>
                                     </div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="control-label">Admission Number</label>
+											<InputText for="LastName" required class="form-control" @bind-Value="@studobj.AdmissionNumber" />
+											<ValidationMessage For="()=>studobj.AdmissionNumber" />
+										</div>
+									</div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Email Address</label>
