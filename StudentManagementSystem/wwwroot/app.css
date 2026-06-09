@@ -51,3 +51,202 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+
+/*Sidebar*/
+
+/* Layout */
+body {
+	margin: 0;
+	font-family: 'Segoe UI', sans-serif;
+	background: #f4f6f9;
+}
+
+/* Sidebar */
+.main-sidebar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 260px;
+	height: 100vh;
+	background: #1e293b;
+	color: #fff;
+	overflow-y: auto;
+	box-shadow: 2px 0 12px rgba(0,0,0,.1);
+}
+
+/* Brand */
+.brand-link {
+	display: flex;
+	align-items: center;
+	padding: 20px;
+	text-decoration: none;
+	color: white;
+	border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+.brand-image {
+	width: 40px;
+	height: 40px;
+	margin-right: 12px;
+	border-radius: 50%;
+}
+
+.brand-text {
+	font-size: 18px;
+	font-weight: 600;
+}
+
+/* User Section */
+.user-panel {
+	display: flex;
+	align-items: center;
+	padding: 20px;
+	border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+	.user-panel .image img {
+		width: 45px;
+		height: 45px;
+		border-radius: 50%;
+	}
+
+	.user-panel .info {
+		margin-left: 12px;
+	}
+
+		.user-panel .info a {
+			color: white;
+			text-decoration: none;
+			font-weight: 500;
+		}
+
+/* Navigation */
+.nav {
+	list-style: none;
+	padding: 10px 0;
+	margin: 0;
+}
+
+.nav-item {
+	margin: 4px 12px;
+}
+
+.nav-link {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 16px;
+	border-radius: 10px;
+	color: #cbd5e1;
+	text-decoration: none;
+	transition: all .2s ease;
+}
+
+	.nav-link:hover {
+		background: #334155;
+		color: white;
+	}
+
+	/* Active Menu */
+	.nav-link.active {
+		background: #2563eb;
+		color: white;
+		font-weight: 600;
+	}
+
+/* Icons */
+.nav-icon {
+	width: 20px;
+	margin-right: 10px;
+}
+
+/* Text + Icon Group */
+.nav-link p {
+	flex: 1;
+	margin: 0;
+}
+
+/* Treeview */
+.nav-treeview {
+	list-style: none;
+	padding-left: 20px;
+	margin-top: 5px;
+}
+
+	.nav-treeview .nav-link {
+		padding: 10px 14px;
+		font-size: 14px;
+		background: transparent;
+	}
+
+		.nav-treeview .nav-link:hover {
+			background: #334155;
+		}
+
+		.nav-treeview .nav-link.active {
+			background: #3b82f6;
+		}
+
+/* Logout Button */
+button.nav-link {
+	cursor: pointer;
+	width: 100%;
+	border: none;
+	background: #dc2626;
+	color: white;
+}
+
+	button.nav-link:hover {
+		background: #b91c1c;
+	}
+
+/* Right Arrow */
+.right {
+	font-size: 12px;
+}
+
+/* Main Content Area */
+.main-content {
+	margin-left: 260px;
+	padding: 24px;
+}
+
+/* Scrollbar */
+.main-sidebar::-webkit-scrollbar {
+	width: 6px;
+}
+
+.main-sidebar::-webkit-scrollbar-thumb {
+	background: #475569;
+	border-radius: 10px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+	.main-sidebar {
+		width: 70px;
+	}
+
+	.brand-text,
+	.user-panel .info,
+	.nav-link p,
+	.right {
+		display: none;
+	}
+
+	.main-content {
+		margin-left: 70px;
+	}
+
+	.nav-link {
+		justify-content: center;
+	}
+
+	.nav-icon {
+		margin-right: 0;
+	}
+}
+
+
+
