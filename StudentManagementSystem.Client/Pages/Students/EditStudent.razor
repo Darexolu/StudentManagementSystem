@@ -5,6 +5,7 @@
 @attribute [Authorize(Roles = "Admin,Super Admin")]
 @inject NavigationManager navigation;
 @rendermode InteractiveServer
+@inject ISchoolClassRepository ClassRepository
 
 <div class="row">
     <div class="col-12">
@@ -67,13 +68,13 @@
 
 											<label class="control-label">Gender</label>
 
-											<InputSelect class="form-control" @bind-Value="studobj.Gender">
-
+											<InputSelect required class="form-control" @bind-Value="studobj.Gender">
 												<option value="">Select Gender</option>
-												<option value="@Gender.Male">Male</option>
-												<option value="@Gender.Female">Female</option>
-												<option value="@Gender.NonBinary">Non-binary</option>
 
+												@foreach (var g in Enum.GetValues(typeof(Gender)).Cast<Gender>())
+												{
+													<option value="@g">@g</option>
+												}
 											</InputSelect>
 
 											<ValidationMessage For="()=>studobj.Gender" />
@@ -85,6 +86,25 @@
 											<label class="control-label">Date of Birth</label>
 											<InputDate for="DOB" class="form-control" @bind-Value="@studobj.DOB" />
 											<ValidationMessage For="()=>studobj.DOB" />
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="control-label">Class</label>
+
+											<InputSelect required class="form-control"
+														 @bind-Value="studobj.SchoolClassId">
+
+												<option value="">Select Class</option>
+
+												@foreach (var c in Classes)
+												{
+													<option value="@c.Id">@c.Name</option>
+												}
+
+											</InputSelect>
+
+											<ValidationMessage For="()=>studobj.SchoolClassId" />
 										</div>
 									</div>
                                     @* <div class="col-md-6">
@@ -116,14 +136,16 @@
     [SupplyParameterFromForm]
     public Student studobj { get; set; } = new Student();
 
-
+	List<SchoolClass> Classes = new();
 
     [Parameter]
     public Guid id { get; set; }
 
 
     protected override async Task OnInitializedAsync()
-    {  
+	{
+		Classes = await ClassRepository.GetAllAsync();
+
             await LoadStudent();
         
     }

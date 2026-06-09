@@ -1,4 +1,5 @@
 ﻿using StudentManagementSystemShared.Models;
+using StudentManagementSystemShared.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,5 +32,9 @@ namespace StudentManagementSystemShared.StudentRepository
 		   Guid classId,
 		   int year,
 		   int month);
+		Task<List<AttendanceSummaryViewModel>> GetMonthlySummaryAsync(
+	Guid classId,
+	int year,
+	int month);
 	}
 }

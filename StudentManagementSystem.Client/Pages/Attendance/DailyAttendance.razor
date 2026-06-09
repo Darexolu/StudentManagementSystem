@@ -41,7 +41,8 @@
 		<label>Date</label>
 
 		<InputDate class="form-control"
-				   @bind-Value="attendanceDate" />
+				   @bind-Value="attendanceDate"
+				   @bind-Value:after="LoadStudents" />
 
 	</div>
 
@@ -91,17 +92,26 @@
 					<td>@student.FullName</td>
 
 					<td>
-						<InputSelect class="form-control"
-									 @bind-Value="entry.Status">
+						<div class="d-flex gap-3">
 
-							@foreach (var status in Enum.GetValues<AttendanceStatus>())
-							{
-								<option value="@status">@status</option>
-							}
+							<div>
+								<input type="radio"
+									   name="attendance-@entry.StudentId"
+									   checked="@(entry.Status == AttendanceStatus.Present)"
+									   @onchange="() => entry.Status = AttendanceStatus.Present" />
+								<label class="ms-1">Present</label>
+							</div>
 
-						</InputSelect>
+							<div style="margin-left: 10px">
+								<input type="radio"
+									   name="attendance-@entry.StudentId"
+									   checked="@(entry.Status == AttendanceStatus.Absent)"
+									   @onchange="() => entry.Status = AttendanceStatus.Absent" />
+								<label class="ms-1">Absent</label>
+							</div>
+
+						</div>
 					</td>
-
 					<td>
 						<InputText class="form-control"
 								   @bind-Value="entry.Remarks" />
@@ -184,8 +194,10 @@
 	}
 	private async Task SaveAttendance()
 	{
+
 		foreach (var attendance in attendanceEntries.Values)
 		{
+			attendance.AttendanceDate = attendanceDate;
 			var existing =
 				await AttendanceRepository.GetAttendanceAsync(
 					attendance.StudentId,

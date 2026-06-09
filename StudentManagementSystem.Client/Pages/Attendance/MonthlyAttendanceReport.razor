@@ -1,0 +1,120 @@
+﻿@page "/monthly-attendance"
+
+@using StudentManagementSystemShared.Models
+@using StudentManagementSystemShared.ViewModels
+
+@inject ISchoolClassRepository SchoolClassRepository
+@inject IAttendanceRepository AttendanceRepository
+@rendermode InteractiveServer
+
+<h3>Monthly Attendance Report</h3>
+
+<div class="row mb-3">
+
+	<div class="col-md-4">
+		<label>Class</label>
+
+		<InputSelect class="form-control"
+					 @bind-Value="selectedClassId">
+
+			<option value="">Select Class</option>
+
+			@foreach (var item in classes)
+			{
+				<option value="@item.Id">@item.Name</option>
+			}
+
+		</InputSelect>
+	</div>
+
+	<div class="col-md-2">
+		<label>Month</label>
+
+		<InputNumber class="form-control"
+					 @bind-Value="month" />
+	</div>
+
+	<div class="col-md-2">
+		<label>Year</label>
+
+		<InputNumber class="form-control"
+					 @bind-Value="year" />
+	</div>
+
+	<div class="col-md-2 mt-4">
+		<button class="btn btn-primary"
+				@onclick="LoadReport">
+			Load Report
+		</button>
+	</div>
+
+</div>
+
+@if (records.Any())
+{
+	<table class="table table-bordered table-striped">
+
+		<thead>
+			<tr>
+				<th>Student</th>
+				<th>Present</th>
+				<th>Absent</th>
+				<th>Total Days</th>
+				<th>Attendance %</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+			@foreach (var item in records)
+			{
+				<tr>
+
+					<td>@item.StudentName</td>
+
+					<td>@item.PresentDays</td>
+
+					<td>@item.AbsentDays</td>
+
+					<td>@item.TotalDays</td>
+
+					<td>
+						@item.AttendancePercentage.ToString("0.00")%
+					</td>
+
+				</tr>
+			}
+
+		</tbody>
+
+	</table>
+}
+
+@code {
+	@code {
+
+		private Guid selectedClassId;
+
+		private int month = DateTime.Today.Month;
+
+		private int year = DateTime.Today.Year;
+
+		private List<SchoolClass> classes = new();
+
+		private List<AttendanceSummaryViewModel> records = new();
+
+		protected override async Task OnInitializedAsync()
+		{
+			classes = await SchoolClassRepository.GetAllAsync();
+		}
+
+		private async Task LoadReport()
+		{
+			records = await AttendanceRepository
+				.GetMonthlySummaryAsync(
+					selectedClassId,
+					year,
+					month);
+		}
+	}
+}

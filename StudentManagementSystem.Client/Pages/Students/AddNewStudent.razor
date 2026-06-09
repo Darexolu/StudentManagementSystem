@@ -20,21 +20,21 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">First Name</label>
-                            <InputText for="FirstName" class="form-control" @bind-Value="@studobj.FirstName"/>
+                            <InputText  for="FirstName" required class="form-control" @bind-Value="@studobj.FirstName"/>
                             <ValidationMessage For="()=>studobj.FirstName"/>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Middle Name</label>
-                            <InputText for="MiddleName" class="form-control" @bind-Value="@studobj.MiddleName" />
+                            <InputText for="MiddleName" required class="form-control" @bind-Value="@studobj.MiddleName" />
                             <ValidationMessage For="()=>studobj.MiddleName" />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Last Name</label>
-                            <InputText for="LastName" class="form-control" @bind-Value="@studobj.LastName" />
+                            <InputText for="LastName" required class="form-control" @bind-Value="@studobj.LastName" />
                             <ValidationMessage For="()=>studobj.LastName" />
                         </div>
                     </div>
@@ -79,13 +79,13 @@
 
 											<label class="control-label">Gender</label>
 
-											<InputSelect class="form-control" @bind-Value="studobj.Gender">
-
+											<InputSelect required class="form-control" @bind-Value="studobj.Gender">
 												<option value="">Select Gender</option>
-												<option value="@Gender.Male">Male</option>
-												<option value="@Gender.Female">Female</option>
-												<option value="@Gender.NonBinary">Non-binary</option>
 
+												@foreach (var g in Enum.GetValues(typeof(Gender)).Cast<Gender>())
+												{
+													<option value="@g">@g</option>
+												}
 											</InputSelect>
 
 											<ValidationMessage For="()=>studobj.Gender" />
@@ -104,7 +104,7 @@
     <div class="form-group">
         <label class="control-label">Class</label>
 
-        <InputSelect class="form-control"
+        <InputSelect required class="form-control"
                      @bind-Value="studobj.SchoolClassId">
 
             <option value="">Select Class</option>

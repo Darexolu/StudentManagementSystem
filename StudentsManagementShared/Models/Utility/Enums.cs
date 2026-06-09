@@ -3,7 +3,8 @@
 namespace StudentManagementSystem.Utility
 {
 	public enum Gender
-	{
+
+	{   
 		Male = 1,
 		Female = 2,
 		[Display(Name = "Non-binary")]

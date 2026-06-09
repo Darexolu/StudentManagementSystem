@@ -3,6 +3,7 @@ using StudentManagementSystem.Data;
 using StudentManagementSystem.Utility;
 using StudentManagementSystemShared.Models;
 using StudentManagementSystemShared.StudentRepository;
+using StudentManagementSystemShared.ViewModels;
 using System;
 
 namespace StudentManagementSystem.Repository
@@ -105,6 +106,53 @@ namespace StudentManagementSystem.Repository
 					x.AttendanceDate.Year == year &&
 					x.AttendanceDate.Month == month)
 				.ToListAsync();
+		}
+		public async Task<List<AttendanceSummaryViewModel>> GetMonthlySummaryAsync(
+	Guid classId,
+	int year,
+	int month)
+		{
+			var records = await _context.StudentAttendances
+				.Include(x => x.Student)
+				.Where(x =>
+					x.SchoolClassId == classId &&
+					x.AttendanceDate.Year == year &&
+					x.AttendanceDate.Month == month)
+				.ToListAsync();
+
+			var result = records
+				.GroupBy(x => new
+				{
+					x.StudentId,
+					Name = x.Student.FirstName + " " + x.Student.MiddleName + " " + x.Student.LastName
+				})
+				.Select(g =>
+				{
+					var total = g.Count();
+
+					var present = g.Count(x =>
+						x.Status == AttendanceStatus.Present);
+
+					var absent = g.Count(x =>
+						x.Status == AttendanceStatus.Absent);
+
+					return new AttendanceSummaryViewModel
+					{
+						StudentId = g.Key.StudentId,
+						StudentName = g.Key.Name,
+						PresentDays = present,
+						AbsentDays = absent,
+						TotalDays = total,
+						AttendancePercentage =
+							total == 0
+							? 0
+							: (double)present / total * 100
+					};
+				})
+				.OrderBy(x => x.StudentName)
+				.ToList();
+
+			return result;
 		}
 	}
 }
