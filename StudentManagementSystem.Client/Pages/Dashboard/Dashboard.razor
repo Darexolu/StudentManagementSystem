@@ -1,0 +1,138 @@
+﻿@page "/dashboard"
+
+<div class="dashboard-container">
+
+    <div class="welcome-section">
+        <h1>Dashboard</h1>
+        <p>Welcome back. Here's what's happening in your school today.</p>
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon">👨‍🎓</div>
+            <div>
+                <h2>450</h2>
+                <span>Students</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">👩‍🏫</div>
+            <div>
+                <h2>35</h2>
+                <span>Teachers</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">👨‍👩‍👧</div>
+            <div>
+                <h2>420</h2>
+                <span>Parents</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🏫</div>
+            <div>
+                <h2>18</h2>
+                <span>Classes</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="dashboard-row">
+
+        <div class="dashboard-card">
+            <h3>Quick Actions</h3>
+
+            <div class="action-grid">
+
+                <NavLink href="/students-list" class="action-btn">
+                    Students
+                </NavLink>
+
+                <NavLink href="/teachers-list" class="action-btn">
+                    Teachers
+                </NavLink>
+
+                <NavLink href="/parents-list" class="action-btn">
+                    Parents
+                </NavLink>
+
+                <NavLink href="/classes-list" class="action-btn">
+                    Classes
+                </NavLink>
+
+                <NavLink href="/subjects-list" class="action-btn">
+                    Subjects
+                </NavLink>
+
+                <NavLink href="/daily-attendance" class="action-btn">
+                    Attendance
+                </NavLink>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Information Panels -->
+    <div class="dashboard-panels">
+
+        <div class="dashboard-card">
+            <h3>Today's Attendance</h3>
+
+            <div class="attendance-item">
+                <span>Present</span>
+                <strong>420</strong>
+            </div>
+
+            <div class="attendance-item">
+                <span>Absent</span>
+                <strong>25</strong>
+            </div>
+
+            <div class="attendance-item">
+                <span>Late</span>
+                <strong>5</strong>
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Academic Overview</h3>
+
+            <div class="attendance-item">
+                <span>Classes</span>
+                <strong>18</strong>
+            </div>
+
+            <div class="attendance-item">
+                <span>Subjects</span>
+                <strong>32</strong>
+            </div>
+
+            <div class="attendance-item">
+                <span>Timetables</span>
+                <strong>18</strong>
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Recent Activities</h3>
+
+            <ul class="activity-list">
+                <li>New student registered.</li>
+                <li>Attendance taken for Grade 5.</li>
+                <li>Mathematics result uploaded.</li>
+                <li>Teacher timetable updated.</li>
+            </ul>
+        </div>
+
+    </div>
+
+</div>

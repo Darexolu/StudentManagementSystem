@@ -1,6 +1,6 @@
 ﻿@implements IDisposable
 @using Microsoft.AspNetCore.Components.Authorization
-
+@rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 
 
@@ -42,7 +42,7 @@
 					</NotAuthorized>
 				</AuthorizeView> *@
 
-				<AuthorizeView>
+				@* <AuthorizeView>
 					<Authorized>
 
 						<li class="nav-item">
@@ -69,24 +69,25 @@
 						</li>
 
 					</Authorized>
-				</AuthorizeView>
+				</AuthorizeView> *@
 				<AuthorizeView Roles="Admin,Super Admin">
+					<li class="nav-item menu-open">
+						<NavLink href="/dashboard" Match="NavLinkMatch.All" class="nav-link">
+							<i class="nav-icon fas fa-tachometer-alt"></i>
+							<p>
+								Dashboard
+							</p>
+						</NavLink>
+					</li>
 				<li class="nav-item menu-open">
 					<NavLink href="/Account/Register" Match="NavLinkMatch.All" class="nav-link">
 						<i class="nav-icon fas fa-user-plus"></i>
 						<p>Register</p>
 					</NavLink>
 				</li>
-          <li class="nav-item menu-open">
-            <NavLink href="/" Match="NavLinkMatch.All" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-              </p>
-            </NavLink>        
-          </li>
+          
                 <li class="nav-item menu-open">
-                    <NavLink href="students-list" class="nav-link">
+                    <NavLink href="/students-list" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Students
@@ -94,7 +95,7 @@
                    </NavLink>
                 </li>
           <li class="nav-item">
-              <NavLink href="parents-list" class="nav-link">
+              <NavLink href="/parents-list" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Parents
@@ -102,7 +103,7 @@
               </NavLink>
           </li>
                 <li class="nav-item">
-                    <NavLink href="teachers-list" class="nav-link">
+                    <NavLink href="/teachers-list" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Teachers
@@ -133,7 +134,7 @@
                         </p>
                         </NavLink>
                 </li> *@
-					<li class="nav-item @(isAcademicMenuOpen ? "menu-open" : "")">
+					<li class="nav-item">
 
 						<a href="#"
 						   class="nav-link @(isAcademicMenuOpen ? "active" : "")"
@@ -142,42 +143,29 @@
 							<i class="nav-icon fas fa-book"></i>
 
 							<p>
-								Class & Subject 
-
-								<i class="right fas @(isAcademicMenuOpen ? "fa-angle-down" : "fa-angle-left")"></i>
+								Class & Subject
 							</p>
 
+							<i class="right fas @(isAcademicMenuOpen ? "fa-angle-down" : "fa-angle-left")"></i>
 						</a>
 
-						<ul class="nav nav-treeview" style="display:@(isAcademicMenuOpen ? "block" : "none")">
+						<ul class="submenu @(isAcademicMenuOpen ? "open" : "")">
 
-							<li class="nav-item">
-								<NavLink href="classes-list" class="nav-link">
-
-									<i class="far fa-circle nav-icon"></i>
-
-									<p>Classes</p>
-
+							<li>
+								<NavLink href="/classes-list" class="nav-link">
+									Classes
 								</NavLink>
 							</li>
 
-							<li class="nav-item">
-								<NavLink href="subjects-list" class="nav-link">
-
-									<i class="far fa-circle nav-icon"></i>
-
-									<p>Subjects</p>
-
+							<li>
+								<NavLink href="/subjects-list" class="nav-link">
+									Subjects
 								</NavLink>
 							</li>
 
-							<li class="nav-item">
-								<NavLink href="class-subjects" class="nav-link">
-
-									<i class="far fa-circle nav-icon"></i>
-
-									<p>Class Subjects</p>
-
+							<li>
+								<NavLink href="/class-subjects" class="nav-link">
+									Class Subjects
 								</NavLink>
 							</li>
 
@@ -186,103 +174,110 @@
 					</li>
 				</AuthorizeView>
 				<AuthorizeView Roles="Admin,Super Admin,Teacher">
-					<li class="nav-item has-treeview">
-						<a href="#" class="nav-link">
+
+					<li class="nav-item">
+
+						<a href="#"
+						   class="nav-link @(isExamOpen ? "active" : "")"
+						   @onclick="ToggleExam">
+
 							<i class="nav-icon fas fa-file-alt"></i>
-							<p>
-								Examination & Results
-								<i class="right fas fa-angle-left"></i>
-							</p>
+
+							<p>Examination & Results</p>
+
+							<i class="right fas @(isExamOpen ? "fa-angle-down" : "fa-angle-left")"></i>
+
 						</a>
 
-						<ul class="nav nav-treeview">
+						<ul class="submenu @(isExamOpen ? "open" : "")">
 
-							<li class="nav-item">
+							<li>
 								<NavLink href="/result-entry" class="nav-link">
-									<i class="far fa-circle nav-icon"></i>
-									<p>Result Entry</p>
+									Result Entry
 								</NavLink>
 							</li>
-
-							@* <li class="nav-item">
-								<NavLink href="/broadsheet" class="nav-link">
-									<i class="far fa-circle nav-icon"></i>
-									<p>Broadsheet</p>
-								</NavLink>
-							</li>
-
-							<li class="nav-item">
-								<NavLink href="/report-cards" class="nav-link">
-									<i class="far fa-circle nav-icon"></i>
-									<p>Report Cards</p>
-								</NavLink>
-							</li> *@
 
 						</ul>
+
 					</li>
 
 				</AuthorizeView>
 				<AuthorizeView Roles="Admin,Super Admin,Teacher">
-				<li class="nav-item has-treeview">
-					<a href="#" class="nav-link">
-						<i class="nav-icon fas fa-file-alt"></i>
-						<p>
-							Timetable Management
-							<i class="right fas fa-angle-left"></i>
-						</p>
-					</a>
 
-					<ul class="nav nav-treeview">
+					<li class="nav-item">
 
-						<li class="nav-item">
-							<NavLink href="/add-timetable" class="nav-link">
-								<i class="far fa-circle nav-icon"></i>
-								<p>Create Timetable</p>
-							</NavLink>
-						</li>
-							<li class="nav-item">
-								<NavLink href="/weekly-timetable" class="nav-link">
-									<i class="far fa-circle nav-icon"></i>
-									<p>View Timetable</p>
-								</NavLink>
-							</li>
-							<li class="nav-item">
-								<NavLink href="/teacher-timetable" class="nav-link">
-									<i class="far fa-circle nav-icon"></i>
-									<p>View Teacher Timetable</p>
-								</NavLink>
-							</li>
+						<a href="#"
+						   class="nav-link @(isTimetableOpen ? "active" : "")"
+						   @onclick="ToggleTimetable">
 
-					</ul>
-				</li>
-				</AuthorizeView>
-				<AuthorizeView Roles="Admin,Super Admin,Teacher">
-					<li class="nav-item has-treeview">
-						<a href="#" class="nav-link">
 							<i class="nav-icon fas fa-file-alt"></i>
-							<p>
-								Attendance Management
-								<i class="right fas fa-angle-left"></i>
-							</p>
+
+							<p>Timetable Management</p>
+
+							<i class="right fas @(isTimetableOpen ? "fa-angle-down" : "fa-angle-left")"></i>
+
 						</a>
 
-						<ul class="nav nav-treeview">
+						<ul class="submenu @(isTimetableOpen ? "open" : "")">
 
-							<li class="nav-item">
-								<NavLink href="/daily-attendance" class="nav-link">
-									<i class="far fa-circle nav-icon"></i>
-									<p>Daily Attendance</p>
+							<li>
+								<NavLink href="/add-timetable" class="nav-link">
+									Create Timetable
 								</NavLink>
 							</li>
-							<li class="nav-item">
-								<NavLink href="/monthly-attendance" class="nav-link">
-									<i class="far fa-circle nav-icon"></i>
-									<p>Monthly Attendance Report</p>
+
+							<li>
+								<NavLink href="/weekly-timetable" class="nav-link">
+									
+									View Timetable
+								</NavLink>
+							</li>
+
+							<li>
+								<NavLink href="/teacher-timetable" class="nav-link">
+									View Teacher Timetable
 								</NavLink>
 							</li>
 
 						</ul>
+
 					</li>
+
+				</AuthorizeView>
+				<AuthorizeView Roles="Admin,Super Admin,Teacher">
+
+					<li class="nav-item">
+
+						<a href="#"
+						   class="nav-link @(isAttendanceOpen ? "active" : "")"
+						   @onclick="ToggleAttendance">
+
+							<i class="nav-icon fas fa-calendar-check"></i>
+
+							<p>Attendance Management</p>
+
+							<i class="right fas @(isAttendanceOpen ? "fa-angle-down" : "fa-angle-left")"></i>
+
+						</a>
+
+						<ul class="submenu @(isAttendanceOpen ? "open" : "")">
+
+							<li>
+								<NavLink href="/daily-attendance" class="nav-link">
+									Daily Attendance
+								</NavLink>
+							</li>
+
+							<li>
+								<NavLink href="/monthly-attendance" class="nav-link">
+									Monthly Attendance Report
+								</NavLink>
+							</li>
+
+						</ul>
+
+					</li>
+
 				</AuthorizeView>
         </ul>
       </nav>
@@ -311,10 +306,29 @@
         NavigationManager.LocationChanged -= OnLocationChanged;
     }
 	private bool isAcademicMenuOpen = false;
+	private bool isTimetableOpen = false;
+	private bool isExamOpen = false;
+	private bool isAttendanceOpen = false;
+
 
 	private void ToggleAcademicMenu()
 	{
 		isAcademicMenuOpen = !isAcademicMenuOpen;
+	}
+	private void ToggleTimetable()
+	{
+		isTimetableOpen = !isTimetableOpen;
+	}
+	
+
+	private void ToggleExam()
+	{
+		isExamOpen = !isExamOpen;
+	}
+
+	private void ToggleAttendance()
+	{
+		isAttendanceOpen = !isAttendanceOpen;
 	}
 }
 

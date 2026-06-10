@@ -112,30 +112,30 @@
 				{
 					if (await UserManager.IsInRoleAsync(user, "Admin"))
 					{
-						RedirectManager.RedirectTo("/");
+						RedirectManager.RedirectTo("/dashboard");
 						return;
 					}
 
 					if (await UserManager.IsInRoleAsync(user, "Teacher"))
 					{
-						RedirectManager.RedirectTo("/teacher/dashboard");
+						RedirectManager.RedirectTo("/dashboard");
 						return;
 					}
 
 					if (await UserManager.IsInRoleAsync(user, "Student"))
 					{
-						RedirectManager.RedirectTo("/student/dashboard");
+						RedirectManager.RedirectTo("/dashboard");
 						return;
 					}
 
 					if (await UserManager.IsInRoleAsync(user, "Parent"))
 					{
-						RedirectManager.RedirectTo("/parent/dashboard");
+						RedirectManager.RedirectTo("/dashboard");
 						return;
 					}
 				}
 
-				RedirectManager.RedirectTo("/");
+				RedirectManager.RedirectTo("/dashboard");
 			}
         }
         else if (result.RequiresTwoFactor)
