@@ -11,18 +11,21 @@
      <div class="col-12">
           <div class="card">
            <div class="card-header">
-               <h3 class="card-title">Students Parents</h3>
+				<div class="page-actions">
+					<p><a class="btn-add" href="/add-parent"><i class="fas fa-plus"></i>Add New Parent</a></p>
                </div>
+			</div>
                <div class="card-body">
     <div class="row">
-        <p><a class="btn btn-success float-end" href="/add-parent">Add New Parent</a></p>
+       
+					<h3 class="page-title"><i class="fas fa-people-group"></i>Parents</h3>
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header"></div>
-                @if (!AllParents.Any())
+               @*  @if (!AllParents.Any())
                 {
                     <p><em>Loading Parents...</em></p>
-                }
+                } *@
                 @if (AllParents.Any())
                 {
                     <div class="card-body">
@@ -30,9 +33,7 @@
                             <thead>
                                 <tr>
                                    @*  <th>id</th> *@
-                                    <th>FirstName</th>
-                                    <th>MiddleName</th>
-                                    <th>LastName</th>
+                                    <th>Full Name</th>
                                     <th>Email</th>
                                     <th>PhoneNo</th>
                                     <th>Student</th>
@@ -45,10 +46,7 @@
                                 @foreach (var parent in AllParents)
                                 {
                                     <tr>
-                                        @* <td>@parent.Id</td> *@
-                                        <td>@parent.FirstName</td>
-                                        <td>@parent.MiddleName</td>
-                                        <td>@parent.LastName</td>
+										<td style="white-space: nowrap;">@parent.FullName</td>
                                         <td>@parent.EmailAddress</td>
                                         <td>@parent.PhoneNumber</td>
                                         <td>@parent.Student.FullName</td>
@@ -57,10 +55,10 @@
 										</td>
 
                                         <td>
-                                            <a class="btn btn-success" href="/parent/edit/@parent.Id"> Edit </a>
+														<a class="btn-table btn-edit" href="/parent/edit/@parent.Id"><i class="fas fa-edit"></i> Edit </a>
                                         </td>
                                         <td>
-                                            <a class="btn btn-danger" href="/parent/delete/@parent.Id"> Delete </a>
+														<a class="btn-table btn-delete" href="/parent/delete/@parent.Id"> <i class="fas fa-trash"></i>Delete </a>
                                         </td>
                                     </tr>
                                 }
@@ -70,7 +68,7 @@
                 }
                 else
                 {
-                    <div class="alert alert-info"> There is no Parent List Available</div>
+                    <div class="alert alert-info"> There is no Parent Available</div>
                 }
             </div>
 

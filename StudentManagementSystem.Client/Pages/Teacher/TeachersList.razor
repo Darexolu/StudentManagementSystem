@@ -11,18 +11,20 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Teachers</h3>
+				<div class="page-actions">
+					<p><a class="btn-add" href="/add-teacher"><i class="fas fa-plus"></i>Add New Teacher</a></p>
             </div>
+			</div>
             <div class="card-body">
-                <div class="row">
-                    <p><a class="btn btn-success float-end" href="/add-teacher">Add New Teacher</a></p>
+                <div class="row">   
+					<h3 class="page-title"><i class="fas fa-chalkboard-teacher"></i>Teachers</h3>
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header"></div>
-                            @if (!AllTeachers.Any())
+                           @*  @if (!AllTeachers.Any())
                             {
                                 <p><em>Loading Teachers...</em></p>
-                            }
+                            } *@
                             @if (AllTeachers.Any())
                             {
                                 <div class="card-body">
@@ -30,9 +32,7 @@
                                         <thead>
                                             <tr>
                                                 @* <th>id</th> *@
-                                                <th>FirstName</th>
-                                                <th>MiddleName</th>
-                                                <th>LastName</th>
+                                                <th>Full Name</th>
                                                 <th>Email</th>
                                                 <th>PhoneNo</th>
                                                 <th>Gender</th>
@@ -44,10 +44,7 @@
                                             @foreach (var teacher in AllTeachers)
                                             {
                                                 <tr>
-                                                    @* <td>@teacher.Id</td> *@
-                                                    <td>@teacher.FirstName</td>
-                                                    <td>@teacher.MiddleName</td>
-                                                    <td>@teacher.LastName</td>
+													<td style="white-space: nowrap;">@teacher.FullName</td>
                                                     <td>@teacher.EmailAddress</td>
                                                     <td>@teacher.PhoneNumber</td>
 													<td style="white-space: nowrap;">
@@ -55,10 +52,10 @@
 													</td>
 
                                                     <td>
-                                                        <a class="btn btn-success" href="/teacher/edit/@teacher.Id"> Edit </a>
+														<a class="btn-table btn-edit" href="/teacher/edit/@teacher.Id"><i class="fas fa-edit"></i> Edit </a>
                                                     </td>
                                                     <td>
-                                                        <a class="btn btn-danger" href="/teacher/delete/@teacher.Id"> Delete </a>
+														<a class="btn-table btn-delete" href="/teacher/delete/@teacher.Id"> <i class="fas fa-trash"></i>Delete </a>
                                                     </td>
                                                 </tr>
                                             }

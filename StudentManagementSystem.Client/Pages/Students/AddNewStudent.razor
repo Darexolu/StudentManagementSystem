@@ -7,111 +7,108 @@
 @inject NavigationManager navigation;
 
 @inject ISchoolClassRepository ClassRepository
-<h3>Add New Student</h3>
+<div class="student-form-header">
+    <h2 class="student-form-title">
+        <i class="fas fa-user-plus"></i>
+        Add New Student
+    </h2>
 
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <EditForm Model="studobj" OnValidSubmit="CreateStudent" FormName="addstudent">
+    <p class="student-form-subtitle">
+        Enter the student's details below.
+    </p>
+</div>
+
+
+@* <hr /> *@
+<div class="student-form-wrapper">
+    <div class="student-form-card">
+
+        <EditForm Model="studobj"
+                  OnValidSubmit="CreateStudent"
+                  FormName="addstudent">
           
-            <div class="col-md-12">
-                <div class="row">
-                    
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">First Name</label>
-                            <InputText  for="FirstName" required class="form-control" @bind-Value="@studobj.FirstName"/>
-                            <ValidationMessage For="()=>studobj.FirstName"/>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Middle Name</label>
-                            <InputText for="MiddleName" required class="form-control" @bind-Value="@studobj.MiddleName" />
-                            <ValidationMessage For="()=>studobj.MiddleName" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Last Name</label>
-                            <InputText for="LastName" required class="form-control" @bind-Value="@studobj.LastName" />
-                            <ValidationMessage For="()=>studobj.LastName" />
-                        </div>
-                    </div>
-					 <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Admission Number</label>
-                            <InputText for="LastName" required class="form-control" @bind-Value="@studobj.AdmissionNumber" />
-                            <ValidationMessage For="()=>studobj.AdmissionNumber" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Email Address</label>
-                            <InputText for="EmailAddress" class="form-control" @bind-Value="@studobj.EmailAddress" />
-                            <ValidationMessage For="()=>studobj.EmailAddress" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Student Address</label>
-                            <InputText for="Address" class="form-control" @bind-Value="@studobj.Address" />
-                            <ValidationMessage For="()=>studobj.Address" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Phone Number</label>
-                            <InputText for="PhoneNumber" class="form-control" @bind-Value="@studobj.PhoneNumber" />
-                            <ValidationMessage For="()=>studobj.PhoneNumber" />
-                        </div>
-                    </div>
-                    @* <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Student Country</label>
-                            <InputSelect for="Country" class="form-control" @bind-Value="@studobj.Country">
-                                <option value="">Select Country</option>
-                                @foreach(var country in Countries)
-                                {
-                                    <option value="@country.Name">@country.Name</option>
-                                }
+           <div class="student-form-grid">
 
-                            </InputSelect>
+    <!-- First Name -->
+    <div class="form-group">
+        <label class="control-label">First Name</label>
+        <InputText class="form-control"
+                   @bind-Value="studobj.FirstName" />
+        <ValidationMessage For="()=>studobj.FirstName" />
+    </div>
 
-                            <ValidationMessage For="()=>studobj.Country" />
-                        </div>
-                    </div> *@
-                     <div class="col-md-6">
-										<div class="form-group">
+    <!-- Middle Name -->
+    <div class="form-group">
+        <label class="control-label">Middle Name</label>
+        <InputText class="form-control"
+                   @bind-Value="studobj.MiddleName" />
+        <ValidationMessage For="()=>studobj.MiddleName" />
+    </div>
 
-											<label class="control-label">Gender</label>
+    <!-- Last Name -->
+    <div class="form-group">
+        <label class="control-label">Last Name</label>
+        <InputText class="form-control"
+                   @bind-Value="studobj.LastName" />
+        <ValidationMessage For="()=>studobj.LastName" />
+    </div>
 
-											<InputSelect required class="form-control" @bind-Value="studobj.Gender">
-												<option value="">Select Gender</option>
+    <!-- Admission Number -->
+    <div class="form-group">
+        <label class="control-label">Admission Number</label>
+        <InputText class="form-control"
+                   @bind-Value="studobj.AdmissionNumber" />
+        <ValidationMessage For="()=>studobj.AdmissionNumber" />
+    </div>
 
-												@foreach (var g in Enum.GetValues(typeof(Gender)).Cast<Gender>())
-												{
-													<option value="@g">@g</option>
-												}
-											</InputSelect>
+    <!-- Email -->
+    <div class="form-group">
+        <label class="control-label">Email Address</label>
+        <InputText class="form-control"
+                   @bind-Value="studobj.EmailAddress" />
+        <ValidationMessage For="()=>studobj.EmailAddress" />
+    </div>
 
-											<ValidationMessage For="()=>studobj.Gender" />
+    <!-- Phone -->
+    <div class="form-group">
+        <label class="control-label">Phone Number</label>
+        <InputText class="form-control"
+                   @bind-Value="studobj.PhoneNumber" />
+        <ValidationMessage For="()=>studobj.PhoneNumber" />
+    </div>
 
-										</div>
-									</div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Date of Birth</label>
-                            <InputDate for="DOB" class="form-control" @bind-Value="@studobj.DOB" />
-                            <ValidationMessage For="()=>studobj.DOB" />
-                        </div>
-                    </div>
+    <!-- Address -->
+    <div class="form-group student">
+        <label class="control-label">Student Address</label>
+        <InputText class="form-control"
+                   @bind-Value="studobj.Address" />
+        <ValidationMessage For="()=>studobj.Address" />
+    </div>
+	 <!-- DOB -->
+    <div class="form-group">
+        <label class="control-label">Date of Birth</label>
+        <InputDate class="form-control"
+                   @bind-Value="studobj.DOB" />
+    </div>
+    <!-- Gender -->
+    <div class="sms-select-group">
+    <div class="form-group">
+        <label class="control-label">Gender</label>
+        <InputSelect class="form-select"
+                     @bind-Value="studobj.Gender">
+            <option value="">Select Gender</option>
+            @foreach (var g in Enum.GetValues(typeof(Gender)).Cast<Gender>())
+            {
+                <option value="@g">@g</option>
+            }
+        </InputSelect>
+    </div>
+</div>
 
-					<div class="col-md-6">
+<div class="sms-select-group">
     <div class="form-group">
         <label class="control-label">Class</label>
-
-        <InputSelect required class="form-control"
+        <InputSelect class="form-select"
                      @bind-Value="studobj.SchoolClassId">
 
             <option value="">Select Class</option>
@@ -122,17 +119,21 @@
             }
 
         </InputSelect>
-
-        <ValidationMessage For="()=>studobj.SchoolClassId" />
     </div>
 </div>
-                </div>
-                </div>
+</div>
 
-                <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-primary">Save Student</button>
-                   <a href="/students-list" class="btn btn-danger">Back to List</a>              
-               </div>
+           <div class="student-form-actions">
+                <button type="submit" class="student-btn-save">
+                    <i class="fas fa-save"></i>
+                    Save Student
+                </button>
+
+                <a href="/students-list" class="student-btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to List
+                </a>
+            </div>
         </EditForm>
     </div>
 </div>

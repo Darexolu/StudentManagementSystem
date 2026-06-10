@@ -427,3 +427,264 @@ tbody tr:nth-child(even) {
 tbody tr:last-child td {
 	border-bottom: none;
 }
+
+/*students list*/
+/* PAGE ACTIONS */
+.page-actions {
+	display: flex;
+	justify-content: flex-start;
+	margin-bottom: 20px;
+}
+
+/* ADD BUTTON */
+.btn-add {
+	background: #1e3a8a;
+	color: white;
+	text-decoration: none;
+	padding: 12px 20px;
+	border-radius: 10px;
+	font-weight: 600;
+	transition: .3s;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+	.btn-add:hover {
+		background: #152c6b;
+		color: white;
+		transform: translateY(-2px);
+	}
+
+/* TABLE BUTTONS */
+.btn-table {
+	text-decoration: none;
+	padding: 8px 14px;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	transition: .3s;
+}
+
+
+.btn-edit {
+	background: #dbeafe;
+	color: #1e3a8a;
+	border: 1px solid #93c5fd;
+}
+
+	.btn-edit:hover {
+		background: #1e3a8a;
+		color: white;
+	}
+
+
+.btn-delete {
+	background: #fee2e2;
+	color: #dc2626;
+	border: 1px solid #fecaca;
+}
+
+	.btn-delete:hover {
+		background: #dc2626;
+		color: white;
+	}
+
+
+td:last-child,
+td:nth-last-child(2) {
+	white-space: nowrap;
+}
+
+.page-title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 5px;
+	font-size: 24px;
+	font-weight: 700;
+	color: #1e3a8a;
+}
+
+	.page-title i {
+		width: 42px;
+		height: 42px;
+		background: #dbeafe;
+		color: #1e3a8a;
+		border-radius: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 18px;
+	}
+
+	/*add new student*/
+/* FORM GRID */
+.student-form-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+}
+
+/* SMALLER INPUTS */
+.student-form-card .form-control
+ {
+	height: 20px;
+	font-size: 14px;
+	border-radius: 8px;
+	border: 1px solid #cbd5e1;
+    width: 150px
+	
+}
+.student-form-card .form-select {
+	height: 42px;
+	border-radius: 8px;
+	border: 1px solid #cbd5e1;
+	font-size: 14px;
+	border-radius: 8px;
+	width: 180px;
+}
+.student-form-card .control-label {
+	font-size: 14px;
+	margin-bottom: 6px;
+	font-weight: 600;
+	color: #1e3a8a;
+}
+.sms-select-group .form-group {
+	display: flex;
+	flex-direction: column; 
+}
+
+.sms-select-group .control-label {
+	margin-bottom: 4px;
+	font-weight: 600;
+	color: #1e3a8a; 
+	margin-bottom: 0;
+}
+
+.sms-select-group .form-select {
+	border-radius: 10px;
+	border: 1px solid #cbd5e1;
+	padding: 10px;
+	transition: 0.3s;
+}
+
+	.sms-select-group .form-select:focus {
+		border-color: #1e3a8a;
+		box-shadow: 0 0 0 3px rgba(30,58,138,0.15);
+	}
+.student-form-card .form-group {
+	margin-bottom: 0;
+}
+
+/* Full width row when needed */
+.student-full-width {
+	grid-column: span 3;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+	.student-form-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 768px) {
+	.student-form-grid {
+		grid-template-columns: 1fr;
+	}
+}
+.student-form-actions {
+	margin-top: 30px;
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.student-btn-save {
+	background: #1e3a8a;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	padding: 12px 24px;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	transition: .3s;
+}
+
+	.student-btn-save:hover {
+		background: #152c6b;
+	}
+
+.student-btn-back {
+	background: #f1f5f9;
+	color: #334155;
+	text-decoration: none;
+	border-radius: 10px;
+	padding: 12px 24px;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	transition: .3s;
+	background: #dc2626;
+	color: white;
+}
+
+	.student-btn-back:hover {
+		background: #e2e8f0;
+		color: #0f172a;
+	}
+
+.student-form-card .text-danger {
+	font-size: 13px;
+	margin-top: 5px;
+}
+
+.student-form-header {
+	margin-bottom: 25px;
+}
+
+.student-form-title {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	color: #1e3a8a;
+	font-size: 28px;
+	font-weight: 700;
+	margin-bottom: 6px;
+}
+
+	.student-form-title i {
+		width: 50px;
+		height: 50px;
+		border-radius: 12px;
+		background: #dbeafe;
+		color: #1e3a8a;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+.student-form-subtitle {
+	color: #64748b;
+	margin: 0;
+}
+
+.student-form-wrapper {
+	width: 100%;
+}
+
+.student-form-card {
+	background: #ffffff;
+	border-radius: 18px;
+	padding: 30px;
+	box-shadow: 0 6px 24px rgba(0,0,0,.08);
+	border: 1px solid #e2e8f0;
+}

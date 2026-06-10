@@ -12,32 +12,35 @@
      <div class="col-12">
           <div class="card">
            <div class="card-header">
-               <h3 class="card-title">Students List</h3>
+				<div class="page-actions">
+					<a class="btn-add" href="/add-student">
+						<i class="fas fa-plus"></i> Add New Student
+					</a>
+				</div>
+				
                </div>
                <div class="card-body">
     <div class="row">
-        <p><a class="btn btn-success float-end" href="/add-student">Add New Student</a></p>
+					<h3 class="page-title">
+						<i class="fas fa-user-graduate"></i>
+						Students List
+					</h3>
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header"></div>
-                @if (!AllStudents.Any())
+                @* @if (!AllStudents.Any())
                 {
                    <p><em>Loading Students...</em></p> 
-                }
+                } *@
                 @if (AllStudents.Any())
                 {
                    <div class="card-body">
                        <table class="table table-striped table-hover">
                            <thead>
                                <tr>
-                                @* <th>id</th> *@
-                                <th>First Name</th>
-                                <th>Middle Name</th>
-                                <th>Last Name</th>
+                                <th>Full Name</th>
 								<th>Admission No.</th>
 								<th>Email</th>
-                                <th>Phone No.</th>         
-								<th>Class</th>
 								<th>Gender</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
@@ -46,23 +49,24 @@
                            <tbody>
                             @foreach(var student in AllStudents)
                             {<tr>
-                            @* <td>@student.Id</td> *@
-                            <td>@student.FirstName</td>
-                            <td>@student.MiddleName</td>
-                            <td>@student.LastName</td>
+                           
+							<td style ="white-space: nowrap;">@student.FullName</td>
 							<td >@student.AdmissionNumber</td>
                             <td>@student.EmailAddress</td>
-                            <td>@student.PhoneNumber</td>
-                          @*  <td>@student.Country</td> *@
 							<td style="white-space: nowrap;">
 							 @student.Gender?.ToString().Replace("NonBinary", "Non-binary")
 							</td>
-                            <td>
-                                            <a class="btn btn-success" href="/student/edit/@student.Id"> Edit </a>
-                            </td>
-                            <td>
-                                            <a class="btn btn-danger" href="/student/delete/@student.Id"> Delete </a>
-                            </td>
+													<td>
+														<a class="btn-table btn-edit" href="/student/edit/@student.Id">
+															<i class="fas fa-edit"></i> Edit
+														</a>
+													</td>
+
+													<td>
+														<a class="btn-table btn-delete" href="/student/delete/@student.Id">
+															<i class="fas fa-trash"></i> Delete
+														</a>
+													</td>
                             </tr>
                             }
                         </tbody>
