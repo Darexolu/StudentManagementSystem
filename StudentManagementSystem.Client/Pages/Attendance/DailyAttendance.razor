@@ -11,13 +11,17 @@
 @inject IStudentRepository StudentRepository
 @inject IAttendanceRepository AttendanceRepository
 
-<h3>Daily Attendance</h3>
 
-<hr />
+<div class="class-list-header">
+	<h2 class="card-title">
+		<i class="fas fa-user-check"></i> Daily Attendance
+	</h2>
+</div>
+@* <hr /> *@
 
 <div class="row">
 
-	<div class="col-md-4">
+	<div class="class-form-group">
 
 		<label>Class</label>
 
@@ -36,11 +40,11 @@
 
 	</div>
 
-	<div class="col-md-4">
+	<div class="class-form-group">
 
 		<label>Date</label>
 
-		<InputDate class="form-control"
+		<InputDate class="form-control" style="width: 690px"
 				   @bind-Value="attendanceDate"
 				   @bind-Value:after="LoadStudents" />
 
@@ -92,28 +96,28 @@
 					<td>@student.FullName</td>
 
 					<td>
-						<div class="d-flex gap-3">
+						<div class="attendance-options">
 
-							<div>
+							<div class="attendance-option">
 								<input type="radio"
 									   name="attendance-@entry.StudentId"
 									   checked="@(entry.Status == AttendanceStatus.Present)"
 									   @onchange="() => entry.Status = AttendanceStatus.Present" />
-								<label class="ms-1">Present</label>
+								<label>Present</label>
 							</div>
 
-							<div style="margin-left: 10px">
+							<div class="attendance-option">
 								<input type="radio"
 									   name="attendance-@entry.StudentId"
 									   checked="@(entry.Status == AttendanceStatus.Absent)"
 									   @onchange="() => entry.Status = AttendanceStatus.Absent" />
-								<label class="ms-1">Absent</label>
+								<label>Absent</label>
 							</div>
 
 						</div>
 					</td>
 					<td>
-						<InputText class="form-control"
+						<InputText class="form-control" style="width: 100px"
 								   @bind-Value="entry.Remarks" />
 					</td>
 				</tr>

@@ -7,52 +7,62 @@
 @inject IAttendanceRepository AttendanceRepository
 @rendermode InteractiveServer
 
-<h3>Monthly Attendance Report</h3>
-
-<div class="row mb-3">
-
-	<div class="col-md-4">
-		<label>Class</label>
-
-		<InputSelect class="form-control"
-					 @bind-Value="selectedClassId">
-
-			<option value="">Select Class</option>
-
-			@foreach (var item in classes)
-			{
-				<option value="@item.Id">@item.Name</option>
-			}
-
-		</InputSelect>
-	</div>
-
-	<div class="col-md-2">
-		<label>Month</label>
-
-		<InputNumber class="form-control"
-					 @bind-Value="month" />
-	</div>
-
-	<div class="col-md-2">
-		<label>Year</label>
-
-		<InputNumber class="form-control"
-					 @bind-Value="year" />
-	</div>
-
-	<div class="col-md-2 mt-4">
-		<button class="btn btn-primary"
-				@onclick="LoadReport">
-			Load Report
-		</button>
-	</div>
-
+<div class="class-list-header">
+	<h3 class="card-title"><i class="fas fa-calendar-check"></i> Monthly Attendance Report</h3>
 </div>
+<EditForm Model="@this" OnValidSubmit="LoadReport">
+	<DataAnnotationsValidator />
 
+	<div class="row mb-3">
+
+		<div class="class-form-group">
+			<label>Class</label>
+
+			<InputSelect required class="form-control"
+						 @bind-Value="selectedClassId">
+
+				<option value="">Select Class</option>
+
+				@foreach (var item in classes)
+				{
+					<option value="@item.Id">@item.Name</option>
+				}
+
+			</InputSelect>
+
+		</div>
+
+		<div class="class-form-group" style="width: 687px">
+			<label>Month</label>
+
+			<InputNumber class="form-control"
+						 @bind-Value="month" />
+		</div>
+
+		<div class="class-form-group" style="width: 687px">
+			<label>Year</label>
+
+			<InputNumber class="form-control"
+						 @bind-Value="year" />
+		</div>
+
+		<div class="col-md-2 mt-4">
+			<button type="submit" class="btn btn-primary">
+				Load Report
+			</button>
+		</div>
+
+	</div>
+</EditForm>
+@if (!string.IsNullOrEmpty(successMessage))
+{
+	<div class="alert alert-success">
+		@successMessage
+	</div>
+}
 @if (records.Any())
 {
-	<table class="table table-bordered table-striped">
+	<table class="table table-bordered table-striped" style="margin-top: 20px;">
 
 		<thead>
 			<tr>
@@ -91,13 +101,13 @@
 }
 
 @code {
-	@code {
 
 		private Guid selectedClassId;
 
 		private int month = DateTime.Today.Month;
 
 		private int year = DateTime.Today.Year;
+	private string? successMessage;
 
 		private List<SchoolClass> classes = new();
 
@@ -115,6 +125,7 @@
 					selectedClassId,
 					year,
 					month);
+		successMessage = "Monthly attendance report loaded successfully.";
 		}
-	}
+	
 }

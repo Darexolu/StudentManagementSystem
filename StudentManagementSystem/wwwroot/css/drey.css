@@ -820,3 +820,20 @@ td:nth-last-child(2) {
 		font-size: 25px;
 		font-weight: 700;
 	}
+.attendance-options {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	flex-wrap: nowrap;
+}
+
+.attendance-option {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+	.attendance-option label {
+		margin: 0;
+	}
