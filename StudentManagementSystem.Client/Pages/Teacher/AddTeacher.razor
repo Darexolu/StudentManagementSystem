@@ -6,51 +6,103 @@
 @attribute [Authorize(Roles = "Admin,Super Admin")]
 @inject NavigationManager navigation;
 
+<div class="student-form-header">
 
-<h4>Add New Teacher Details</h4>
+<h2 class="student-form-title"><i class="fas fa-user-plus"></i>Add New Teacher</h2>
+ <p class="student-form-subtitle">
+        Enter the teacher's details below.
+    </p>
+</div>
 
-<hr />
-<div class="row">
-    <div class="col-md-12">
+@* <hr /> *@
+<div class="student-form-wrapper">
+    <div class="student-form-card">
  <EditForm Model="teacherobj" OnValidSubmit="CreateTeacher" FormName="addteacher">
           
-            <div class="col-md-12">
-                <div class="row">
-                    
-                    <div class="col-md-6">
+             <div class="student-form-grid">
                         <div class="form-group">
                             <label class="control-label">First Name</label>
                             <InputText for="FirstName" required class="form-control" @bind-Value="@teacherobj.FirstName"/>
                             <ValidationMessage For="()=>teacherobj.FirstName"/>
                         </div>
-                    </div>
-                      <div class="col-md-6">
+                    
+                     
                         <div class="form-group">
                             <label class="control-label">Middle Name</label>
                             <InputText for="MiddleName" class="form-control" @bind-Value="@teacherobj.MiddleName" />
                             <ValidationMessage For="()=>teacherobj.MiddleName" />
                         </div>
-                    </div>
-                     <div class="col-md-6">
+                   
+                    
                         <div class="form-group">
                             <label class="control-label">Last Name</label>
                             <InputText for="LastName" required class="form-control" @bind-Value="@teacherobj.LastName" />
                             <ValidationMessage For="()=>teacherobj.LastName" />
                         </div>
-                    </div>
-					 <div class="col-md-6">
+                    
+					 
                         <div class="form-group">
                             <label class="control-label">Email Address</label>
                             <InputText for="EmailAddress" class="form-control" @bind-Value="@teacherobj.EmailAddress" />
                             <ValidationMessage For="()=>teacherobj.EmailAddress" />
                         </div>
-                    </div>
-                      <div class="col-md-6">
-    <div class="form-group">
+                    
+                        <div class="form-group">
+                            <label class="control-label">Address</label>
+                            <InputTextArea for="Address" class="form-control" style="resize: none;" @bind-Value="@teacherobj.Address" />
+                            <ValidationMessage For="()=>teacherobj.Address" />
+                        </div>
+                   
+                    
+                        <div class="form-group">
+                            <label class="control-label">Phone Number</label>
+                            <InputText for="PhoneNumber" class="form-control" @bind-Value="@teacherobj.PhoneNumber" />
+                            <ValidationMessage For="()=>teacherobj.PhoneNumber" />
+                        </div>
+                   
+                   
+                        <div class="form-group">
+                            <label class="control-label">Facebook Link</label>
+                            <InputText for="FacebookLink" class="form-control" @bind-Value="@teacherobj.FacebookLink" />
+                            <ValidationMessage For="()=>teacherobj.FacebookLink" />
+                        </div>
+                   
+                    
+                        <div class="form-group">
+                            <label class="control-label">Twitter Link</label>
+                            <InputText for="TwitterLink" class="form-control" @bind-Value="@teacherobj.TwitterLink" />
+                            <ValidationMessage For="()=>teacherobj.TwitterLink" />
+                        </div>
+                   
+                    
+                        <div class="form-group">
+                            <label class="control-label">LinkedIn Link</label>
+                            <InputText for="LinkedInLink" class="form-control" @bind-Value="@teacherobj.LinkedInLink" />
+                            <ValidationMessage For="()=>teacherobj.LinkedInLink" />
+                        </div>
+                  
+                    
+                  
+              <div class="form-group">
+
+        <label class="control-label">Designation</label>
+
+        <InputText class="form-control"
+                     @bind-Value="teacherobj.Designation"  placeholder="e.g. Vice Principal">  </InputText>
+        <ValidationMessage For="()=>teacherobj.Designation" />
+
+</div>
+                     
+                        <div class="form-group">
+                            <label class="control-label">Date of Birth</label>
+                            <InputDate for="DOB" class="form-control" @bind-Value="@teacherobj.DOB" />
+                            <ValidationMessage For="()=>teacherobj.DOB" />
+                        </div>
+						<div class="form-group">
 
         <label class="control-label">Gender</label>
 
-       <InputSelect class="form-control" @bind-Value="teacherobj.Gender">
+       <InputSelect class="form-select" required @bind-Value="teacherobj.Gender">
 
 								<option value="">Select Gender</option>
 								<option value="@Gender.Male">Male</option>
@@ -62,13 +114,13 @@
         <ValidationMessage For="()=>teacherobj.Gender" />
 
     </div>
-</div>
-                    <div class="col-md-6">
+
+                    
     <div class="form-group">
 
         <label class="control-label">Marital Status</label>
 
-        <InputSelect class="form-control" @bind-Value="teacherobj.MaritalStatus">
+        <InputSelect class="form-select" required @bind-Value="teacherobj.MaritalStatus">
 
     <option value="">Select Marital Status</option>
 
@@ -82,67 +134,14 @@
         <ValidationMessage For="()=>teacherobj.MaritalStatus" />
 
     </div>
-</div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Address</label>
-                            <InputText for="Address" class="form-control" @bind-Value="@teacherobj.Address" />
-                            <ValidationMessage For="()=>teacherobj.Address" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Phone Number</label>
-                            <InputText for="PhoneNumber" class="form-control" @bind-Value="@teacherobj.PhoneNumber" />
-                            <ValidationMessage For="()=>teacherobj.PhoneNumber" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Facebook Link</label>
-                            <InputText for="FacebookLink" class="form-control" @bind-Value="@teacherobj.FacebookLink" />
-                            <ValidationMessage For="()=>teacherobj.FacebookLink" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Twitter Link</label>
-                            <InputText for="TwitterLink" class="form-control" @bind-Value="@teacherobj.TwitterLink" />
-                            <ValidationMessage For="()=>teacherobj.TwitterLink" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">LinkedIn Link</label>
-                            <InputText for="LinkedInLink" class="form-control" @bind-Value="@teacherobj.LinkedInLink" />
-                            <ValidationMessage For="()=>teacherobj.LinkedInLink" />
-                        </div>
+
+                   
+
                     </div>
                     
-                  <div class="col-md-6">
-              <div class="form-group">
-
-        <label class="control-label">Designation</label>
-
-        <InputText class="form-control"
-                     @bind-Value="teacherobj.Designation"  placeholder="e.g. Vice Principal">  </InputText>
-        <ValidationMessage For="()=>teacherobj.Designation" />
-
-    </div>
-</div>
-                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Date of Birth</label>
-                            <InputDate for="DOB" class="form-control" @bind-Value="@teacherobj.DOB" />
-                            <ValidationMessage For="()=>teacherobj.DOB" />
-                        </div>
-                    </div>
-
-                    </div>
-                    </div>
-                     <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-primary">Save Teacher</button>
-                      <a href="/teachers-list" class="btn btn-danger">Back to List</a>              
+                     <div class="student-form-actions">
+                    <button type="submit" class="student-btn-save"><i class="fas fa-save"></i>Save Teacher</button>
+                      <a href="/teachers-list" class="student-btn-back"><i class="fas fa-arrow-left"></i>Back to List</a>              
                 </div>
 
                      </EditForm>

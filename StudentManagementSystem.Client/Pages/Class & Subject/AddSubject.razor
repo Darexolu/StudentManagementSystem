@@ -14,7 +14,10 @@
 
 	<section class="content-header">
 		<div class="container-fluid">
-			<h1>Subjects Management</h1>
+
+			<div class="page-header">
+				<h1 class="page-title"> <i class="fas fa-book"></i>Subjects Management</h1>
+			</div>
 		</div>
 	</section>
 
@@ -22,9 +25,9 @@
 		<div class="container-fluid">
 
 			<!-- FORM -->
-			<div class="card card-primary">
+			<div class="class-form-card">
 
-				<div class="card-header">
+				<div class="class-form-header">
 					<h3 class="card-title">
 						@(isEdit ? "Edit Subject" : "Create Subject")
 					</h3>
@@ -36,19 +39,19 @@
 
 					<DataAnnotationsValidator />
 
-					<div class="card-body">
+					<div class="class-form-body">
 
-						<div class="form-group">
+						<div class="class-form-group">
 							<label>Subject Name</label>
 							<InputText class="form-control" @bind-Value="model.Name" />
 						</div>
 
-						<div class="form-group">
+						<div class="class-form-group">
 							<label>Code</label>
 							<InputText class="form-control" @bind-Value="model.Code" />
 						</div>
 
-						<div class="form-group">
+						<div class="class-form-group">
 							<label>
 								<InputCheckbox @bind-Value="model.IsCore" />
 								Is Core Subject
@@ -57,15 +60,16 @@
 
 					</div>
 
-					<div class="card-footer">
-						<button type="submit" class="btn btn-primary">
+					<div class="class-form-footer">
+
+						<button type="submit" class="class-save-btn">
 							@(isEdit ? "Update" : "Save")
 						</button>
 
 						@if (isEdit)
 						{
 							<button type="button"
-									class="btn btn-secondary ml-2"
+									class="class-cancel-btn"
 									@onclick="ResetForm">
 								Cancel
 							</button>
@@ -77,9 +81,9 @@
 			</div>
 
 			<!-- TABLE -->
-			<div class="card">
+			<div class="class-list-card">
 
-				<div class="card-header">
+				<div class="class-list-header">
 					<h3 class="card-title">Subjects List</h3>
 				</div>
 
@@ -109,15 +113,15 @@
 
 										<td>
 											<button type="button"
-													class="btn btn-warning btn-sm"
+													class="btn-table btn-edit"
 													@onclick="() => EditSubject(item)">
-												Edit
+												<i class="fas fa-edit"></i>Edit
 											</button>
 
 											<button type="button"
-													class="btn btn-danger btn-sm ml-2"
+													class="btn-table btn-delete"
 													@onclick="() => DeleteSubject(item.Id)">
-												Delete
+												<i class="fas fa-trash"></i>Delete
 											</button>
 										</td>
 									</tr>

@@ -380,7 +380,12 @@
 /* =========================
    GLOBAL TABLE DESIGN SYSTEM
 ========================= */
-
+.table-scroll-wrapper {
+	width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	border-radius: 12px;
+}
 table {
 	width: 100%;
 	border-collapse: collapse;
@@ -580,10 +585,10 @@ td:nth-last-child(2) {
 	margin-bottom: 0;
 }
 
-/* Full width row when needed */
-.student-full-width {
-	grid-column: span 3;
-}
+	/* Full width row when needed */
+	.student-full-width {
+		grid-column: span 3;
+	}
 
 /* Responsive */
 @media (max-width: 992px) {
@@ -688,3 +693,130 @@ td:nth-last-child(2) {
 	box-shadow: 0 6px 24px rgba(0,0,0,.08);
 	border: 1px solid #e2e8f0;
 }
+
+.no-resize {
+	resize: none;
+}
+
+
+/* ===== CLASSES LIST PAGE ===== */
+
+.class-page {
+	padding: 10px;
+}
+
+
+.page-title {
+	color: #1e3a8a;
+	font-size: 28px;
+	font-weight: 700;
+	margin-bottom: 20px;
+}
+
+	.page-title i {
+		margin-right: 10px;
+	}
+
+
+.class-form-card {
+	background: #fff;
+	border-radius: 18px;
+	box-shadow: 0 4px 20px rgba(0,0,0,.08);
+	overflow: hidden;
+	border: none;
+	margin-bottom: 25px;
+}
+
+.class-form-header {
+	background: #1e3a8a;
+	color: white;
+	padding: 18px 24px;
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.class-form-body {
+	padding: 25px;
+}
+
+.class-form-footer {
+	padding: 20px 25px;
+	border-top: 1px solid #e2e8f0;
+	background: #f8fafc;
+}
+
+
+.class-form-group {
+	margin-bottom: 20px;
+}
+
+	.class-form-group label {
+		display: block;
+		margin-bottom: 8px;
+		color: #1e293b;
+		font-weight: 600;
+	}
+
+	.class-form-group .form-control {
+		border-radius: 10px;
+		border: 1px solid #cbd5e1;
+		padding: 12px;
+	}
+
+		.class-form-group .form-control:focus {
+			border-color: #1e3a8a;
+			box-shadow: 0 0 0 3px rgba(30,58,138,.15);
+		}
+
+.class-save-btn {
+	background: #1e3a8a;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	padding: 10px 22px;
+	font-weight: 600;
+}
+
+	.class-save-btn:hover {
+		background: #152c6b;
+	}
+
+.class-cancel-btn {
+	background: #64748b;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	padding: 10px 22px;
+	margin-left: 10px;
+}
+
+	.class-cancel-btn:hover {
+		background: #475569;
+	}
+
+
+.class-list-card {
+	background: white;
+	border-radius: 18px;
+	overflow: hidden;
+	box-shadow: 0 4px 20px rgba(0,0,0,.08);
+}
+
+.class-list-header {
+	background: #f8fafc;
+	padding: 18px 24px;
+	border-bottom: 1px solid #e2e8f0;
+}
+
+	.class-list-header h3 {
+		margin: 0;
+		color: #1e3a8a;
+		font-size: 20px;
+		font-weight: 700;
+	}
+	.class-list-header h2 {
+		margin: 0;
+		color: #1e3a8a;
+		font-size: 25px;
+		font-weight: 700;
+	}

@@ -7,136 +7,136 @@
 @rendermode InteractiveServer
 @inject ISchoolClassRepository ClassRepository
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Update Students Details</h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
+<div class="student-form-header">
+	<h2 class="student-form-title">
+		<i class="fas fa-user-edit"></i>
+		Update Student
+	</h2>
+
+	<p class="student-form-subtitle">
+		Update student's details below.
+	</p>
+</div>
+
+
+			<div class="student-form-wrapper">
+				<div class="student-form-card">
                         <EditForm Model="studobj" OnValidSubmit="UpdateStudent" FormName="updatestudent">
                             <DataAnnotationsValidator />
                             <ValidationSummary />
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">First Name</label>
-											<InputText for="FirstName" required class="form-control" @bind-Value="@studobj.FirstName" />
-                                            <ValidationMessage For="()=>studobj.FirstName" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">Middle Name</label>
-                                            <InputText for="MiddleName" class="form-control" @bind-Value="@studobj.MiddleName" />
-                                            <ValidationMessage For="()=>studobj.MiddleName" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">Last Name</label>
-											<InputText for="LastName" required class="form-control" @bind-Value="@studobj.LastName" />
-                                            <ValidationMessage For="()=>studobj.LastName" />
-                                        </div>
-                                    </div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="control-label">Admission Number</label>
-											<InputText for="LastName" required class="form-control" @bind-Value="@studobj.AdmissionNumber" />
-											<ValidationMessage For="()=>studobj.AdmissionNumber" />
-										</div>
-									</div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">Email Address</label>
-											<InputText for="EmailAddress" class="form-control" @bind-Value="@studobj.EmailAddress" />
-                                            <ValidationMessage For="()=>studobj.EmailAddress" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">Address</label>
-                                            <InputText for="Address" class="form-control" @bind-Value="@studobj.Address" />
-                                            <ValidationMessage For="()=>studobj.Address" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">Phone Number</label>
-                                            <InputText for="PhoneNumber" class="form-control" @bind-Value="@studobj.PhoneNumber" />
-                                            <ValidationMessage For="()=>studobj.PhoneNumber" />
-                                        </div>
-                                    </div>
-									<div class="col-md-6">
-										<div class="form-group">
+							<div class="student-form-grid">
 
-											<label class="control-label">Gender</label>
-
-											<InputSelect required class="form-control" @bind-Value="studobj.Gender">
-												<option value="">Select Gender</option>
-
-												@foreach (var g in Enum.GetValues(typeof(Gender)).Cast<Gender>())
-												{
-													<option value="@g">@g</option>
-												}
-											</InputSelect>
-
-											<ValidationMessage For="()=>studobj.Gender" />
-
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="control-label">Date of Birth</label>
-											<InputDate for="DOB" class="form-control" @bind-Value="@studobj.DOB" />
-											<ValidationMessage For="()=>studobj.DOB" />
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="control-label">Class</label>
-
-											<InputSelect required class="form-control"
-														 @bind-Value="studobj.SchoolClassId">
-
-												<option value="">Select Class</option>
-
-												@foreach (var c in Classes)
-												{
-													<option value="@c.Id">@c.Name</option>
-												}
-
-											</InputSelect>
-
-											<ValidationMessage For="()=>studobj.SchoolClassId" />
-										</div>
-									</div>
-                                    @* <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">Country</label>
-                                            <InputText for="Country" class="form-control" @bind-Value="@studobj.Country" />
-
-                                            <ValidationMessage For="()=>studobj.Country" />
-                                        </div>
-                                    </div> *@
-                                </div>
-
-                                   
-                                <div class="form-group mt-4">
-                                    <button type="submit" class="btn btn-primary">Update Student</button>
-									<a href="/students-list" class="btn btn-danger">Back to List</a>
+								<!-- First Name -->
+								<div class="form-group">
+									<label class="control-label">First Name</label>
+									<InputText class="form-control"
+											   @bind-Value="studobj.FirstName" />
+									<ValidationMessage For="()=>studobj.FirstName" />
 								</div>
-                            </div>
+
+								<!-- Middle Name -->
+								<div class="form-group">
+									<label class="control-label">Middle Name</label>
+									<InputText class="form-control"
+											   @bind-Value="studobj.MiddleName" />
+									<ValidationMessage For="()=>studobj.MiddleName" />
+								</div>
+
+								<!-- Last Name -->
+								<div class="form-group">
+									<label class="control-label">Last Name</label>
+									<InputText class="form-control"
+											   @bind-Value="studobj.LastName" />
+									<ValidationMessage For="()=>studobj.LastName" />
+								</div>
+
+								<!-- Admission Number -->
+								<div class="form-group">
+									<label class="control-label">Admission Number</label>
+									<InputText class="form-control"
+											   @bind-Value="studobj.AdmissionNumber" />
+									<ValidationMessage For="()=>studobj.AdmissionNumber" />
+								</div>
+
+								<!-- Email -->
+								<div class="form-group">
+									<label class="control-label">Email Address</label>
+									<InputText class="form-control"
+											   @bind-Value="studobj.EmailAddress" />
+									<ValidationMessage For="()=>studobj.EmailAddress" />
+								</div>
+
+								<!-- Phone -->
+								<div class="form-group">
+									<label class="control-label">Phone Number</label>
+									<InputText class="form-control"
+											   @bind-Value="studobj.PhoneNumber" />
+									<ValidationMessage For="()=>studobj.PhoneNumber" />
+								</div>
+
+								<!-- Address -->
+								<div class="form-group student">
+									<label class="control-label">Student Address</label>
+					<InputTextArea class="form-control" style="resize: none;"
+											   @bind-Value="studobj.Address" />
+									<ValidationMessage For="()=>studobj.Address" />
+								</div>
+								<!-- DOB -->
+								<div class="form-group">
+									<label class="control-label">Date of Birth</label>
+									<InputDate class="form-control"
+											   @bind-Value="studobj.DOB" />
+								</div>
+								<!-- Gender -->
+								<div class="sms-select-group">
+									<div class="form-group">
+										<label class="control-label">Gender</label>
+										<InputSelect required class="form-select"
+													 @bind-Value="studobj.Gender">
+											<option value="">Select Gender</option>
+											@foreach (var g in Enum.GetValues(typeof(Gender)).Cast<Gender>())
+											{
+												<option value="@g">@g</option>
+											}
+										</InputSelect>
+									</div>
+								</div>
+
+								<div class="sms-select-group">
+									<div class="form-group">
+										<label class="control-label">Class</label>
+										<InputSelect required class="form-select"
+													 @bind-Value="studobj.SchoolClassId">
+
+											<option value="">Select Class</option>
+
+											@foreach (var c in Classes)
+											{
+												<option value="@c.Id">@c.Name</option>
+											}
+
+										</InputSelect>
+									</div>
+								</div>
+							</div>
+							<div class="student-form-actions">
+								<button type="submit" class="student-btn-save">
+									<i class="fas fa-save"></i>
+									Update Student
+								</button>
+
+								<a href="/students-list" class="student-btn-back">
+									<i class="fas fa-arrow-left"></i>
+									Back to List
+								</a>
+							</div>
                         </EditForm>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+           
+        
+   
+
 
 @code {
 

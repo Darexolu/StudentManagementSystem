@@ -245,7 +245,7 @@ button.nav-link {
 }
 
 /* Mobile */
-@media (max-width: 768px) {
+/*@media (max-width: 768px) {
 	.main-sidebar {
 		width: 70px;
 	}
@@ -269,7 +269,7 @@ button.nav-link {
 		margin-right: 0;
 	}
 }
-
+*/
 
 
 /*Mainlayout*/

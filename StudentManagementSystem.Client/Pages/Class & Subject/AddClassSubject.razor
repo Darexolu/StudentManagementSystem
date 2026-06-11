@@ -17,7 +17,9 @@
 
 	<section class="content-header">
 		<div class="container-fluid">
-			<h1>Class Subject Assignment</h1>
+			<div class="page-header">
+				<h1 class="page-title"><i class="fas fa-link"></i>Class Subject Assignment</h1>
+			</div>
 		</div>
 	</section>
 
@@ -26,11 +28,11 @@
 		<div class="container-fluid">
 
 			<!-- FORM -->
-			<div class="card card-primary">
+			<div class="class-form-card">
 
-				<div class="card-header">
+				<div class="class-form-header">
 					<h3 class="card-title">
-						Assign Subject to Class
+						@(isEdit ? "Re-Assign Subject to Class" : "Assign Subject to Class")
 					</h3>
 				</div>
 
@@ -38,9 +40,9 @@
 						  OnValidSubmit="Save"
 						  FormName="class-subject-form">
 
-					<div class="card-body">
+					<div class="class-form-body">
 
-						<div class="form-group">
+						<div class="class-form-group">
 							<label>Class</label>
 							<InputSelect class="form-control" @bind-Value="model.SchoolClassId">
 								<option value="">Select Class</option>
@@ -51,7 +53,7 @@
 							</InputSelect>
 						</div>
 
-						<div class="form-group">
+						<div class="class-form-group">
 							<label>Subject</label>
 							<InputSelect class="form-control" @bind-Value="model.SubjectId">
 								<option value="">Select Subject</option>
@@ -62,7 +64,7 @@
 							</InputSelect>
 						</div>
 
-						<div class="form-group">
+						<div class="class-form-group">
 							<label>Teacher</label>
 							<InputSelect class="form-control" @bind-Value="model.TeacherId">
 								<option value="">Select Teacher</option>
@@ -75,10 +77,18 @@
 
 					</div>
 
-					<div class="card-footer">
-						<button class="btn btn-primary" type="submit">
-							Assign
+					<div class="class-form-footer">
+						<button class="class-save-btn" type="submit">
+							@(isEdit ? "Re-Assign" : "Assign")
 						</button>
+						@if (isEdit)
+						{
+							<button type="button"
+									class="class-cancel-btn"
+									@onclick="ResetForm">
+								Cancel
+							</button>
+						}
 					</div>
 
 				</EditForm>
@@ -86,9 +96,9 @@
 			</div>
 
 			<!-- TABLE -->
-			<div class="card">
+			<div class="class-list-card">
 
-				<div class="card-header">
+				<div class="class-list-header">
 					<h3 class="card-title">Assigned Subjects</h3>
 				</div>
 
@@ -116,14 +126,14 @@
 
 									<td>
 										<button type="button"
-												class="btn btn-warning btn-sm"
+												class="btn-table btn-edit"
 												@onclick="() => EditClassSubject(item)">
-											Edit
+											<i class="fas fa-edit"></i>Edit
 										</button>
 										<button type="button"
-												class="btn btn-danger btn-sm"
+												class="btn-table btn-delete"
 												@onclick="() => Delete(item.Id)">
-											Delete
+											<i class="fas fa-trash"></i>Delete
 										</button>
 									</td>
 								</tr>

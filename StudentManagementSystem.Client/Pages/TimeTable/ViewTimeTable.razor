@@ -9,14 +9,15 @@
 @inject ITimeTableRepository TimeTableRepository
 @inject ISchoolClassRepository ClassRepository
 
-<h3>Class Weekly Timetable</h3>
-
-<hr />
+<div class="class-list-header">
+<h2 class="card-title"><i class="fas fa-calendar-plus"></i> Class Timetable</h2>
+</div>
+@* <hr /> *@
 
 <!-- CLASS SELECTOR -->
 <div class="row mb-3">
 
-	<div class="col-md-4">
+	<div class="class-form-group">
 		<label>Select Class</label>
 
 		<InputSelect class="form-control"
@@ -31,7 +32,7 @@
 
 		</InputSelect>
 	</div>
-	<div class="col-md-4">
+	<div class="class-form-group">
 
 		<label>Timetable Type</label>
 

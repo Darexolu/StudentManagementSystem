@@ -41,6 +41,7 @@
                                 <th>Full Name</th>
 								<th>Admission No.</th>
 								<th>Email</th>
+								@* <th>Class</th> *@
 								<th>Gender</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
@@ -53,6 +54,7 @@
 							<td style ="white-space: nowrap;">@student.FullName</td>
 							<td >@student.AdmissionNumber</td>
                             <td>@student.EmailAddress</td>
+							@* <td>@student.SchoolClass?.Name</td> *@
 							<td style="white-space: nowrap;">
 							 @student.Gender?.ToString().Replace("NonBinary", "Non-binary")
 							</td>

@@ -80,7 +80,7 @@
     <!-- Address -->
     <div class="form-group student">
         <label class="control-label">Student Address</label>
-        <InputText class="form-control"
+        <InputTextArea class="form-control" style="resize: none;"
                    @bind-Value="studobj.Address" />
         <ValidationMessage For="()=>studobj.Address" />
     </div>
@@ -94,7 +94,7 @@
     <div class="sms-select-group">
     <div class="form-group">
         <label class="control-label">Gender</label>
-        <InputSelect class="form-select"
+        <InputSelect required class="form-select"
                      @bind-Value="studobj.Gender">
             <option value="">Select Gender</option>
             @foreach (var g in Enum.GetValues(typeof(Gender)).Cast<Gender>())
@@ -108,7 +108,7 @@
 <div class="sms-select-group">
     <div class="form-group">
         <label class="control-label">Class</label>
-        <InputSelect class="form-select"
+        <InputSelect required class="form-select"
                      @bind-Value="studobj.SchoolClassId">
 
             <option value="">Select Class</option>

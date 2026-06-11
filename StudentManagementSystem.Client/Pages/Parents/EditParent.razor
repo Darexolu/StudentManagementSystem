@@ -6,137 +6,127 @@
 @attribute [Authorize(Roles = "Admin,Super Admin")]
 
 
+<div class="student-form-header">
 
-<h3>Update Parent Details</h3>
+	<h2 class="student-form-title"><i class="fas fa-user-edit"></i>Update Parent</h2>
+	<p class="student-form-subtitle">
+		Update parent's details below.
+	</p>
+</div>
 
-<hr />
-<div class="row">
-    <div class="col-md-12">
+@* <hr /> *@
+<div class="student-form-wrapper">
+<div class="student-form-card">
  <EditForm Model="parentobj" OnValidSubmit="UpdateParent" FormName="updateparent">
-          
-            <div class="col-md-12">
-                <div class="row">
-                    
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">First Name</label>
-                            <InputText for="FirstName" required class="form-control" @bind-Value="@parentobj.FirstName"/>
-                            <ValidationMessage For="()=>parentobj.FirstName"/>
-                        </div>
-                    </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Middle Name</label>
-                            <InputText for="MiddleName" class="form-control" @bind-Value="@parentobj.MiddleName" />
-                            <ValidationMessage For="()=>parentobj.MiddleName" />
-                        </div>
-                    </div>
-                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Last Name</label>
-							<InputText for="LastName" required class="form-control" @bind-Value="@parentobj.LastName" />
-                            <ValidationMessage For="()=>parentobj.LastName" />
-                        </div>
-                    </div>
-                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Email Address</label>
-                            <InputText for="EmailAddress" class="form-control" @bind-Value="@parentobj.EmailAddress" />
-                            <ValidationMessage For="()=>parentobj.EmailAddress" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Parent Address</label>
-                            <InputText for="Address" class="form-control" @bind-Value="@parentobj.Address" />
-                            <ValidationMessage For="()=>parentobj.Address" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Phone Number</label>
-                            <InputText for="PhoneNumber" class="form-control" @bind-Value="@parentobj.PhoneNumber" />
-                            <ValidationMessage For="()=>parentobj.PhoneNumber" />
-                        </div>
-                    </div>
-					<div class="col-md-6">
-						<div class="form-group">
 
-							<label class="control-label">Gender</label>
+			<div class="student-form-grid">
+				<div class="form-group">
+					<label class="control-label">First Name</label>
+					<InputText for="FirstName" class="form-control" @bind-Value="@parentobj.FirstName" />
+					<ValidationMessage For="()=>parentobj.FirstName" />
+				</div>
 
-							<label class="control-label">Gender</label>
+				<div class="form-group">
+					<label class="control-label">Middle Name</label>
+					<InputText for="MiddleName" class="form-control" @bind-Value="@parentobj.MiddleName" />
+					<ValidationMessage For="()=>parentobj.MiddleName" />
+				</div>
 
-							<InputSelect class="form-control" @bind-Value="parentobj.Gender">
 
-								<option value="">Select Gender</option>
-								<option value="@Gender.Male">Male</option>
-								<option value="@Gender.Female">Female</option>
-								<option value="@Gender.NonBinary">Non-binary</option>
+				<div class="form-group">
+					<label class="control-label">Last Name</label>
+					<InputText for="LastName" class="form-control" @bind-Value="@parentobj.LastName" />
+					<ValidationMessage For="()=>parentobj.LastName" />
+				</div>
 
-							</InputSelect>
 
-							<ValidationMessage For="()=>parentobj.Gender" />
+				<div class="form-group">
+					<label class="control-label">Email Address</label>
+					<InputText for="EmailAddress" class="form-control" @bind-Value="@parentobj.EmailAddress" />
+					<ValidationMessage For="()=>parentobj.EmailAddress" />
+				</div>
 
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group">
 
-							<label class="control-label">Marital Status</label>
+				<div class="form-group">
+					<label class="control-label">Parent Address</label>
+					<InputTextArea for="Address" class="form-control" style="resize: none;" @bind-Value="@parentobj.Address" />
+					<ValidationMessage For="()=>parentobj.Address" />
+				</div>
 
-							<InputSelect class="form-control" @bind-Value="parentobj.MaritalStatus">
 
-								<option value="">Select Marital Status</option>
+				<div class="form-group">
+					<label class="control-label">Phone Number</label>
+					<InputText for="PhoneNumber" class="form-control" @bind-Value="@parentobj.PhoneNumber" />
+					<ValidationMessage For="()=>parentobj.PhoneNumber" />
+				</div>
+				<div class="form-group">
+					<label class="control-label">Date of Birth</label>
+					<InputDate for="DOB" class="form-control" @bind-Value="@parentobj.DOB" />
+					<ValidationMessage For="()=>parentobj.DOB" />
+				</div>
+				<div class="form-group">
+					<label class="control-label">Relationship with student</label>
+					<InputText for="Relationship" class="form-control" @bind-Value="@parentobj.Relationship">
 
-								@foreach (var item in Enum.GetValues<MaritalStatus>())
-								{
-									<option value="@item">@item</option>
-								}
+					</InputText>
 
-							</InputSelect>
+					<ValidationMessage For="()=>parentobj.Relationship" />
+				</div>
 
-							<ValidationMessage For="()=>parentobj.MaritalStatus" />
+				<div class="form-group">
 
-						</div>
-					</div>
-                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Student</label>
-                            <InputSelect for="StudentId" class="form-control" @bind-Value="@parentobj.StudentId">
-                                <option value="">Select Student</option>
-                               
-                                @foreach(var student in Students)
-                                {
-                                    <option value="@student.Id">@student.FullName</option>
-                                }
-                            </InputSelect>
+					<label class="control-label">Gender</label>
 
-                            <ValidationMessage For="()=>parentobj.StudentId" />
-                        </div>
-                    </div>
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label">Relationship with student</label>
-							<InputText for="Relationship" class="form-control" @bind-Value="@parentobj.Relationship">
+					<InputSelect required class="form-select" @bind-Value="parentobj.Gender">
 
-							</InputText>
+						<option value="">Select Gender</option>
+						<option value="@Gender.Male">Male</option>
+						<option value="@Gender.Female">Female</option>
+						<option value="@Gender.NonBinary">Non-binary</option>
 
-							<ValidationMessage For="()=>parentobj.Relationship" />
-						</div>
-					</div>
-                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Date of Birth</label>
-                            <InputDate for="DOB" class="form-control" @bind-Value="@parentobj.DOB" />
-                            <ValidationMessage For="()=>parentobj.DOB" />
-                        </div>
-                    </div>
+					</InputSelect>
 
-                    </div>
-                    </div>
-                     <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-primary">Update Parent</button>
-				<a href="/parents-list" class="btn btn-danger">Back to List</a>
+					<ValidationMessage For="()=>parentobj.Gender" />
+
+				</div>
+
+
+				<div class="form-group">
+
+					<label class="control-label">Marital Status</label>
+
+					<InputSelect required class="form-select" @bind-Value="parentobj.MaritalStatus">
+
+						<option value="">Select Marital Status</option>
+
+						@foreach (var item in Enum.GetValues<MaritalStatus>())
+						{
+							<option value="@item">@item</option>
+						}
+
+					</InputSelect>
+
+					<ValidationMessage For="()=>parentobj.MaritalStatus" />
+
+				</div>
+
+				<div class="form-group">
+					<label class="control-label">Student</label>
+					<InputSelect required for="StudentId" class="form-select" @bind-Value="@parentobj.StudentId">
+						<option value="">Select Student</option>
+
+						@foreach (var student in Students)
+						{
+							<option value="@student.Id">@student.FullName</option>
+						}
+					</InputSelect>
+
+					<ValidationMessage For="()=>parentobj.StudentId" />
+				</div>
+			</div>
+			<div class="student-form-actions">
+				<button type="submit" class="student-btn-save">Update Parent</button>
+				<a href="/parents-list" class="student-btn-back">Back to List</a>
 			</div>
 
                      </EditForm>

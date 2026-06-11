@@ -12,10 +12,10 @@
 @inject ISubjectRepository SubjectRepository
 @inject ITeacherRepository TeacherRepository
 @inject IJSRuntime JS
+<div class="class-list-header">
+	<h2 class="card-title"><i class="fas fa-calendar-plus"></i> @(isEdit ? "Update Timetable" : "Create Timetable")</h2>
+</div>
 
-<h3>Create Timetable</h3>
-
-<hr />
 
 <EditForm Model="this" OnValidSubmit="SaveAll">
 
@@ -38,7 +38,7 @@
 	<!-- CLASS -->
 	<div class="row mb-3">
 
-		<div class="col-md-6">
+		<div class="class-form-group">
 			<label>Select Class</label>
 
 			<InputSelect required class="form-control"
@@ -54,7 +54,7 @@
 			</InputSelect>
 		</div>
 
-		<div class="col-md-6">
+		<div class="class-form-group">
 
 			<label>Timetable Type</label>
 
@@ -72,7 +72,7 @@
 
 	</div>
 
-	<hr />
+	@* <hr /> *@
 
 	<!-- GRID -->
 	<table class="table table-bordered text-center">
@@ -153,16 +153,25 @@
 
 	</table>
 
-	<button class="btn btn-primary mt-3" type="submit">
-		Save Weekly Timetable
+	<button class=" class-save-btn" type="submit">
+		@(isEdit ? "Update Timetable" : "Save Timetable")
 	</button>
+	@if (isEdit)
+	{
+		<button type="button"
+				class="class-cancel-btn"
+				@onclick="ResetForm">
 
+			Cancel
+		</button>
+	}
 </EditForm>
 
-<hr />
 
-<h4>Timetable List</h4>
 
+	<div class="class-list-header">
+	<h3 class="card-title">Timetable List</h3>
+	</div>
 @if (list.Any())
 {
 	<table class="table table-bordered table-striped">
@@ -216,15 +225,15 @@
 					<td>
 
 						<button type="button"
-								class="btn btn-warning btn-sm"
+								class="btn-table btn-edit"
 								@onclick="() => Edit(item)">
-							Edit
+							<i class="fas fa-edit"></i>Edit
 						</button>
 
 						<button type="button"
-								class="btn btn-danger btn-sm ms-2"
+								class="btn-table btn-delete"
 								@onclick="() => Delete(item.Id)">
-							Delete
+							<i class="fas fa-trash"></i>Delete
 						</button>
 
 					</td>
@@ -235,6 +244,7 @@
 		</tbody>
 
 	</table>
+	
 }
 else
 {
@@ -432,5 +442,16 @@ else
 		{
 			item.EndTime = result;
 		}
+	}
+	private void ResetForm()
+	{
+		selectedClassId = Guid.Empty;
+		selectedTimeTableType = TimeTableType.Class;
+
+		isEdit = false;
+		validationMessage = null;
+		successMessage = null;
+
+		GenerateRows(); 
 	}
 }
