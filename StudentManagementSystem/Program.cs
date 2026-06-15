@@ -13,6 +13,7 @@ using StudentManagementSystemShared.StudentRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -58,7 +59,7 @@ builder.Services.AddScoped<IClassSubjectRepository, ClassSubjectRepository>();
 builder.Services.AddScoped<IResultRepository, ResultRepository>();
 builder.Services.AddScoped<ITimeTableRepository, TimeTableRepository>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
-
+builder.Services.AddScoped<ReportCardPdfService>();
 
 
 

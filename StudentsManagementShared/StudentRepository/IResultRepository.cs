@@ -1,4 +1,5 @@
-﻿using StudentManagementSystemShared.Models;
+﻿using StudentManagementSystemShared.Dtos;
+using StudentManagementSystemShared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,11 @@ namespace StudentManagementSystemShared.StudentRepository
 	Guid studentId,
 	string term,
 	string session);
+		Task<StudentReportCardDto> GetStudentReportCardAsync(
+	Guid studentId,
+	string term,
+	string session);
+
 
 	}
 

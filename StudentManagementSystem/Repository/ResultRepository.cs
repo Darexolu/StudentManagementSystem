@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentManagementSystem.Data;
+using StudentManagementSystemShared.Dtos;
 using StudentManagementSystemShared.Models;
 using StudentManagementSystemShared.StudentRepository;
 
@@ -206,6 +207,41 @@ namespace StudentManagementSystem.Repository
 					x.Session == session)
 				.OrderBy(x => x.Subject.Name)
 				.ToListAsync();
+		}
+		public async Task<StudentReportCardDto> GetStudentReportCardAsync(
+	Guid studentId,
+	string term,
+	string session)
+		{
+			var student = await _context.Students
+				.Include(x => x.SchoolClass)
+				.FirstOrDefaultAsync(x => x.Id == studentId);
+
+			var results = await _context.Results
+				.Include(x => x.Subject)
+				.Where(x =>
+					x.StudentId == studentId &&
+					x.Term == term &&
+					x.Session == session)
+				.ToListAsync();
+
+			return new StudentReportCardDto
+			{
+				StudentName = student.FullName,
+				ClassName = student.SchoolClass?.Name,
+				Term = term,
+				Session = session,
+				Subjects = results.Select(r => new SubjectResultDto
+				{
+					Subject = r.Subject?.Name,
+					Test1 = r.Test1,
+					Test2 = r.Test2,
+					Assignment = r.Assignment,
+					Exam = r.Exam,
+					Total = r.Total,
+					Grade = r.Grade
+				}).ToList()
+			};
 		}
 	}
 }

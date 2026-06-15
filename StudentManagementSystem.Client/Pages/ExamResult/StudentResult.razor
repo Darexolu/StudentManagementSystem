@@ -4,6 +4,8 @@
 @inject IStudentRepository StudentRepository
 @inject IResultRepository ResultRepository
 @rendermode InteractiveServer
+@inject ReportCardPdfService PdfService
+@inject IJSRuntime JS
 
 <h3>Student Result Sheet</h3>
 
@@ -81,14 +83,14 @@
 		</tbody>
 	</table>
 
-	<button class="btn btn-primary">
+	<button class="btn btn-primary" @onclick="DownloadPdf">
 		Print Result Sheet (PDF)
 	</button>
 }
 
 @code {
 
-	private Guid? selectedStudentId;
+	private Guid selectedStudentId;
 	private string term = "First Term";
 	private string session = $"{DateTime.Now.Year}/{DateTime.Now.Year + 1}";
 
@@ -106,9 +108,28 @@
 			return;
 
 		results = await ResultRepository
-			.GetStudentResultSheetAsync(
-				selectedStudentId.Value,
-				term,
-				session);
+				.GetStudentResultSheetAsync(
+					selectedStudentId,
+					term,
+					session);
+	}
+	
+
+	private async Task DownloadPdf()
+	{
+		var data = await ResultRepository.GetStudentReportCardAsync(
+			selectedStudentId,
+			term,
+			session);
+
+		if (data == null)
+			return;
+
+		var bytes = PdfService.Generate(data);
+
+		await JS.InvokeVoidAsync(
+	"downloadFile",
+	"ReportCard.pdf",
+	bytes);
 	}
 }
