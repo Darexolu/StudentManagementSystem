@@ -22,5 +22,29 @@ namespace StudentManagementSystemShared.StudentRepository
 		Task<List<Result>> GetStudentResults(Guid studentId);
 
 		Task<List<Result>> GetClassResults(Guid classId);
+
+		Task<List<Result>> GetByFiltersAsync(
+	      Guid classId,
+	      Guid subjectId,
+	      string term,
+	      string session);
+		Task<List<Result>> GetByClassSubjectTermSessionAsync(
+          Guid classId,
+          Guid subjectId,
+         string term,
+         string session);
+		Task<Result> GetStudentResultAsync(
+		  Guid studentId,
+		  Guid classId,
+		  Guid subjectId,
+		  string term,
+		 string session);
+		Task<List<Result>> GetStudentResultSheetAsync(
+	Guid studentId,
+	string term,
+	string session);
+
 	}
+
 }
+

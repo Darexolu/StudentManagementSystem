@@ -147,5 +147,65 @@ namespace StudentManagementSystem.Repository
 			await _context.SaveChangesAsync();
 		}
 
+		public async Task<List<Result>> GetByFiltersAsync(
+	Guid classId,
+	Guid subjectId,
+	string term,
+	string session)
+		{
+			return await _context.Results
+				.Include(x => x.Student)
+				.Include(x => x.Subject)
+				.Where(x =>
+					x.SchoolClassId == classId &&
+					x.SubjectId == subjectId &&
+					x.Term == term &&
+					x.Session == session)
+				.OrderBy(x => x.Student.FirstName)
+				.ToListAsync();
+		}
+		public async Task<List<Result>> GetByClassSubjectTermSessionAsync(
+	Guid classId,
+	Guid subjectId,
+	string term,
+	string session)
+		{
+			return await _context.Results
+				.Where(x =>
+					x.SchoolClassId == classId &&
+					x.SubjectId == subjectId &&
+					x.Term == term &&
+					x.Session == session)
+				.ToListAsync();
+		}
+		public async Task<Result?> GetStudentResultAsync(
+	Guid studentId,
+	Guid classId,
+	Guid subjectId,
+	string term,
+	string session)
+		{
+			return await _context.Results.FirstOrDefaultAsync(x =>
+				x.StudentId == studentId &&
+				x.SchoolClassId == classId &&
+				x.SubjectId == subjectId &&
+				x.Term == term &&
+				x.Session == session);
+		}
+		public async Task<List<Result>> GetStudentResultSheetAsync(
+	Guid studentId,
+	string term,
+	string session)
+		{
+			return await _context.Results
+				.Include(x => x.Subject)
+				.Include(x => x.SchoolClass)
+				.Where(x =>
+					x.StudentId == studentId &&
+					x.Term == term &&
+					x.Session == session)
+				.OrderBy(x => x.Subject.Name)
+				.ToListAsync();
+		}
 	}
 }

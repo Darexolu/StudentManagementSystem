@@ -1,0 +1,147 @@
+﻿@page "/result-view"
+
+@using StudentManagementSystemShared.Models
+@using Microsoft.AspNetCore.Authorization
+
+@rendermode InteractiveServer
+@attribute [Authorize(Roles = "Admin,Super Admin,Teacher,Student,Parent")]
+
+@inject IResultRepository ResultRepository
+@inject ISchoolClassRepository ClassRepository
+@inject ISubjectRepository SubjectRepository
+
+<h3>Result Viewer</h3>
+
+<hr />
+
+<!-- FILTERS -->
+<div class="row">
+
+	<div class="col-md-3">
+		<label>Class</label>
+		<InputSelect class="form-control"
+					 @bind-Value="selectedClassId">
+			<option value="">Select Class</option>
+			@foreach (var c in classes)
+			{
+				<option value="@c.Id">@c.Name</option>
+			}
+		</InputSelect>
+	</div>
+
+	<div class="col-md-3">
+		<label>Subject</label>
+		<InputSelect class="form-control"
+					 @bind-Value="selectedSubjectId"
+					 @bind-Value:after="LoadResults">
+			<option value="">Select Subject</option>
+			@foreach (var s in subjects)
+			{
+				<option value="@s.Id">@s.Name</option>
+			}
+		</InputSelect>
+	</div>
+
+	<div class="col-md-3">
+		<label>Term</label>
+		<InputSelect class="form-control"
+					 @bind-Value="selectedTerm">
+			<option>First Term</option>
+			<option>Second Term</option>
+			<option>Third Term</option>
+		</InputSelect>
+	</div>
+
+	<div class="col-md-3">
+		<label>Session</label>
+		<InputText class="form-control"
+				   @bind-Value="selectedSession" />
+	</div>
+
+</div>
+
+<br />
+
+<button class="btn btn-primary"
+		@onclick="LoadResults">
+	View Results
+</button>
+
+<hr />
+
+@if (results == null || !results.Any())
+{
+	<div class="alert alert-info">
+		No results found.
+	</div>
+}
+else
+{
+	<table class="table table-bordered table-striped">
+
+		<thead class="table-dark">
+			<tr>
+				<th>Student</th>
+				<th>Test1</th>
+				<th>Test2</th>
+				<th>Assignment</th>
+				<th>Exam</th>
+				<th>Total</th>
+				<th>Grade</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+			@foreach (var item in results)
+			{
+				<tr>
+
+					<td>
+						@item.Student?.FirstName @item.Student?.LastName
+					</td>
+
+					<td>@item.Test1</td>
+					<td>@item.Test2</td>
+					<td>@item.Assignment</td>
+					<td>@item.Exam</td>
+					<td>@item.Total</td>
+					<td><b>@item.Grade</b></td>
+
+				</tr>
+			}
+
+		</tbody>
+
+	</table>
+}
+
+@code {
+
+	private Guid? selectedClassId;
+	private Guid? selectedSubjectId;
+	private string selectedTerm = "First Term";
+	private string selectedSession = $"{DateTime.Now.Year}/{DateTime.Now.Year + 1}";
+
+	private List<SchoolClass> classes = new();
+	private List<Subject> subjects = new();
+	private List<Result> results = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		classes = await ClassRepository.GetAllAsync();
+		subjects = await SubjectRepository.GetAllAsync();
+	}
+
+	private async Task LoadResults()
+	{
+		if (selectedClassId == null || selectedSubjectId == null)
+			return;
+
+		results = await ResultRepository.GetByFiltersAsync(
+			selectedClassId.Value,
+			selectedSubjectId.Value,
+			selectedTerm,
+			selectedSession);
+	}
+}

@@ -1,0 +1,114 @@
+﻿@page "/student-result-sheet"
+
+@using StudentManagementSystemShared.Models
+@inject IStudentRepository StudentRepository
+@inject IResultRepository ResultRepository
+@rendermode InteractiveServer
+
+<h3>Student Result Sheet</h3>
+
+<div class="row mb-3">
+
+	<div class="col-md-4">
+		<label>Select Student</label>
+
+		<InputSelect class="form-control"
+					 @bind-Value="selectedStudentId"
+					 @bind-Value:after="LoadResults">
+
+			<option value="">Select Student</option>
+
+			@foreach (var s in students)
+			{
+				<option value="@s.Id">@s.FullName</option>
+			}
+
+		</InputSelect>
+	</div>
+
+	<div class="col-md-3">
+		<label>Term</label>
+
+		<InputSelect class="form-control"
+					 @bind-Value="term"
+					 @bind-Value:after="LoadResults">
+
+			<option>First Term</option>
+			<option>Second Term</option>
+			<option>Third Term</option>
+
+		</InputSelect>
+	</div>
+
+	<div class="col-md-3">
+		<label>Session</label>
+
+		<InputText class="form-control"
+				   @bind-Value="session"
+				   @bind-Value:after="LoadResults" />
+	</div>
+
+</div>
+
+@if (results.Any())
+{
+	<table class="table table-bordered">
+		<thead class="table-dark">
+			<tr>
+				<th>Subject</th>
+				<th>Test1</th>
+				<th>Test2</th>
+				<th>Assignment</th>
+				<th>Exam</th>
+				<th>Total</th>
+				<th>Grade</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			@foreach (var r in results)
+			{
+				<tr>
+					<td>@r.Subject?.Name</td>
+					<td>@r.Test1</td>
+					<td>@r.Test2</td>
+					<td>@r.Assignment</td>
+					<td>@r.Exam</td>
+					<td>@r.Total</td>
+					<td>@r.Grade</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	<button class="btn btn-primary">
+		Print Result Sheet (PDF)
+	</button>
+}
+
+@code {
+
+	private Guid? selectedStudentId;
+	private string term = "First Term";
+	private string session = $"{DateTime.Now.Year}/{DateTime.Now.Year + 1}";
+
+	private List<Student> students = new();
+	private List<Result> results = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		students = await StudentRepository.GetAllStudentsAsync();
+	}
+
+	private async Task LoadResults()
+	{
+		if (selectedStudentId == null)
+			return;
+
+		results = await ResultRepository
+			.GetStudentResultSheetAsync(
+				selectedStudentId.Value,
+				term,
+				session);
+	}
+}
