@@ -9,11 +9,11 @@ public class ReportCardPdfService
 	{
 		try
 		{
-			if (data.Subjects == null)
-				throw new Exception("Subjects list is NULL");
+			//if (data.Subjects == null)
+			//	throw new Exception("Subjects list is NULL");
 
-			if (data.Subjects.Any(x => x == null))
-				throw new Exception("Subjects list contains NULL item");
+			//if (data.Subjects.Any(x => x == null))
+			//	throw new Exception("Subjects list contains NULL item");
 
 			var subjects = data.Subjects ?? new List<SubjectResultDto>();
 

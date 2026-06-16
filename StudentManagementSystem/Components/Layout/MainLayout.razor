@@ -1,5 +1,9 @@
-﻿@inherits LayoutComponentBase
-
+﻿@using StudentManagementSystem.Client.Services
+@using StudentManagementSystemShared.Models
+@using StudentManagementSystemShared.StudentRepository
+@inherits LayoutComponentBase
+@inject ISystemSettingsRepository SettingsRepository
+@inject AppSettingsService AppSettings
 <div class="app-layout">
 
     <NavMenu />
@@ -7,7 +11,20 @@
     <div class="page-area">
 
 		<header class="topbar">
-			<h3>School Management System</h3>
+			<div class="school-header">
+				<h3 >
+					@(string.IsNullOrWhiteSpace(settings?.SchoolName)
+												? "School Management System"
+												: settings.SchoolName)
+				</h3>
+
+				@if (!string.IsNullOrWhiteSpace(settings?.SchoolMotto))
+				{
+					<small class="text-muted mt-0">
+						@settings.SchoolMotto
+					</small>
+				}
+			</div>
 
 			<div class="topbar-right">
 				<AuthorizeView>
@@ -40,6 +57,13 @@
 		</div>
 	</footer> *@
 </div>
+@code {
+	private SystemSetting settings;
 
+	protected override async Task OnInitializedAsync()
+	{
+		settings = await AppSettings.GetAsync();
+	}
+}
 
    

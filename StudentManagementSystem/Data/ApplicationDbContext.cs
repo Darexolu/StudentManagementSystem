@@ -18,6 +18,7 @@ namespace StudentManagementSystem.Data
 		public DbSet<Result> Results { get; set; }
 		public DbSet<ClassTimeTable> ClassTimeTables { get; set; }
 		public DbSet<StudentAttendance> StudentAttendances { get; set; }
+		public DbSet<SystemSetting> SystemSettings { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
         {

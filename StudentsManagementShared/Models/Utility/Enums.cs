@@ -37,4 +37,10 @@ namespace StudentManagementSystem.Utility
 		Late = 3,
 		Excused = 4
 	}
+	public enum SchoolTerm
+	{
+		FirstTerm = 1,
+		SecondTerm = 2,
+		ThirdTerm = 3
+	}
 }

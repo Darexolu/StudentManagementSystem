@@ -1,8 +1,13 @@
 ﻿@implements IDisposable
 @using Microsoft.AspNetCore.Components.Authorization
+@using StudentManagementSystem.Client.Services
+@using StudentManagementSystemShared.StudentRepository
+@using StudentManagementSystemShared.Models
+
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
-
+@inject ISystemSettingsRepository SettingsRepository
+@inject AppSettingsService AppSettings
 
  <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -19,9 +24,13 @@
         @* <div class="image">
           <img src="AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div> *@
-       @*  <div class="info">
-          <a href="#" class="d-block">Darex Olu</a>
-        </div> *@
+        <div class="info">
+				<small  class="d-block">
+					@(string.IsNullOrWhiteSpace(settings?.SchoolName)
+												? "School Management System"
+												: settings.SchoolName)
+				</small>
+        </div>
       </div>
 
       <!-- Sidebar Menu -->
@@ -79,6 +88,7 @@
 							</p>
 						</NavLink>
 					</li>
+
 				<li class="nav-item menu-open">
 					<NavLink href="/Account/Register" Match="NavLinkMatch.All" class="nav-link">
 						<i class="nav-icon fas fa-user-plus"></i>
@@ -289,6 +299,37 @@
 					</li>
 
 				</AuthorizeView>
+				<AuthorizeView Roles="Admin,Super Admin,Teacher">
+
+					<li class="nav-item">
+
+						<a href="#"
+						   class="nav-link @(isAttendanceOpen ? "active" : "")"
+						   @onclick="ToggleSettingsMenu">
+
+							<i class="fas fa-user-check"></i>
+
+							<p>System Setup</p>
+
+							<i class="right fas @(isSettingsOpen ? "fa-angle-down" : "fa-angle-left")"></i>
+
+						</a>
+
+						<ul class="submenu @(isSettingsOpen ? "open" : "")">
+
+							<li>
+								<NavLink href="/settings" class="nav-link">
+									<i class="fas fa-cogs"></i>System Settings
+								</NavLink>
+							</li>
+
+							
+
+						</ul>
+
+					</li>
+
+				</AuthorizeView>
         </ul>
       </nav>
     </div>
@@ -298,11 +339,16 @@
 
 @code {
     private string? currentUrl;
-
+	private SystemSetting settings;
+	protected override async Task OnInitializedAsync()
+	{
+		settings = await AppSettings.GetAsync();
+	}
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+		
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -319,8 +365,13 @@
 	private bool isTimetableOpen = false;
 	private bool isExamOpen = false;
 	private bool isAttendanceOpen = false;
+	private bool isSettingsOpen = false;
 
 
+	private void ToggleSettingsMenu()
+	{
+		isSettingsOpen = !isSettingsOpen;
+	}
 	private void ToggleAcademicMenu()
 	{
 		isAcademicMenuOpen = !isAcademicMenuOpen;
