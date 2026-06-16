@@ -5,33 +5,26 @@ namespace StudentManagementSystem.Client.Services
 {
 	public class AppSettingsService
 	{
-		private readonly ISystemSettingsRepository _repo;
-
-		private SystemSetting _cache;
-		private bool _loaded;
 		private readonly SemaphoreSlim _lock = new(1, 1);
 
-		public AppSettingsService(ISystemSettingsRepository repo)
-		{
-			_repo = repo;
-		}
+		public SystemSetting? Settings { get; private set; }
 
-		public async Task<SystemSetting> GetAsync()
+		public event Action? OnChange;
+
+		public async Task InitializeAsync(Func<Task<SystemSetting>> factory)
 		{
-			if (_loaded)
-				return _cache;
+			if (Settings != null)
+				return;
 
 			await _lock.WaitAsync();
 
 			try
 			{
-				if (_loaded)
-					return _cache;
-
-				_cache = await _repo.GetAsync();
-				_loaded = true;
-
-				return _cache;
+				if (Settings == null)
+				{
+					Settings = await factory();
+					OnChange?.Invoke();
+				}
 			}
 			finally
 			{
@@ -39,10 +32,10 @@ namespace StudentManagementSystem.Client.Services
 			}
 		}
 
-		public void ClearCache()
+		public void Update(SystemSetting settings)
 		{
-			_loaded = false;
-			_cache = null;
+			Settings = settings;
+			OnChange?.Invoke();
 		}
 	}
 }

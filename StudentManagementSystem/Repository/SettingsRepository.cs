@@ -10,13 +10,15 @@ namespace StudentManagementSystem.Repository
 		private readonly ApplicationDbContext _context;
 		public SettingsRepository(ApplicationDbContext context)
 		{
-			this._context = context;
+			_context = context;
 		}
 		public async Task<SystemSetting> GetAsync()
 		{
-			return await _context.SystemSettings
+
+			 var  settings = await _context.SystemSettings
 		.AsNoTracking()
 		.FirstOrDefaultAsync();
+			return settings;
 		}
 
 		public async Task<SystemSetting> SaveAsync(SystemSetting model)
@@ -26,46 +28,46 @@ namespace StudentManagementSystem.Repository
 				if (model == null)
 					throw new ArgumentNullException(nameof(model));
 
-				var existing = await _context.SystemSettings.FirstOrDefaultAsync();
+				var existing = await _context.SystemSettings
+					.FirstOrDefaultAsync();
 
-				//if (existing == null)
-				//{
-				//var newstudent = _context.Students.Add(student).Entity;
-				//await _context.SaveChangesAsync();
-				//return newstudent;
+				if (existing == null)
+				{
+					model.Id = Guid.NewGuid();
 
-				//}
-				//else
-				//{
-				//	existing.SchoolName = model.SchoolName;
-				//	existing.SchoolAddress = model.SchoolAddress;
-				//	existing.SchoolPhone = model.SchoolPhone;
-				//	existing.SchoolEmail = model.SchoolEmail;
-				//	existing.SchoolWebsite = model.SchoolWebsite;
-				//	existing.PrincipalName = model.PrincipalName;
-				//	existing.CurrentSession = model.CurrentSession;
-				//	existing.CurrentTerm = model.CurrentTerm;
-				//	existing.SchoolMotto = model.SchoolMotto;
-				//	existing.LogoUrl = model.LogoUrl;
-				//	existing.ReportCardFooter = model.ReportCardFooter;
-				//	existing.ResultSignatureName = model.ResultSignatureName;
-				//	existing.ResultSignatureTitle = model.ResultSignatureTitle;
-				//	existing.ResultPublishingEnabled = model.ResultPublishingEnabled;
-				//	existing.SchoolLogoUrl = model.SchoolLogoUrl;
+					var settings = _context.SystemSettings
+						.Add(model)
+						.Entity;
 
-				//}
-				//model.Id = Guid.NewGuid();
-				var settings = _context.SystemSettings.Add(model).Entity;
+					await _context.SaveChangesAsync();
+
+					return settings;
+				}
+
+				existing.SchoolName = model.SchoolName;
+				existing.SchoolAddress = model.SchoolAddress;
+				existing.SchoolPhone = model.SchoolPhone;
+				existing.SchoolEmail = model.SchoolEmail;
+				existing.SchoolWebsite = model.SchoolWebsite;
+				existing.PrincipalName = model.PrincipalName;
+				existing.SchoolMotto = model.SchoolMotto;
+				existing.CurrentSession = model.CurrentSession;
+				existing.CurrentTerm = model.CurrentTerm;
+				existing.LogoUrl = model.LogoUrl;
+				existing.ReportCardFooter = model.ReportCardFooter;
+				existing.ResultSignatureName = model.ResultSignatureName;
+				existing.ResultSignatureTitle = model.ResultSignatureTitle;
+				existing.ResultPublishingEnabled = model.ResultPublishingEnabled;
+				
+
 				await _context.SaveChangesAsync();
 
-				return settings;
+				return existing;
 			}
 			catch (Exception ex)
 			{
-				// Optional: log here
-				Console.WriteLine($"SystemSetting Save Error: {ex.Message}");
+				Console.WriteLine($"SystemSetting Save Error: {ex}");
 
-				// Re-throw so UI can still handle it properly
 				throw;
 			}
 		}

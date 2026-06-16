@@ -12,17 +12,13 @@
 
 		<header class="topbar">
 			<div class="school-header">
-				<h3 >
-					@(string.IsNullOrWhiteSpace(settings?.SchoolName)
-												? "School Management System"
-												: settings.SchoolName)
+				<h3>
+					@(AppSettings.Settings?.SchoolName ?? "School Management System")
 				</h3>
 
-				@if (!string.IsNullOrWhiteSpace(settings?.SchoolMotto))
+				@if (!string.IsNullOrWhiteSpace(AppSettings.Settings?.SchoolMotto))
 				{
-					<small class="text-muted mt-0">
-						@settings.SchoolMotto
-					</small>
+					<small>@AppSettings.Settings.SchoolMotto</small>
 				}
 			</div>
 
@@ -58,11 +54,11 @@
 	</footer> *@
 </div>
 @code {
-	private SystemSetting settings;
+	
 
 	protected override async Task OnInitializedAsync()
 	{
-		settings = await AppSettings.GetAsync();
+		await AppSettings.InitializeAsync(() => SettingsRepository.GetAsync());
 	}
 }
 

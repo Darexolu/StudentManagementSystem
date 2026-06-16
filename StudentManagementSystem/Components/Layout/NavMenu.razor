@@ -25,11 +25,7 @@
           <img src="AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div> *@
         <div class="info">
-				<small  class="d-block">
-					@(string.IsNullOrWhiteSpace(settings?.SchoolName)
-												? "School Management System"
-												: settings.SchoolName)
-				</small>
+				<small class="d-block"> @(AppSettings.Settings?.SchoolName ?? "School Management System")</small>
         </div>
       </div>
 
@@ -339,11 +335,7 @@
 
 @code {
     private string? currentUrl;
-	private SystemSetting settings;
-	protected override async Task OnInitializedAsync()
-	{
-		settings = await AppSettings.GetAsync();
-	}
+	
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);

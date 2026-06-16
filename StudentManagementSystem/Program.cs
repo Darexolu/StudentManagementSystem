@@ -61,7 +61,7 @@ builder.Services.AddScoped<ITimeTableRepository, TimeTableRepository>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 builder.Services.AddScoped<ISystemSettingsRepository, SettingsRepository>();
 builder.Services.AddScoped<ReportCardPdfService>();
-builder.Services.AddScoped<AppSettingsService>();
+builder.Services.AddSingleton<AppSettingsService>();
 
 
 

@@ -132,12 +132,14 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		model = await AppSettings.GetAsync();
+		model = await SettingsRepository.GetAsync()
+			?? new SystemSetting();
 	}
 
 	private async Task SaveSettings()
 	{
 		await SettingsRepository.SaveAsync(model);
+		AppSettings.Update(model);
 		successMessage = "Settings saved successfully.";
 	}
 }
