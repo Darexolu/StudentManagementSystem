@@ -37,6 +37,7 @@ namespace StudentManagementSystem.Data
 	.HasConversion<string>();
 
 
+
 		}
 
     }

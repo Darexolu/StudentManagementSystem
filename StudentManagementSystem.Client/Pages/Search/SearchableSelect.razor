@@ -1,0 +1,59 @@
+﻿@typeparam TItem
+
+<div class="searchable-dropdown">
+
+	<input class="form-control"
+		   placeholder="Search..."
+		   @bind="searchText"
+		   @bind:event="oninput"
+		   @onfocus="OpenDropdown" />
+
+	@if (isOpen)
+	{
+		<div class="dropdown-panel">
+
+			@foreach (var item in FilteredItems)
+			{
+				<div class="dropdown-item"
+					 @onclick="() => Select(item)">
+					@TextField(item)
+				</div>
+			}
+
+		</div>
+	}
+
+</div>
+@code {
+
+	[Parameter] public IEnumerable<TItem> Items { get; set; } = [];
+
+	[Parameter] public Func<TItem, string> TextField { get; set; } = default!;
+	[Parameter] public Func<TItem, Guid> ValueField { get; set; } = default!;
+
+	[Parameter] public Guid Value { get; set; }
+	[Parameter] public EventCallback<Guid> ValueChanged { get; set; }
+
+	private string searchText = "";
+	private bool isOpen = false;
+
+	private IEnumerable<TItem> FilteredItems =>
+		string.IsNullOrWhiteSpace(searchText)
+			? Items
+			: Items.Where(x =>
+				TextField(x).Contains(searchText, StringComparison.OrdinalIgnoreCase));
+
+	private async Task Select(TItem item)
+	{
+		Value = ValueField(item);
+		searchText = TextField(item);
+		isOpen = false;
+
+		await ValueChanged.InvokeAsync(Value);
+	}
+
+	private void OpenDropdown()
+	{
+		isOpen = true;
+	}
+}

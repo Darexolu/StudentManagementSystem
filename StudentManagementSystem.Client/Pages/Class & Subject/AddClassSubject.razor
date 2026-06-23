@@ -17,232 +17,237 @@
 
 	<section class="content-header">
 		<div class="container-fluid">
-			<div class="page-header">
-				<h1 class="page-title"><i class="fas fa-link"></i>Class Subject Assignment</h1>
-			</div>
+			<h1 class="page-title">
+				<i class="fas fa-link"></i> Class Subject Assignment
+			</h1>
 		</div>
 	</section>
 
 	<section class="content">
-
 		<div class="container-fluid">
 
-			<!-- FORM -->
+			<!-- CLASS SELECT -->
 			<div class="class-form-card">
+				<div class="class-form-body">
 
-				<div class="class-form-header">
-					<h3 class="card-title">
-						@(isEdit ? "Re-Assign Subject to Class" : "Assign Subject to Class")
-					</h3>
+					<div class="class-form-group">
+						<label>Select Class</label>
+						<InputSelect class="form-control"
+									 @bind-Value="selectedClassId"
+									 @bind-Value:after="OnClassChanged">
+
+							<option value="">Select Class</option>
+
+							@foreach (var c in classes)
+							{
+								<option value="@c.Id">@c.Name</option>
+							}
+
+						</InputSelect>
+
+					</div>
+
 				</div>
+			</div>
+			@if (!string.IsNullOrEmpty(successMessage))
+			{
+				<div class="alert alert-success">
+					@successMessage
+				</div>
+			}
+			@if (!string.IsNullOrEmpty(errorMessage))
+			{
+				<div class="alert alert-danger">
+					@errorMessage
+				</div>
+			}
+			@if (rows.Any())
+			{
+				<!-- ASSIGNMENT TABLE -->
+				<div class="class-list-card">
 
-				<EditForm Model="model"
-						  OnValidSubmit="Save"
-						  FormName="class-subject-form">
+					<div class="class-list-header">
+						<h3 class="card-title">
+							Assign Subjects to Teachers
+						</h3>
+					</div>
 
-					<div class="class-form-body">
+					<div class="card-body table-responsive">
 
-						<div class="class-form-group">
-							<label>Class</label>
-							<InputSelect class="form-control" @bind-Value="model.SchoolClassId">
-								<option value="">Select Class</option>
-								@foreach (var c in classes)
+						<table class="table table-bordered table-hover">
+
+							<thead>
+								<tr>
+									<th>Subject</th>
+									<th>Teacher</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								@foreach (var row in rows)
 								{
-									<option value="@c.Id">@c.Name</option>
-								}
-							</InputSelect>
-						</div>
+									<tr>
 
-						<div class="class-form-group">
-							<label>Subject</label>
-							<InputSelect class="form-control" @bind-Value="model.SubjectId">
-								<option value="">Select Subject</option>
-								@foreach (var s in subjects)
-								{
-									<option value="@s.Id">@s.Name</option>
-								}
-							</InputSelect>
-						</div>
+										<!-- SELECT SUBJECT -->
+										<td>
+											<input type="checkbox"
+												   @bind="row.IsSelected" />
+											<span class="ms-2">@row.SubjectName</span>
+										</td>
 
-						<div class="class-form-group">
-							<label>Teacher</label>
-							<InputSelect class="form-control" @bind-Value="model.TeacherId">
-								<option value="">Select Teacher</option>
-								@foreach (var t in teachers)
-								{
-									<option value="@t.Id">@t.FirstName</option>
+										<!-- ASSIGN TEACHER -->
+										<td>
+											<InputSelect class="form-control"
+														 @bind-Value="row.TeacherId"
+														 disabled="@(!row.IsSelected)">
+
+												<option value="">Select Teacher</option>
+
+												@foreach (var t in teachers)
+												{
+													<option value="@t.Id">@t.FullName</option>
+												}
+
+											</InputSelect>
+										</td>
+
+									</tr>
 								}
-							</InputSelect>
-						</div>
+							</tbody>
+
+						</table>
 
 					</div>
 
 					<div class="class-form-footer">
-						<button class="class-save-btn" type="submit">
-							@(isEdit ? "Re-Assign" : "Assign")
+						<button class="class-save-btn"
+								@onclick="SaveAssignments">
+							Save Assignments
 						</button>
-						@if (isEdit)
-						{
-							<button type="button"
-									class="class-cancel-btn"
-									@onclick="ResetForm">
-								Cancel
-							</button>
-						}
 					</div>
 
-				</EditForm>
-
-			</div>
-
-			<!-- TABLE -->
-			<div class="class-list-card">
-
-				<div class="class-list-header">
-					<h3 class="card-title">Assigned Subjects</h3>
 				</div>
-
-				<div class="card-body table-responsive">
-
-					<table class="table table-hover text-nowrap">
-
-						<thead>
-							<tr>
-								<th>Class</th>
-								<th>Subject</th>
-								<th>Teacher</th>
-								<th>Actions</th>
-							</tr>
-						</thead>
-
-						<tbody>
-
-							@foreach (var item in list)
-							{
-								<tr>
-									<td>@item.SchoolClass?.Name</td>
-									<td>@item.Subject?.Name</td>
-									<td>@item.Teacher?.FullName</td>
-
-									<td>
-										<button type="button"
-												class="btn-table btn-edit"
-												@onclick="() => EditClassSubject(item)">
-											<i class="fas fa-edit"></i>Edit
-										</button>
-										<button type="button"
-												class="btn-table btn-delete"
-												@onclick="() => Delete(item.Id)">
-											<i class="fas fa-trash"></i>Delete
-										</button>
-									</td>
-								</tr>
-							}
-
-						</tbody>
-
-					</table>
-
-				</div>
-
-			</div>
+			}
 
 		</div>
-
 	</section>
 
 </div>
 
 @code {
 
-	private ClassSubject model = new();
-
+	private Guid? selectedClassId;
+	private string? successMessage;
+	private string? errorMessage;
+	private List<ClassSubjectRow> rows = new();
 	private List<ClassSubject> list = new();
 	private List<SchoolClass> classes = new();
 	private List<Subject> subjects = new();
 	private List<Teacher> teachers = new();
-	private bool isEdit = false;
+
 	protected override async Task OnInitializedAsync()
 	{
 		classes = await ClassRepository.GetAllAsync();
 		subjects = await SubjectRepository.GetAllAsync();
 		teachers = await TeacherRepository.GetAllAsync();
-
-		await Load();
-	}
-
-	private async Task Load()
-	{
 		list = await ClassSubjectRepository.GetAllAsync();
 	}
-
-	private async Task Save()
+	private async Task BuildRows()
 	{
-		var mod = model.SchoolClassId;
-		var mod2 = model.SubjectId;
-		var mod3 = model.TeacherId;
-
-		// // Prevent empty save
-		// if (model.SchoolClassId == Guid.Empty ||
-		// 	model.SubjectId == Guid.Empty ||
-		// 	model.TeacherId == Guid.Empty)
-		// {
-		// 	return;
-		// }
-
-		// Prevent duplicate assignment
-		var exists = list.Any(x =>
-			x.SchoolClassId == model.SchoolClassId &&
-			x.SubjectId == model.SubjectId &&
-			x.TeacherId == model.TeacherId);
-
-		if (exists)
+		if (selectedClassId == Guid.Empty)
 		{
+			rows = new();
 			return;
 		}
-		if (isEdit)
+
+		var assigned = await ClassSubjectRepository
+			.GetByClassIdAsync(selectedClassId);
+
+		rows = subjects.Select(s =>
 		{
-			await ClassSubjectRepository.UpdateAsync(model);
-		}
+			var existing = assigned.FirstOrDefault(x => x.SubjectId == s.Id);
 
-		else
-		{
-			model.Id = Guid.NewGuid();
-			await ClassSubjectRepository.AddAsync(model);
-		}
-
-		// Reset form
-		model = new ClassSubject();
-
-		isEdit = false;
-
-		// Reload table
-		await Load();
-		ResetForm();
+			return new ClassSubjectRow
+				{
+					SubjectId = s.Id,
+					SubjectName = s.Name,
+					TeacherId = existing?.TeacherId,
+					ClassSubjectId = existing?.Id,
+					IsSelected = existing != null,
+					
+				};
+		}).ToList();
 	}
-	private void EditClassSubject(ClassSubject item)
+	private async Task OnClassChanged()
 	{
-		model = new ClassSubject
+		if (selectedClassId == null || selectedClassId == Guid.Empty)
+		{
+			rows = new();
+			StateHasChanged();
+			return;
+		}
+		await BuildRows();
+	}
+	private async Task SaveAssignments()
+	{
+		var invalidRows = rows
+		.Where(r => r.IsSelected && r.TeacherId == null)
+		.ToList();
+
+		if (invalidRows.Any())
+		{
+			errorMessage = "Teacher is required for all selected subjects.";
+			StateHasChanged();
+			return;
+		}
+		foreach (var row in rows)
+		{
+			
+			var existing = await ClassSubjectRepository
+	.GetByClassAndSubjectAsync(selectedClassId, row.SubjectId);
+
+			// ❌ UNCHECKED = DELETE
+			if (!row.IsSelected)
 			{
-				Id = item.Id,
-				SchoolClassId = item.SchoolClassId,
-				SubjectId = item.SubjectId,
-				TeacherId = item.TeacherId
-			};
+				if (existing != null)
+					await ClassSubjectRepository.DeleteAsync(existing.Id);
 
+				continue;
+			}
 
-		isEdit = true;
+		
+			if (row.TeacherId == null)
+				continue;
+
+			
+			if (existing != null)
+			{
+				existing.TeacherId = row.TeacherId;
+
+				await ClassSubjectRepository.UpdateAsync(existing);
+			}
+			else
+			{
+				
+				await ClassSubjectRepository.AddAsync(new ClassSubject
+					{
+						Id = Guid.NewGuid(),
+						SchoolClassId = selectedClassId,
+						SubjectId = row.SubjectId,
+						TeacherId = row.TeacherId
+					});
+			}
+		}
+
+		successMessage = "Assignments saved successfully!";
+		await BuildRows();
+
+		StateHasChanged();
+
+		await Task.Delay(3000);
+		successMessage = null;
+		StateHasChanged();
 	}
 
-	private async Task Delete(Guid id)
-	{
-		await ClassSubjectRepository.DeleteAsync(id);
-
-		await Load();
-	}
-	private void ResetForm()
-	{
-		model = new ClassSubject();
-		isEdit = false;
-	}
+	
 }

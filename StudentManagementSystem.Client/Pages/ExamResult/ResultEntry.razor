@@ -1,5 +1,6 @@
 ﻿@page "/result-entry"
 
+@using StudentManagementSystem.Client.Pages.Search
 @using StudentManagementSystemShared.Models
 @using Microsoft.AspNetCore.Authorization
 @rendermode InteractiveServer
@@ -52,7 +53,7 @@
 								<div class="col-md-3">
 									<label>Class</label>
 
-									<InputSelect class="form-control"
+									<InputSelect required class="form-control"
 												 @bind-Value="selectedClassId">
 
 										<option value="">Select Class</option>
@@ -70,19 +71,11 @@
 								<div class="col-md-3">
 									<label>Subject</label>
 
-									<InputSelect class="form-control"
-												 @bind-Value="selectedSubjectId">
-
-										<option value="">Select Subject</option>
-
-										@foreach (var item in subjects)
-										{
-											<option value="@item.Id">
-												@item.Name
-											</option>
-										}
-
-									</InputSelect>
+									<SearchableSelect TItem="Subject"
+                  Items="subjects"
+                  TextField="x => x.Name"
+                  ValueField="x => x.Id"
+                  @bind-Value="selectedSubjectId" />
 								</div>
 
 								<div class="col-md-3">

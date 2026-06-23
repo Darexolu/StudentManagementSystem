@@ -34,7 +34,7 @@ namespace StudentManagementSystem.Repository
 				.FirstOrDefaultAsync(x => x.Id == id && !x.Deleted);
 		}
 
-		public async Task<List<ClassSubject>> GetByClassIdAsync(Guid classId)
+		public async Task<List<ClassSubject>> GetByClassIdAsync(Guid? classId)
 		{
 			return await _context.ClassSubjects
 				.Include(x => x.Subject)
@@ -74,6 +74,16 @@ namespace StudentManagementSystem.Repository
 			data.Deleted = true;
 
 			await _context.SaveChangesAsync();
+		}
+
+		public async Task<ClassSubject?> GetByClassAndSubjectAsync(Guid? classId, Guid subjectId)
+		{
+			return await _context.ClassSubjects
+				.AsNoTracking()
+				.FirstOrDefaultAsync(x =>
+					x.SchoolClassId == classId &&
+					x.SubjectId == subjectId &&
+					!x.Deleted);
 		}
 	}
 }

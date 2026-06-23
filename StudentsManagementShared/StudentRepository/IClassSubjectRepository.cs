@@ -13,12 +13,13 @@ namespace StudentManagementSystemShared.StudentRepository
 
 		Task<ClassSubject?> GetByIdAsync(Guid id);
 
-		Task<List<ClassSubject>> GetByClassIdAsync(Guid classId);
+		Task<List<ClassSubject>> GetByClassIdAsync(Guid? classId);
 
 		Task AddAsync(ClassSubject model);
 
 		Task UpdateAsync(ClassSubject model);
 
 		Task DeleteAsync(Guid id);
+		Task<ClassSubject?> GetByClassAndSubjectAsync(Guid? classId, Guid subjectId);
 	}
 }
