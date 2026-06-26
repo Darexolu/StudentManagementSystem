@@ -1,8 +1,9 @@
 ﻿@page "/result-entry"
 
-@using StudentManagementSystem.Client.Pages.Search
+@using StudentManagementSystem.Client.Pages.ReusableComponents
 @using StudentManagementSystemShared.Models
 @using Microsoft.AspNetCore.Authorization
+@inject IClassSubjectRepository ClassSubjectRepository
 @rendermode InteractiveServer
 
 @attribute [Authorize(Roles = "Admin,Super Admin,Teacher")]
@@ -53,8 +54,10 @@
 								<div class="col-md-3">
 									<label>Class</label>
 
-									<InputSelect required class="form-control"
-												 @bind-Value="selectedClassId">
+								<InputSelect required
+											 class="form-control"
+											 @bind-Value="selectedClassId"
+											 @bind-Value:after="OnClassChanged">
 
 										<option value="">Select Class</option>
 
@@ -233,16 +236,35 @@
 	private List<Student> students = new();
 	private List<SchoolClass> classes = new();
 	private List<Subject> subjects = new();
+	private List<Subject> allSubjects = new();
 
 	protected override async Task OnInitializedAsync()
 	{
 		students = await StudentRepository.GetAllStudentsAsync();
 		classes = await ClassRepository.GetAllAsync();
-		subjects = await SubjectRepository.GetAllAsync();
+		subjects = new List<Subject>();
+		allSubjects = await SubjectRepository.GetAllAsync();
 
 		await Load();
 	}
+	private async Task OnClassChanged()
+	{
+		selectedSubjectId = Guid.Empty;
 
+		if (selectedClassId == Guid.Empty)
+		{
+			subjects.Clear();
+			return;
+		}
+
+		var classSubjects = await ClassSubjectRepository
+			.GetByClassIdAsync(selectedClassId);
+
+		subjects = allSubjects
+			.Where(s => classSubjects.Any(cs => cs.SubjectId == s.Id))
+			.OrderBy(s => s.Name)
+			.ToList();
+	}
 	private async Task Load()
 	{
 		results = await ResultRepository.GetAllAsync();

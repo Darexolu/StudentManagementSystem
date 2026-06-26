@@ -11,6 +11,7 @@
 @inject ISchoolClassRepository ClassRepository
 @inject ISubjectRepository SubjectRepository
 @inject ITeacherRepository TeacherRepository
+@inject IClassSubjectRepository ClassSubjectRepository
 @inject IJSRuntime JS
 <div class="class-list-header">
 	<h2 class="card-title"><i class="fas fa-calendar-plus"></i> @(isEdit ? "Update Timetable" : "Create Timetable")</h2>
@@ -42,7 +43,8 @@
 			<label>Select Class</label>
 
 			<InputSelect required class="form-control"
-						 @bind-Value="selectedClassId">
+						 @bind-Value="selectedClassId"
+						 @bind-Value:after="OnClassChanged">
 
 				<option value="">Select Class</option>
 
@@ -101,11 +103,13 @@
 
 					<td>
 						<InputSelect class="form-control"
-									 @bind-Value="item.SubjectId">
+									 @bind-Value="item.SubjectId"
+									 @bind-Value:after="() => OnSubjectChanged(item)">
+							>
 
 							<option value="">Select</option>
 
-							@foreach (var s in subjects)
+							@foreach (var s in classSubjects)
 							{
 								<option value="@s.Id">@s.Name</option>
 							}
@@ -114,17 +118,10 @@
 					</td>
 
 					<td>
-						<InputSelect class="form-control"
-									 @bind-Value="item.TeacherId">
-
-							<option value="">Select</option>
-
-							@foreach (var t in teachers)
-							{
-								<option value="@t.Id">@t.FullName</option>
-							}
-
-						</InputSelect>
+						<input type="text"
+							   class="form-control"
+							   value="@GetTeacherName(item.TeacherId)"
+							   disabled />
 					</td>
 
 					<td>
@@ -266,6 +263,8 @@ else
 	private List<SchoolClass> classes = new();
 	private List<Subject> subjects = new();
 	private List<Teacher> teachers = new();
+	private List<Subject> classSubjects = new();
+	private List<ClassSubject> classSubjectAssignments = new();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -274,7 +273,37 @@ else
 
 		GenerateRows();
 	}
+	private async Task OnClassChanged()
+	{
+		await LoadSubjectsForClass();
 
+		// optional: clear timetable selections when class changes
+		foreach (var item in entries)
+		{
+			item.SubjectId = null;
+			item.TeacherId = null;
+		}
+	}
+
+	private async Task LoadSubjectsForClass()
+	{
+		if (selectedClassId == Guid.Empty)
+		{
+			classSubjects = new List<Subject>();
+			return;
+		}
+
+		var classSubjectRecords = await ClassSubjectRepository.GetByClassIdAsync(selectedClassId);
+
+		classSubjectAssignments = await ClassSubjectRepository
+		.GetByClassIdAsync(selectedClassId);
+
+		classSubjects = classSubjectRecords
+			.Where(x => x.Subject != null)
+			.Select(x => x.Subject!)
+			.DistinctBy(x => x.Id)
+			.ToList();
+	}
 	private void GenerateRows()
 	{
 		entries.Clear();
@@ -302,6 +331,28 @@ else
 			}
 		}
 	}
+	private string GetTeacherName(Guid? teacherId)
+	{
+		if (teacherId == null)
+			return "";
+
+		return teachers
+			.FirstOrDefault(x => x.Id == teacherId)?
+			.FullName ?? "";
+	}
+	private void OnSubjectChanged(ClassTimeTable item)
+	{
+		if (item.SubjectId == null)
+		{
+			item.TeacherId = null;
+			return;
+		}
+
+		var assignment = classSubjectAssignments
+			.FirstOrDefault(x => x.SubjectId == item.SubjectId);
+
+		item.TeacherId = assignment?.TeacherId;
+	}
 
 	private async Task LoadDropdowns()
 	{
@@ -322,10 +373,27 @@ else
 			validationMessage = "Please select a class.";
 			return;
 		}
+		// CHECK FOR DUPLICATES BEFORE SAVING
+		if (!isEdit)
+		{
+			foreach (var item in entries.Where(x => x.SubjectId != null))
+			{
+				var exists = await TimeTableRepository
+					.FindByClassDayPeriod(selectedClassId, item.Day, item.PeriodNumber);
+
+				if (exists != null)
+				{
+					validationMessage = $"A timetable already exists for {item.Day}, Period {item.PeriodNumber}. Please edit the existing record instead.";
+					successMessage = null;
+					return;
+				}
+			}
+		}
 
 		foreach (var item in entries)
 		{
 			if (item.SubjectId == null || item.TeacherId == null)
+
 				continue;
 			if (isEdit)
 			{
@@ -347,6 +415,7 @@ else
 			}
 			else
 			{
+
 				await TimeTableRepository.AddAsync(new ClassTimeTable
 					{
 						SchoolClassId = selectedClassId,

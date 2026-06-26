@@ -18,10 +18,13 @@ namespace StudentManagementSystem.Repository
 		public async Task<List<ClassTimeTable>> GetAllAsync()
 		{
 			return await _context.ClassTimeTables
-				.Include(x => x.SchoolClass)
-				.Include(x => x.Subject)
-				.Include(x => x.Teacher)
-				.ToListAsync();
+	.Include(x => x.SchoolClass)
+	.Include(x => x.Subject)
+	.Include(x => x.Teacher)
+	.OrderBy(x => x.SchoolClass.Name)
+	.ThenBy(x => x.Day)
+	.ThenBy(x => x.PeriodNumber)
+	.ToListAsync();
 		}
 
 		public async Task<ClassTimeTable> AddAsync(ClassTimeTable model)

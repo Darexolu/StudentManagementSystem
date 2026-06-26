@@ -9,6 +9,7 @@
 @inject IResultRepository ResultRepository
 @inject ISchoolClassRepository ClassRepository
 @inject ISubjectRepository SubjectRepository
+@inject IClassSubjectRepository ClassSubjectRepository
 
 <h3>Result Viewer</h3>
 
@@ -20,7 +21,8 @@
 	<div class="col-md-3">
 		<label>Class</label>
 		<InputSelect class="form-control"
-					 @bind-Value="selectedClassId">
+					 @bind-Value="selectedClassId"
+					 @bind-Value:after="OnClassChanged">
 			<option value="">Select Class</option>
 			@foreach (var c in classes)
 			{
@@ -126,13 +128,32 @@ else
 	private List<SchoolClass> classes = new();
 	private List<Subject> subjects = new();
 	private List<Result> results = new();
+	private List<Subject> allSubjects = new();
 
 	protected override async Task OnInitializedAsync()
 	{
 		classes = await ClassRepository.GetAllAsync();
-		subjects = await SubjectRepository.GetAllAsync();
+		allSubjects = await SubjectRepository.GetAllAsync();
+		subjects = new();   
 	}
+	private async Task OnClassChanged()
+	{
+		selectedSubjectId = null;
 
+		if (selectedClassId == null)
+		{
+			subjects.Clear();
+			return;
+		}
+
+		var classSubjects = await ClassSubjectRepository
+			.GetByClassIdAsync(selectedClassId.Value);
+
+		subjects = allSubjects
+			.Where(s => classSubjects.Any(cs => cs.SubjectId == s.Id))
+			.OrderBy(s => s.Name)
+			.ToList();
+	}
 	private async Task LoadResults()
 	{
 		if (selectedClassId == null || selectedSubjectId == null)

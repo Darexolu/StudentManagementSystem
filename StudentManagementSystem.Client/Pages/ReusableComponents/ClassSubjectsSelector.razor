@@ -1,0 +1,82 @@
+﻿@using StudentManagementSystemShared.Models
+@inject ISchoolClassRepository ClassRepository
+@inject IClassSubjectRepository ClassSubjectRepository
+@inject ISubjectRepository SubjectRepository
+
+<div class="row">
+
+	<div class="col-md-6">
+		<label>Class</label>
+
+		<InputSelect class="form-control"
+					 @bind-Value="SelectedClassId"
+					 @bind-Value:after="LoadSubjects">
+
+			<option value="">Select Class</option>
+
+			@foreach (var item in classes)
+			{
+				<option value="@item.Id">@item.Name</option>
+			}
+
+		</InputSelect>
+	</div>
+
+	<div class="col-md-6">
+		<label>Subject</label>
+
+		<InputSelect class="form-control"
+					 @bind-Value="SelectedSubjectId">
+
+			<option value="">Select Subject</option>
+
+			@foreach (var item in subjects)
+			{
+				<option value="@item.Id">@item.Name</option>
+			}
+
+		</InputSelect>
+	</div>
+
+</div>
+
+@code {
+
+	private List<SchoolClass> classes = new();
+	private List<Subject> allSubjects = new();
+	private List<Subject> subjects = new();
+
+	[Parameter]
+	public Guid SelectedClassId { get; set; }
+
+	[Parameter]
+	public EventCallback<Guid> SelectedClassIdChanged { get; set; }
+
+	[Parameter]
+	public Guid SelectedSubjectId { get; set; }
+
+	[Parameter]
+	public EventCallback<Guid> SelectedSubjectIdChanged { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		classes = await ClassRepository.GetAllAsync();
+		allSubjects = await SubjectRepository.GetAllAsync();
+	}
+
+	private async Task LoadSubjects()
+	{
+		await SelectedClassIdChanged.InvokeAsync(SelectedClassId);
+
+		SelectedSubjectId = Guid.Empty;
+
+		var assigned = await ClassSubjectRepository
+			.GetByClassIdAsync(SelectedClassId);
+
+		subjects = allSubjects
+			.Where(x => assigned.Any(a => a.SubjectId == x.Id))
+			.ToList();
+
+		await SelectedSubjectIdChanged.InvokeAsync(SelectedSubjectId);
+	}
+}
