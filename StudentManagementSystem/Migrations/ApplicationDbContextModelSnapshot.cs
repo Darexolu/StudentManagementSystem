@@ -240,13 +240,11 @@ namespace StudentManagementSystem.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SchoolClassId");
+
                     b.HasIndex("SubjectId");
 
                     b.HasIndex("TeacherId");
-
-                    b.HasIndex("SchoolClassId", "SubjectId")
-                        .IsUnique()
-                        .HasFilter("[SchoolClassId] IS NOT NULL AND [SubjectId] IS NOT NULL");
 
                     b.ToTable("ClassSubjects");
                 });

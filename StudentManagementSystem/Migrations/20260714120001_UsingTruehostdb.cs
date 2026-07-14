@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StudentManagementSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class UsingTruehostdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -80,26 +80,6 @@ namespace StudentManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Students",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Gender = table.Column<int>(type: "int", nullable: true),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DOB = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Students", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Subjects",
                 columns: table => new
                 {
@@ -126,6 +106,32 @@ namespace StudentManagementSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SystemCodes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SystemSettings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SchoolName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SchoolAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SchoolPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SchoolEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SchoolWebsite = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PrincipalName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SchoolMotto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrentSession = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CurrentTerm = table.Column<int>(type: "int", nullable: false),
+                    ReportCardFooter = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResultSignatureName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResultSignatureTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResultPublishingEnabled = table.Column<bool>(type: "bit", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SystemSettings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -260,6 +266,127 @@ namespace StudentManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdmissionNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: true),
+                    SchoolClassId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DOB = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Students_SchoolClasses_SchoolClassId",
+                        column: x => x.SchoolClassId,
+                        principalTable: "SchoolClasses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SystemCodeDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SystemCodeId = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderNo = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SystemCodeDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SystemCodeDetails_SystemCodes_SystemCodeId",
+                        column: x => x.SystemCodeId,
+                        principalTable: "SystemCodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClassSubjects",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SchoolClassId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SubjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TeacherId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClassSubjects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClassSubjects_SchoolClasses_SchoolClassId",
+                        column: x => x.SchoolClassId,
+                        principalTable: "SchoolClasses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ClassSubjects_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subjects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ClassSubjects_Teachers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "Teachers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClassTimeTables",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SchoolClassId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TeacherId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Day = table.Column<int>(type: "int", nullable: true),
+                    StartTime = table.Column<TimeSpan>(type: "time", nullable: true),
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: true),
+                    Room = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PeriodNumber = table.Column<int>(type: "int", nullable: false),
+                    TimeTableType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClassTimeTables", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClassTimeTables_SchoolClasses_SchoolClassId",
+                        column: x => x.SchoolClassId,
+                        principalTable: "SchoolClasses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ClassTimeTables_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subjects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ClassTimeTables_Teachers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "Teachers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Parents",
                 columns: table => new
                 {
@@ -335,93 +462,29 @@ namespace StudentManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SystemCodeDetails",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SystemCodeId = table.Column<int>(type: "int", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OrderNo = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SystemCodeDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SystemCodeDetails_SystemCodes_SystemCodeId",
-                        column: x => x.SystemCodeId,
-                        principalTable: "SystemCodes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ClassSubjects",
+                name: "StudentAttendances",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SchoolClassId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    SubjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TeacherId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClassSubjects", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ClassSubjects_SchoolClasses_SchoolClassId",
-                        column: x => x.SchoolClassId,
-                        principalTable: "SchoolClasses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ClassSubjects_Subjects_SubjectId",
-                        column: x => x.SubjectId,
-                        principalTable: "Subjects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ClassSubjects_Teachers_TeacherId",
-                        column: x => x.TeacherId,
-                        principalTable: "Teachers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ClassTimeTables",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SchoolClassId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TeacherId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Day = table.Column<int>(type: "int", nullable: true),
-                    StartTime = table.Column<TimeSpan>(type: "time", nullable: true),
-                    EndTime = table.Column<TimeSpan>(type: "time", nullable: true),
-                    Room = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PeriodNumber = table.Column<int>(type: "int", nullable: false)
+                    AttendanceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassTimeTables", x => x.Id);
+                    table.PrimaryKey("PK_StudentAttendances", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClassTimeTables_SchoolClasses_SchoolClassId",
+                        name: "FK_StudentAttendances_SchoolClasses_SchoolClassId",
                         column: x => x.SchoolClassId,
                         principalTable: "SchoolClasses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ClassTimeTables_Subjects_SubjectId",
-                        column: x => x.SubjectId,
-                        principalTable: "Subjects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ClassTimeTables_Teachers_TeacherId",
-                        column: x => x.TeacherId,
-                        principalTable: "Teachers",
+                        name: "FK_StudentAttendances_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -516,6 +579,21 @@ namespace StudentManagementSystem.Migrations
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StudentAttendances_SchoolClassId",
+                table: "StudentAttendances",
+                column: "SchoolClassId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentAttendances_StudentId",
+                table: "StudentAttendances",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_SchoolClassId",
+                table: "Students",
+                column: "SchoolClassId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SystemCodeDetails_SystemCodeId",
                 table: "SystemCodeDetails",
                 column: "SystemCodeId");
@@ -555,7 +633,13 @@ namespace StudentManagementSystem.Migrations
                 name: "Results");
 
             migrationBuilder.DropTable(
+                name: "StudentAttendances");
+
+            migrationBuilder.DropTable(
                 name: "SystemCodeDetails");
+
+            migrationBuilder.DropTable(
+                name: "SystemSettings");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -567,16 +651,16 @@ namespace StudentManagementSystem.Migrations
                 name: "Teachers");
 
             migrationBuilder.DropTable(
-                name: "SchoolClasses");
+                name: "Subjects");
 
             migrationBuilder.DropTable(
                 name: "Students");
 
             migrationBuilder.DropTable(
-                name: "Subjects");
+                name: "SystemCodes");
 
             migrationBuilder.DropTable(
-                name: "SystemCodes");
+                name: "SchoolClasses");
         }
     }
 }

@@ -12,8 +12,8 @@ using StudentManagementSystem.Data;
 namespace StudentManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260609101811_RemovedRequiredPhoneMumberForStudent")]
-    partial class RemovedRequiredPhoneMumberForStudent
+    [Migration("20260714120001_UsingTruehostdb")]
+    partial class UsingTruehostdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -481,6 +481,10 @@ namespace StudentManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("AdmissionNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
@@ -625,6 +629,63 @@ namespace StudentManagementSystem.Migrations
                     b.HasIndex("SystemCodeId");
 
                     b.ToTable("SystemCodeDetails");
+                });
+
+            modelBuilder.Entity("StudentManagementSystemShared.Models.SystemSetting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CurrentSession")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CurrentTerm")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LogoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrincipalName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportCardFooter")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("ResultPublishingEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ResultSignatureName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResultSignatureTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SchoolAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SchoolEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SchoolMotto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SchoolName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SchoolPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SchoolWebsite")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemSettings");
                 });
 
             modelBuilder.Entity("StudentManagementSystemShared.Models.Teacher", b =>
