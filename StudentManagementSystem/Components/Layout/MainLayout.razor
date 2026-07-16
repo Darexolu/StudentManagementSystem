@@ -58,7 +58,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		await AppSettings.InitializeAsync(() => SettingsRepository.GetAsync());
+		await AppSettings.InitializeAsync();
 	}
 }
 
