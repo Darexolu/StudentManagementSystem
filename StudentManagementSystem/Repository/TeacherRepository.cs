@@ -76,5 +76,9 @@ namespace StudentManagementSystem.Repository
 
 			return teachers;
         }
-    }
+		public async Task<int> GetCountAsync()
+		{
+			return await _context.Teachers.CountAsync();
+		}
+	}
 }

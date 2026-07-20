@@ -18,5 +18,7 @@ namespace StudentManagementSystemShared.StudentRepository
 		Task UpdateAsync(SchoolClass model);
 
 		Task DeleteAsync(Guid id);
+
+		Task<int> GetCountAsync();
 	}
 }

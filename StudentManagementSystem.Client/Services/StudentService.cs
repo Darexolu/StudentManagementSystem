@@ -69,5 +69,10 @@ namespace StudentsManagementSystem.Client.Services
 			return response ?? new List<Student>();
 		}
 
+		public async Task<int> GetCountAsync()
+		{
+			return await _httpClient.GetFromJsonAsync<int>("api/Student/Student-Count");
+		}
+
 	}
 }

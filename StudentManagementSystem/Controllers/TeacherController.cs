@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentManagementSystem.Data;
+using StudentManagementSystem.Repository;
 using StudentManagementSystemShared.Models;
 using StudentManagementSystemShared.StudentRepository;
 
@@ -62,10 +63,15 @@ namespace StudentManagementSystem.Controllers
 
                 return Ok(await _repo.DeleteAsync(id));
 	     	}
+		[HttpGet("Teacher-Count")]
+		public async Task<ActionResult<int>> GetTeacherCount()
+		{
+			return Ok(await _teacherRepository.GetCountAsync());
+		}
+		//private bool TeacherExists(Guid id)
+		//{
+		//    return _context.Teachers.Any(e => e.Id == id);
+		//}
 
-            //private bool TeacherExists(Guid id)
-            //{
-            //    return _context.Teachers.Any(e => e.Id == id);
-            //}
-        }
+	}
 }

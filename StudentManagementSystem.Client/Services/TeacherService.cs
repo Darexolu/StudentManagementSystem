@@ -42,5 +42,10 @@ namespace StudentManagementSystem.Client.Services
             var response = await data.Content.ReadFromJsonAsync<Teacher>();
             return response;
         }
-    }
+
+		public async Task<int> GetCountAsync()
+		{
+			return await _httpClient.GetFromJsonAsync<int>("api/Teacher/Teacher-Count");
+		}
+	}
 }

@@ -66,7 +66,11 @@ namespace StudentManagementSystem.Controllers
             return Ok(updatedStudent);
         }
 
+		[HttpGet("Student-Count")]
+		public async Task<ActionResult<int>> GetStudentCount()
+		{
+			return Ok(await _studentRepository.GetCountAsync());
+		}
 
-
-    }
+	}
 }

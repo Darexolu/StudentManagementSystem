@@ -77,6 +77,10 @@ namespace StudentManagementSystem.Repository
 			return parent;
 		}
 
-        
-    }
+		public async Task<int> GetCountAsync()
+		{
+			return await _context.Parents.CountAsync();
+		}
+
+	}
 }

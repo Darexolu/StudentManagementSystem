@@ -64,5 +64,10 @@ namespace StudentManagementSystem.Repository
 
 			await _context.SaveChangesAsync();
 		}
+
+		public async Task<int> GetCountAsync()
+		{
+			return await _context.SchoolClasses.CountAsync();
+		}
 	}
 }

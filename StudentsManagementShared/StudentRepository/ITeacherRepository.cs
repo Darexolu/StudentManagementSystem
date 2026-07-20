@@ -14,5 +14,6 @@ namespace StudentManagementSystemShared.StudentRepository
         Task<Teacher> DeleteAsync(Guid id);
         Task<List<Teacher>> GetAllAsync();
         Task<Teacher> GetTeacherByIdAsync(Guid id);
-    }
+		Task<int> GetCountAsync();
+	}
 }

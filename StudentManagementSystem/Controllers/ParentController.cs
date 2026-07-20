@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentManagementSystem.Data;
+using StudentManagementSystem.Repository;
 using StudentManagementSystemShared.Models;
 using StudentManagementSystemShared.StudentRepository;
 
@@ -80,8 +81,12 @@ namespace StudentManagementSystem.Controllers
 
             return NoContent();
         }
-
-        private bool ParentExists(Guid id)
+		[HttpGet("Parent-Count")]
+		public async Task<ActionResult<int>> GetParentCount()
+		{
+			return Ok(await _parentRepository.GetCountAsync());
+		}
+		private bool ParentExists(Guid id)
         {
             return _context.Parents.Any(e => e.Id == id);
         }

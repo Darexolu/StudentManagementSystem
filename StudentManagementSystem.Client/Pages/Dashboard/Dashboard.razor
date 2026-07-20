@@ -1,5 +1,11 @@
 ﻿@page "/dashboard"
 @using Microsoft.AspNetCore.Authorization
+@using StudentManagementSystemShared.Models
+@inject IStudentRepository StudentRepository
+@inject ITeacherRepository TeacherRepository
+@inject IParentRepository ParentRepository
+@inject ISchoolClassRepository SchoolClassRepository
+
 @attribute [Authorize]
 <div class="dashboard-container">
 
@@ -14,7 +20,7 @@
         <div class="stat-card">
             <div class="stat-icon">👨‍🎓</div>
             <div>
-                <h2>450</h2>
+				<h2>@studentCount</h2>
                 <span>Students</span>
             </div>
         </div>
@@ -22,7 +28,7 @@
         <div class="stat-card">
             <div class="stat-icon">👩‍🏫</div>
             <div>
-                <h2>35</h2>
+				<h2>@teacherCount</h2>
                 <span>Teachers</span>
             </div>
         </div>
@@ -30,7 +36,7 @@
         <div class="stat-card">
             <div class="stat-icon">👨‍👩‍👧</div>
             <div>
-                <h2>420</h2>
+				<h2>@parentCount</h2>
                 <span>Parents</span>
             </div>
         </div>
@@ -38,7 +44,7 @@
         <div class="stat-card">
             <div class="stat-icon">🏫</div>
             <div>
-                <h2>18</h2>
+				<h2>@classCount</h2>
                 <span>Classes</span>
             </div>
         </div>
@@ -137,3 +143,21 @@
     </div>
 
 </div>
+
+				@code {
+
+	private int studentCount;
+	private int teacherCount;
+	private int parentCount;
+	private int classCount;
+
+	protected override async Task OnInitializedAsync()
+	{
+		studentCount = await StudentRepository.GetCountAsync();
+		teacherCount = await TeacherRepository.GetCountAsync();
+		parentCount = await ParentRepository.GetCountAsync();
+		classCount = await SchoolClassRepository.GetCountAsync();
+	}
+	}
+	}
+				}

@@ -15,5 +15,6 @@ namespace StudentManagementSystemShared.StudentRepository
         Task<List<Student>> GetAllStudentsAsync();
 		Task<Student> GetStudentByIdAsync(Guid studentId);
 		Task<List<Student>> GetByClassIdAsync(Guid classId);
+		Task<int> GetCountAsync();
 	}
 }

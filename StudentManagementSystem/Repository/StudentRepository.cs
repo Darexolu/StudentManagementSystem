@@ -84,5 +84,10 @@ namespace StudentManagementSystem.Repository
 	.ThenBy(x => x.LastName)
 	.ToListAsync();
 		}
+
+		public async Task<int> GetCountAsync()
+		{
+			return await _context.Students.CountAsync();
+		}
 	}
 }
