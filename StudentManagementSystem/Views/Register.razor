@@ -1,0 +1,139 @@
+﻿@page "/Users/Register"
+@attribute [Authorize(Roles = "Admin,Super Admin")]
+
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Identity
+@using StudentManagementSystem.Data
+
+@inject UserManager<ApplicationUser> UserManager
+@inject IUserStore<ApplicationUser> UserStore
+@inject ILogger<Register> Logger
+@inject NavigationManager NavigationManager
+
+
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <h1>Create Account</h1>
+        <p class="subtitle">Register a new user in the system</p>
+
+        @if (!string.IsNullOrWhiteSpace(Message))
+        {
+            <div class="alert @AlertClass">
+                @Message
+            </div>
+        }
+
+        <EditForm Model="Input" OnValidSubmit="RegisterUser">
+
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+
+            <div class="form-group">
+                <InputText @bind-Value="Input.Email"
+                           class="form-control"
+                           placeholder="Email" />
+                <ValidationMessage For="() => Input.Email" />
+            </div>
+
+            <div class="form-group">
+                <InputText type="password"
+                           @bind-Value="Input.Password"
+                           class="form-control"
+                           placeholder="Password" />
+                <ValidationMessage For="() => Input.Password" />
+            </div>
+
+            <div class="form-group">
+                <InputText type="password"
+                           @bind-Value="Input.ConfirmPassword"
+                           class="form-control"
+                           placeholder="Confirm Password" />
+                <ValidationMessage For="() => Input.ConfirmPassword" />
+            </div>
+
+            <div class="form-group">
+                <InputSelect @bind-Value="Input.Role"
+                             class="form-control">
+
+                    <option value="">Select Role</option>
+                    <option value="Super Admin">Super Admin</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Student">Student</option>
+                    <option value="Parent">Parent</option>
+
+                </InputSelect>
+
+                <ValidationMessage For="() => Input.Role" />
+            </div>
+
+            <button type="submit" class="btn-primary">
+                Create Account
+            </button>
+
+        </EditForm>
+
+    </div>
+
+</div>
+
+@code
+{
+    private InputModel Input = new();
+
+    private string? Message;
+    private string AlertClass = "alert-success";
+
+    private async Task RegisterUser()
+    {
+        Message = "";
+
+        var user = new ApplicationUser
+        {
+            UserName = Input.Email,
+            Email = Input.Email,
+            EmailConfirmed = true
+        };
+
+        var result = await UserManager.CreateAsync(user, Input.Password);
+
+        if (!result.Succeeded)
+        {
+            AlertClass = "alert-danger";
+            Message = string.Join("<br/>", result.Errors.Select(x => x.Description));
+            return;
+        }
+
+        await UserManager.AddToRoleAsync(user, Input.Role);
+
+        Logger.LogInformation("Admin created a new user.");
+
+        AlertClass = "alert-success";
+        Message = "User created successfully.";
+		NavigationManager.NavigateTo("/Account/Login", forceLoad: true);
+        Input = new();
+    }
+
+    private class InputModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = "";
+
+        [Required]
+        [StringLength(100, MinimumLength = 6)]
+        public string Password { get; set; } = "";
+
+        [Required]
+        [Compare(nameof(Password))]
+        public string ConfirmPassword { get; set; } = "";
+
+        [Required]
+        public string Role { get; set; } = "";
+    }
+}

@@ -25,4 +25,10 @@
     <PackageReference Include="QuestPDF" Version="2026.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Register.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
 </Project>
