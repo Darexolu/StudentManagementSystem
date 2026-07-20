@@ -4,6 +4,7 @@
 @inherits LayoutComponentBase
 @inject ISystemSettingsRepository SettingsRepository
 @inject AppSettingsService AppSettings
+@inject SidebarService SidebarService
 <div class="app-layout">
 
     <NavMenu />
@@ -11,6 +12,9 @@
     <div class="page-area">
 
 		<header class="topbar">
+			<button class="menu-toggle" @onclick="ToggleSidebar">
+				<i class="fas fa-bars"></i>
+			</button>
 			<div class="school-header">
 				<h3>
 					@(AppSettings.Settings?.SchoolName ?? "School Management System")
@@ -43,7 +47,7 @@
         <main class="main-content">
             @Body
         </main>
-
+		
     </div>
 	@* <footer class="main-footer">
 		<strong>Copyright &copy; @DateTime.Now.Year <a href="">Designed and developed by Darex Olu</a>.</strong>
@@ -59,6 +63,12 @@
 	protected override async Task OnInitializedAsync()
 	{
 		await AppSettings.InitializeAsync();
+	}
+	
+
+	private void ToggleSidebar()
+	{
+		SidebarService.Toggle();
 	}
 }
 

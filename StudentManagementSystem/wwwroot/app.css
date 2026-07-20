@@ -76,6 +76,73 @@ body {
 	overflow-y: auto;
 	box-shadow: 2px 0 12px rgba(0,0,0,.1);
 }
+/* Hamburger button */
+.menu-toggle {
+	display: none;
+	border: none;
+	background: transparent;
+	font-size: 24px;
+	color: #1e3a8a;
+	margin-right: 15px;
+	cursor: pointer;
+}
+
+/* Desktop */
+@media (min-width:1025px) {
+
+	.main-sidebar {
+		transform: translateX(0);
+	}
+
+	.page-area {
+		margin-left: 260px;
+	}
+
+	.school-header {
+		margin-left: 22px;
+	}
+
+}
+
+/* Tablet & Mobile */
+@media (max-width:1024px) {
+
+	.menu-toggle {
+		display: block;
+	}
+
+	.main-sidebar {
+		transform: translateX(-100%);
+		transition: transform .3s ease;
+		z-index: 2000;
+		width: 200px;
+	}
+
+		.main-sidebar.show-sidebar {
+			transform: translateX(0);
+		}
+
+	.page-area {
+		margin-left: 0;
+	}
+
+	.topbar {
+		margin-left: 0;
+	}
+
+	.main-content {
+		margin-left: 0;
+	}
+}
+.sidebar-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0,0,0,.4);
+	z-index: 1500;
+}
+
+/* Sidebar */
+
 
 /* Brand */
 .brand-link {
@@ -230,7 +297,6 @@ button.nav-link {
 
 /* Main Content Area */
 .main-content {
-	margin-left: 260px;
 	padding: 24px;
 }
 
@@ -300,7 +366,6 @@ button.nav-link {
 	display: flex;
 	align-items: center;
 	border-bottom: 1px solid #e2e8f0;
-	margin-left: 260px;
 }
 
 	.topbar h3 {

@@ -8,10 +8,12 @@
 @inject NavigationManager NavigationManager
 @inject ISystemSettingsRepository SettingsRepository
 @inject AppSettingsService AppSettings
+@inject SidebarService SidebarService
+
 
  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
+<aside class="main-sidebar @(SidebarService.IsOpen ? "show-sidebar" : "")">
+	<!-- Brand Logo -->
     @* <a href="index3.html" class="brand-link">
       <img src="AdminLTE/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">AdminLTE 3</span>
@@ -331,7 +333,12 @@
     </div>
   </aside>
 
-  
+@if (SidebarService.IsOpen)
+{
+	<div class="sidebar-overlay"
+		 @onclick="SidebarService.Close">
+	</div>
+}
 
 @code {
     private string? currentUrl;
@@ -340,11 +347,13 @@
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+		SidebarService.OnChange += StateHasChanged;
 		
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
+		SidebarService.Close();
         currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
         StateHasChanged();
     }
@@ -352,6 +361,7 @@
     public void Dispose()
     {
         NavigationManager.LocationChanged -= OnLocationChanged;
+		SidebarService.OnChange -= StateHasChanged;
     }
 	private bool isAcademicMenuOpen = false;
 	private bool isTimetableOpen = false;
@@ -383,5 +393,6 @@
 	{
 		isAttendanceOpen = !isAttendanceOpen;
 	}
+	
 }
 
