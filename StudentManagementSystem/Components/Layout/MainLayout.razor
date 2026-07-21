@@ -11,36 +11,72 @@
 
     <div class="page-area">
 
-		<header class="topbar">
-			<button class="menu-toggle" @onclick="ToggleSidebar">
-				<i class="fas fa-bars"></i>
-			</button>
-			<div class="school-header">
-				<h3>
-					@(AppSettings.Settings?.SchoolName ?? "School Management System")
-				</h3>
+		<header class="topbar border-bottom bg-white py-2">
+			<div class="container-fluid">
+				<div class="d-flex flex-wrap align-items-center justify-content-between">
 
-				@if (!string.IsNullOrWhiteSpace(AppSettings.Settings?.SchoolMotto))
-				{
-					<small>@AppSettings.Settings.SchoolMotto</small>
-				}
-			</div>
+					<!-- Left Side -->
+					<div class="d-flex align-items-center flex-grow-1">
+						<button class="btn btn-outline-secondary me-3 menu-toggle"
+								@onclick="ToggleSidebar">
+							<i class="fas fa-bars"></i>
+						</button>
 
-			<div class="topbar-right">
-				<AuthorizeView>
-					<Authorized>
-						<form action="/Account/Logout" method="post">
-							<AntiforgeryToken />
+						<div class="school-header">
 
-							<input type="hidden" name="returnUrl" value="Account/Login" />
+							<!-- School Name + Address (Desktop) -->
+							<div class="d-md-flex align-items-center">
+								<h3 class="mb-0 text-break me-md-3">
+									@(AppSettings.Settings?.SchoolName ?? "School Management System")
+								</h3>
 
-							<button type="submit" class="logout-btn">
-								<i class="nav-icon fas fa-sign-out-alt"></i>
-								Logout
-							</button>
-						</form>
-					</Authorized>
-				</AuthorizeView>
+								@if (!string.IsNullOrWhiteSpace(AppSettings.Settings?.SchoolAddress))
+								{
+									<small class="text-muted d-none d-md-inline school-address">
+										<i class="fas fa-map-marker-alt me-1"></i>
+										@AppSettings.Settings.SchoolAddress
+									</small>
+								}
+							</div>
+
+							@if (!string.IsNullOrWhiteSpace(AppSettings.Settings?.SchoolMotto))
+							{
+								<small class="text-muted d-block">
+									@AppSettings.Settings.SchoolMotto
+								</small>
+							}
+
+							<!-- Address (Mobile) -->
+							@if (!string.IsNullOrWhiteSpace(AppSettings.Settings?.SchoolAddress))
+							{
+								<small class="text-muted d-block d-md-none school-address">
+									<i class="fas fa-map-marker-alt me-1"></i>
+									@AppSettings.Settings.SchoolAddress
+								</small>
+							}
+
+						</div>
+					</div>
+
+					<!-- Right Side -->
+					<div class="mt-2 mt-md-0">
+						<AuthorizeView>
+							<Authorized>
+								<form action="/Account/Logout" method="post" class="mb-0">
+									<AntiforgeryToken />
+
+									<input type="hidden" name="returnUrl" value="Account/Login" />
+
+									<button type="submit" class="logout-btn">
+										<i class="nav-icon fas fa-sign-out-alt"></i>
+										<span>Logout</span>
+									</button>
+								</form>
+							</Authorized>
+						</AuthorizeView>
+					</div>
+
+				</div>
 			</div>
 		</header>
 

@@ -99,7 +99,7 @@ body {
 	}
 
 	.school-header {
-		margin-left: 22px;
+		margin-left: 10px;
 	}
 
 }
@@ -358,6 +358,7 @@ button.nav-link {
 	display: flex;
 	flex-direction: column;
 }
+  /* Top Bar*/
 
 .topbar {
 	height: 70px;
@@ -373,14 +374,13 @@ button.nav-link {
 		color: #1e3a8a;
 	}
 
-/* THIS PUSHES RIGHT SIDE TO END */
+
 .topbar-right {
 	margin-left: auto;
 	display: flex;
 	align-items: center;
 }
 
-/* logout button styling */
 .logout-btn {
 	background: #dc2626;
 	color: white;
@@ -400,34 +400,96 @@ button.nav-link {
 	.logout-btn:hover {
 		background: #b91c1c;
 	}
-.main-content {
-	flex: 1;
-	padding: 25px;
-	background: #f8fafc;
+.school-header h3 {
+	margin: 0;
+	color: #1e3a8a;
+	font-weight: 600;
 }
 
-
-/*Search*/
-.searchable-dropdown {
-	position: relative;
+.school-address {
+	font-size: 0.78rem;
+	white-space: nowrap;
 }
 
-.dropdown-panel {
-	position: absolute;
-	width: 100%;
-	background: white;
-	border: 1px solid #ddd;
-	max-height: 220px;
-	overflow-y: auto;
-	z-index: 9999;
-	border-radius: 6px;
-	
+/* Tablets */
+@media (max-width: 768px) {
+	.topbar {
+		padding: 0 15px;
+		height: 90px;
+	}
+
+	.logout-btn {
+		width: 75px;
+		padding: 6px 10px;
+		font-size: 13px;
+		gap: 5px;
+	}
+
+	.school-header small {
+		font-size: 0.75rem;
+	}
+
+	.school-address {
+		display: block;
+		margin-top: 2px;
+		white-space: normal;
+		font-size: 0.7rem;
+	}
 }
 
-dropdown-item {
-	padding: 8px;
-	cursor: pointer;
-}
+/* Phones */
+@media (max-width: 576px) {
+	.topbar {
+		padding: 0 10px;
+	}
+	.school-header h3 {
+		font-size: 1.1rem;
+	}
+	.logout-btn {
+		width: auto;
+		min-width: 40px;
+		padding: 6px 8px;
+		font-size: 12px;
+		gap: 4px;
+	}
+
+		/* Optional: show only the icon on very small screens */
+		.logout-btn span {
+			display: none;
+		}
+
+	/* Top Bar*/
+
+
+	.main-content {
+		flex: 1;
+		padding: 25px;
+		background: #f8fafc;
+	}
+
+
+
+
+	/*Search*/
+	.searchable-dropdown {
+		position: relative;
+	}
+
+	.dropdown-panel {
+		position: absolute;
+		width: 100%;
+		background: white;
+		border: 1px solid #ddd;
+		max-height: 220px;
+		overflow-y: auto;
+		z-index: 9999;
+		border-radius: 6px;
+	}
+
+	dropdown-item {
+		padding: 8px;
+		cursor: pointer;
+	}
 
 	.dropdown-item:hover {
 		background: #2563eb;
