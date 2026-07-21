@@ -16,7 +16,7 @@
 		<div class="container-fluid">
 
 			<div class="page-header">
-				<h1 class="page-title"> <i class="fas fa-book"></i>Subjects Management</h1>
+				<h3 class="page-title"> <i class="fas fa-book"></i>Subjects Management</h3>
 			</div>
 		</div>
 	</section>
@@ -115,13 +115,13 @@
 											<button type="button"
 													class="btn-table btn-edit"
 													@onclick="() => EditSubject(item)">
-												<i class="fas fa-edit"></i>Edit
+												<i class="fas fa-edit"></i><span>Edit</span>
 											</button>
 
 											<button type="button"
 													class="btn-table btn-delete"
 													@onclick="() => DeleteSubject(item.Id)">
-												<i class="fas fa-trash"></i>Delete
+												<i class="fas fa-trash"></i><span>Delete</span>
 											</button>
 										</td>
 									</tr>

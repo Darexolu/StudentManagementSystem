@@ -442,9 +442,11 @@ button.nav-link {
 	.topbar {
 		padding: 0 10px;
 	}
+
 	.school-header h3 {
 		font-size: 1.1rem;
 	}
+
 	.logout-btn {
 		width: auto;
 		min-width: 40px;
@@ -495,3 +497,4 @@ button.nav-link {
 		background: #2563eb;
 		color: white;
 	}
+}
