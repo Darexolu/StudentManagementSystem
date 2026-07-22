@@ -11,9 +11,10 @@
 @inject ISubjectRepository SubjectRepository
 @inject IClassSubjectRepository ClassSubjectRepository
 
-<h3>Result Viewer</h3>
 
-<hr />
+	<h3 class="page-title">Result Viewer</h3>
+
+@* <hr /> *@
 
 <!-- FILTERS -->
 <div class="row">
@@ -79,43 +80,104 @@
 }
 else
 {
-	<table class="table table-bordered table-striped">
+	<!-- Desktop -->
+	<div class="d-none d-md-block">
 
-		<thead class="table-dark">
-			<tr>
-				<th>Student</th>
-				<th>Test1</th>
-				<th>Test2</th>
-				<th>Assignment</th>
-				<th>Exam</th>
-				<th>Total</th>
-				<th>Grade</th>
-			</tr>
-		</thead>
+		<div class="table-responsive">
+			<table class="table table-bordered table-striped">
 
-		<tbody>
+				<thead class="table-dark">
+					<tr>
+						<th>Student</th>
+						<th>Test1</th>
+						<th>Test2</th>
+						<th>Assignment</th>
+						<th>Exam</th>
+						<th>Total</th>
+						<th>Grade</th>
+					</tr>
+				</thead>
 
-			@foreach (var item in results)
-			{
-				<tr>
+				<tbody>
 
-					<td>
-						@item.Student?.FirstName @item.Student?.LastName
-					</td>
+					@foreach (var item in results)
+					{
+						<tr>
 
-					<td>@item.Test1</td>
-					<td>@item.Test2</td>
-					<td>@item.Assignment</td>
-					<td>@item.Exam</td>
-					<td>@item.Total</td>
-					<td><b>@item.Grade</b></td>
+							<td>
+								@item.Student?.FirstName @item.Student?.LastName
+							</td>
 
-				</tr>
-			}
+							<td>@item.Test1</td>
+							<td>@item.Test2</td>
+							<td>@item.Assignment</td>
+							<td>@item.Exam</td>
+							<td>@item.Total</td>
+							<td><b>@item.Grade</b></td>
 
-		</tbody>
+						</tr>
+					}
 
-	</table>
+				</tbody>
+
+			</table>
+		</div>
+
+	</div>
+
+	<!-- Mobile -->
+	<div class="d-block d-md-none">
+
+		@foreach (var item in results)
+		{
+			<div class="card mb-3 shadow-sm">
+
+				<div class="card-header fw-bold">
+					@item.Student?.FirstName @item.Student?.LastName
+				</div>
+
+				<div class="card-body">
+
+					<div class="d-flex justify-content-between mb-2">
+						<span>Test 1</span>
+						<strong>@item.Test1</strong>
+					</div>
+
+					<div class="d-flex justify-content-between mb-2">
+						<span>Test 2</span>
+						<strong>@item.Test2</strong>
+					</div>
+
+					<div class="d-flex justify-content-between mb-2">
+						<span>Assignment</span>
+						<strong>@item.Assignment</strong>
+					</div>
+
+					<div class="d-flex justify-content-between mb-2">
+						<span>Exam</span>
+						<strong>@item.Exam</strong>
+					</div>
+
+					<hr />
+
+					<div class="d-flex justify-content-between mb-2">
+						<span>Total</span>
+						<strong>@item.Total</strong>
+					</div>
+
+					<div class="d-flex justify-content-between">
+						<span>Grade</span>
+						<span class="badge bg-primary px-3 py-2">
+							@item.Grade
+						</span>
+					</div>
+
+				</div>
+
+			</div>
+		}
+
+	</div>
 }
 
 @code {

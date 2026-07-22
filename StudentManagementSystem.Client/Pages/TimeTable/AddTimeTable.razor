@@ -14,7 +14,7 @@
 @inject IClassSubjectRepository ClassSubjectRepository
 @inject IJSRuntime JS
 <div class="class-list-header">
-	<h2 class="card-title"><i class="fas fa-calendar-plus"></i> @(isEdit ? "Update Timetable" : "Create Timetable")</h2>
+	<h3 class="page-title"><i class="fas fa-calendar-plus"></i> @(isEdit ? "Update Timetable" : "Create Timetable")</h3>
 </div>
 
 
@@ -84,73 +84,69 @@
 				<th>Day</th>
 				<th>Period</th>
 				<th>Subject</th>
-				<th>Teacher</th>
+				<th class="d-none d-md-table-cell">Teacher</th>
 				<th>Start</th>
 				<th>End</th>
-				<th>Room</th>
+				<th class="d-none d-md-table-cell">Room</th>
 			</tr>
 		</thead>
-
 		<tbody>
 
 			@foreach (var item in entries)
-			{
-				<tr id="row-@item.Day-@item.PeriodNumber">
+{
+    <tr id="row-@item.Day-@item.PeriodNumber">
 
-					<td>@item.Day</td>
+        <td>@item.Day</td>
 
-					<td>@item.PeriodNumber</td>
+        <td>@item.PeriodNumber</td>
 
-					<td>
-						<InputSelect class="form-control"
-									 @bind-Value="item.SubjectId"
-									 @bind-Value:after="() => OnSubjectChanged(item)">
-							>
+        <td>
+            <InputSelect class="form-control"
+                         @bind-Value="item.SubjectId"
+                         @bind-Value:after="() => OnSubjectChanged(item)">
+                <option value="">Select</option>
 
-							<option value="">Select</option>
+                @foreach (var s in classSubjects)
+                {
+                    <option value="@s.Id">@s.Name</option>
+                }
+            </InputSelect>
+        </td>
 
-							@foreach (var s in classSubjects)
-							{
-								<option value="@s.Id">@s.Name</option>
-							}
+        <td class="d-none d-md-table-cell">
+            <input type="text"
+                   class="form-control"
+                   value="@GetTeacherName(item.TeacherId)"
+                   disabled />
+        </td>
 
-						</InputSelect>
-					</td>
+        <td>
+            <input type="time"
+                   class="form-control"
+                   value="@GetStartTime(item)"
+                   @onchange="e => SetStartTime(item, e.Value?.ToString())" />
+        </td>
 
-					<td>
-						<input type="text"
-							   class="form-control"
-							   value="@GetTeacherName(item.TeacherId)"
-							   disabled />
-					</td>
+        <td>
+            <input type="time"
+                   class="form-control"
+                   value="@GetEndTime(item)"
+                   @onchange="e => SetEndTime(item, e.Value?.ToString())" />
+        </td>
 
-					<td>
-						<input type="time"
-							   class="form-control"
-							   value="@GetStartTime(item)"
-							   @onchange="e => SetStartTime(item, e.Value?.ToString())" />
-					</td>
+        <td class="d-none d-md-table-cell">
+            <InputText class="form-control"
+                       @bind-Value="item.Room" />
+        </td>
 
-					<td>
-						<input type="time"
-							   class="form-control"
-							   value="@GetEndTime(item)"
-							   @onchange="e => SetEndTime(item, e.Value?.ToString())" />
-					</td>
-
-					<td>
-						<InputText class="form-control"
-								   @bind-Value="item.Room" />
-					</td>
-
-				</tr>
-			}
+    </tr>
+}
 
 		</tbody>
 
 	</table>
 
-	<button class=" class-save-btn" type="submit">
+	<button class=" class-save-btn mb-4" type="submit">
 		@(isEdit ? "Update Timetable" : "Save Timetable")
 	</button>
 	@if (isEdit)
@@ -167,22 +163,27 @@
 
 
 	<div class="class-list-header">
-	<h3 class="card-title">Timetable List</h3>
+	<h6 class="page-title mb-0">Timetable List</h6>
 	</div>
 @if (list.Any())
 {
+	<div class="table-responsive">
 	<table class="table table-bordered table-striped">
 
 		<thead>
 			<tr>
 				<th>Class</th>
 				<th>Subject</th>
-				<th>Teacher</th>
+
+				<th class="d-none d-md-table-cell">Teacher</th>
+
 				<th>Day</th>
 				<th>Start</th>
 				<th>End</th>
 				<th>Type</th>
-				<th>Room</th>
+
+				<th class="d-none d-md-table-cell">Room</th>
+
 				<th>Action</th>
 			</tr>
 		</thead>
@@ -192,7 +193,6 @@
 			@foreach (var item in list)
 			{
 				<tr>
-
 					<td>@item.SchoolClass?.Name</td>
 
 					<td>
@@ -201,7 +201,9 @@
 						<small>Period: @item.PeriodNumber</small>
 					</td>
 
-					<td>@item.Teacher?.FullName</td>
+					<td class="d-none d-md-table-cell">
+						@item.Teacher?.FullName
+					</td>
 
 					<td>@item.Day</td>
 
@@ -216,21 +218,25 @@
 										? DateTime.Today.Add(item.EndTime.Value).ToString("hh:mm tt")
 										: "")
 					</td>
+
 					<td>@item.TimeTableType</td>
-					<td>@item.Room</td>
+
+					<td class="d-none d-md-table-cell">
+						@item.Room
+					</td>
 
 					<td>
 
 						<button type="button"
 								class="btn-table btn-edit"
 								@onclick="() => Edit(item)">
-							<i class="fas fa-edit"></i>Edit
+								<i class="fas fa-edit"></i><span>Edit</span>
 						</button>
 
 						<button type="button"
 								class="btn-table btn-delete"
 								@onclick="() => Delete(item.Id)">
-							<i class="fas fa-trash"></i>Delete
+								<i class="fas fa-trash"></i><span>Delete</span>
 						</button>
 
 					</td>
@@ -240,7 +246,7 @@
 
 		</tbody>
 
-	</table>
+	</table></div>
 	
 }
 else

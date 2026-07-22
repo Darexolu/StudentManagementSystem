@@ -171,10 +171,11 @@
 	min-height: 100vh;
 }
 
-.welcome-section h1 {
+.welcome-section h3 {
 	color: #1e3a8a;
-	font-size: 32px;
+	font-size: 25px;
 	margin-bottom: 5px;
+	font-weight: 500;
 }
 
 .welcome-section p {
@@ -399,8 +400,8 @@
 		padding: 10px;
 	}
 
-	.welcome-section h1 {
-		font-size: 22px;
+	.welcome-section h3 {
+		font-size: 19px;
 	}
 
 	.welcome-section p {
@@ -682,7 +683,7 @@ td:nth-last-child(2) {
 	align-items: center;
 	gap: 10px;
 	margin-bottom: 5px;
-	font-weight: 700;
+	font-weight: 500;
 	color: #1e3a8a;
 }
 
@@ -708,7 +709,6 @@ td:nth-last-child(2) {
 
 /* Tablet */
 @media (max-width: 768px) {
-
 	.page-title,.card-title h3 {
 		font-size: 20px;
 	}
@@ -734,6 +734,24 @@ td:nth-last-child(2) {
 		font-size: .9rem;
 		padding: .6rem;
 	}
+	.timetable-table th,
+	.timetable-table td {
+		padding: 6px 4px;
+	}
+	.timetable-table td {
+		line-height: 1.2;
+	}
+
+		.timetable-table td div {
+			font-size: 11px;
+		}
+	.timetable-table small {
+		font-size: 10px;
+	}
+	.timetable-table td:first-child {
+		font-size: 11px;
+		min-width: 85px;
+	}
 }
 
 /* Phones */
@@ -742,7 +760,26 @@ td:nth-last-child(2) {
 	.page-actions {
 		margin-bottom: 12px;
 	}
+	.timetable-table th,
+	.timetable-table td {
+		padding: 4px 4px;
+	}
 
+	.timetable-table td {
+		line-height: 1.2;
+		min-width: 40px;
+	}
+
+		.timetable-table td div {
+			font-size: 11px;
+		}
+	.timetable-table td:first-child {
+		font-size: 9px;
+		min-width: 60px;
+	}
+	.timetable-table small {
+		font-size: 9px;
+	}
 	.page-title, .card-title h3  {
 		font-size: 16px;
 		margin-bottom: 15px;
@@ -1147,8 +1184,9 @@ td:nth-last-child(2) {
 
 .page-title {
 	color: #1e3a8a;
-	font-weight: 700;
+	font-weight: 500;
 	margin-bottom: 20px;
+	font-size : 25px;
 }
 
 	.page-title i {
@@ -1296,33 +1334,3 @@ td:nth-last-child(2) {
 
 /*Results entry*/
 
-.results-table-wrapper {
-	width: 100%;
-	overflow-x: auto;
-	overflow-y: hidden;
-	-webkit-overflow-scrolling: touch;
-}
-
-.result-table {
-	white-space: nowrap;
-}
-
-	.result-table .form-control {
-		width: 75px;
-		min-width: 75px;
-		text-align: center;
-	}
-
-	.result-table th,
-	.result-table td {
-		vertical-align: middle;
-	}
-
-		.result-table td:first-child,
-		.result-table th:first-child {
-			min-width: 180px;
-		}
-.result-wrapper {
-	width: 100%;
-	overflow-x: hidden;
-}

@@ -403,7 +403,7 @@ button.nav-link {
 .school-header h3 {
 	margin: 0;
 	color: #1e3a8a;
-	font-weight: 600;
+	font-weight: 700;
 }
 
 .school-address {
@@ -444,7 +444,7 @@ button.nav-link {
 	}
 
 	.school-header h3 {
-		font-size: 1.1rem;
+		font-size: 1.2rem;
 	}
 
 	.logout-btn {
@@ -460,7 +460,7 @@ button.nav-link {
 			display: none;
 		}
 
-	/* Top Bar*/
+	/* Top Bar Ending*/
 
 
 	.main-content {

@@ -7,7 +7,7 @@
 @inject ReportCardPdfService PdfService
 @inject IJSRuntime JS
 
-<h3>Student Result Sheet</h3>
+<h3 class="page-title">Student Result Sheet</h3>
 
 <div class="row mb-3">
 
@@ -54,36 +54,99 @@
 
 @if (results.Any())
 {
-	<table class="table table-bordered">
-		<thead class="table-dark">
-			<tr>
-				<th>Subject</th>
-				<th>Test1</th>
-				<th>Test2</th>
-				<th>Assignment</th>
-				<th>Exam</th>
-				<th>Total</th>
-				<th>Grade</th>
-			</tr>
-		</thead>
+	<!-- Desktop Table -->
+	<div class="d-none d-md-block">
 
-		<tbody>
-			@foreach (var r in results)
-			{
-				<tr>
-					<td>@r.Subject?.Name</td>
-					<td>@r.Test1</td>
-					<td>@r.Test2</td>
-					<td>@r.Assignment</td>
-					<td>@r.Exam</td>
-					<td>@r.Total</td>
-					<td>@r.Grade</td>
-				</tr>
-			}
-		</tbody>
-	</table>
+		<div class="table-responsive">
+			<table class="table table-bordered">
 
-	<button class="btn btn-primary" @onclick="DownloadPdf">
+				<thead class="table-dark">
+					<tr>
+						<th>Subject</th>
+						<th>Test1</th>
+						<th>Test2</th>
+						<th>Assignment</th>
+						<th>Exam</th>
+						<th>Total</th>
+						<th>Grade</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@foreach (var r in results)
+					{
+						<tr>
+							<td>@r.Subject?.Name</td>
+							<td>@r.Test1</td>
+							<td>@r.Test2</td>
+							<td>@r.Assignment</td>
+							<td>@r.Exam</td>
+							<td>@r.Total</td>
+							<td>@r.Grade</td>
+						</tr>
+					}
+				</tbody>
+
+			</table>
+		</div>
+
+	</div>
+
+	<!-- Mobile Cards -->
+	<div class="d-block d-md-none">
+
+		@foreach (var r in results)
+		{
+			<div class="card mb-3 shadow-sm">
+
+				<div class="card-header fw-bold">
+					@r.Subject?.Name
+				</div>
+
+				<div class="card-body">
+
+					<div class="d-flex justify-content-between mb-2">
+						<span>Test 1</span>
+						<strong>@r.Test1</strong>
+					</div>
+
+					<div class="d-flex justify-content-between mb-2">
+						<span>Test 2</span>
+						<strong>@r.Test2</strong>
+					</div>
+
+					<div class="d-flex justify-content-between mb-2">
+						<span>Assignment</span>
+						<strong>@r.Assignment</strong>
+					</div>
+
+					<div class="d-flex justify-content-between mb-2">
+						<span>Exam</span>
+						<strong>@r.Exam</strong>
+					</div>
+
+					<hr />
+
+					<div class="d-flex justify-content-between mb-2">
+						<span>Total</span>
+						<strong>@r.Total</strong>
+					</div>
+
+					<div class="d-flex justify-content-between">
+						<span>Grade</span>
+						<span class="badge bg-primary px-3 py-2">
+							@r.Grade
+						</span>
+					</div>
+
+				</div>
+
+			</div>
+		}
+
+	</div>
+
+	<button class="btn btn-primary mt-3" @onclick="DownloadPdf">
 		Print Result Sheet (PDF)
 	</button>
 }

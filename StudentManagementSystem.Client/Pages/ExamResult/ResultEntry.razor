@@ -15,7 +15,7 @@
 
 <PageTitle>Results Management</PageTitle>
 
-<div class="content-wrapper result-wrapper">
+<div class="content-wrapper">
 
 	<section class="content-header">
 		<div class="container-fluid">
@@ -128,87 +128,158 @@
 
 				@if (resultEntries.Any())
 				{
-					<div class="class-list-card mt-4">
+					<!-- Desktop Table -->
+					<div class="d-none d-md-block">
 
-						<div class="table-responsive results-table-wrapper">
+						<div class="class-list-card mt-4">
 
-							<table class="table table-bordered result-table">
+							<div class="table-responsive">
 
-								<thead>
+								<table class="table table-bordered">
 
-									<tr>
-										<th>Student</th>
-										<th>Test 1</th>
-										<th>Test 2</th>
-										<th>Assignment</th>
-										<th>Exam</th>
-										<th>Total</th>
-										<th>Grade</th>
-									</tr>
-
-								</thead>
-
-								<tbody>
-
-									@foreach (var item in resultEntries)
-									{
+									<thead>
 										<tr>
-
-											<td>@item.StudentName</td>
-
-											<td>
-												<InputNumber class="form-control"
-															 @bind-Value="item.Test1" />
-											</td>
-
-											<td>
-												<InputNumber class="form-control"
-															 @bind-Value="item.Test2" />
-											</td>
-
-											<td>
-												<InputNumber class="form-control"
-															 @bind-Value="item.Assignment" />
-											</td>
-
-											<td>
-												<InputNumber class="form-control"
-															 @bind-Value="item.Exam" />
-											</td>
-
-											<td>
-												@(item.Test1 +
-																						item.Test2 +
-																						item.Assignment +
-																						item.Exam)
-											</td>
-
-											<td>
-												@GetGrade(
-																								item.Test1 +
-																								item.Test2 +
-																								item.Assignment +
-																								item.Exam)
-											</td>
-
+											<th>Student</th>
+											<th>Test 1</th>
+											<th>Test 2</th>
+											<th>Assignment</th>
+											<th>Exam</th>
+											<th>Total</th>
+											<th>Grade</th>
 										</tr>
-									}
+									</thead>
 
-								</tbody>
+									<tbody>
 
-							</table>
+										@foreach (var item in resultEntries)
+										{
+											<tr>
+
+												<td>@item.StudentName</td>
+
+												<td>
+													<InputNumber class="form-control"
+																 @bind-Value="item.Test1" />
+												</td>
+
+												<td>
+													<InputNumber class="form-control"
+																 @bind-Value="item.Test2" />
+												</td>
+
+												<td>
+													<InputNumber class="form-control"
+																 @bind-Value="item.Assignment" />
+												</td>
+
+												<td>
+													<InputNumber class="form-control"
+																 @bind-Value="item.Exam" />
+												</td>
+
+												<td>
+													@(item.Test1 +
+																							item.Test2 +
+																							item.Assignment +
+																							item.Exam)
+												</td>
+
+												<td>
+													@GetGrade(
+																									item.Test1 +
+																									item.Test2 +
+																									item.Assignment +
+																									item.Exam)
+												</td>
+
+											</tr>
+										}
+
+									</tbody>
+
+								</table>
+
+							</div>
+
+							<div class="p-3">
+								<button class="class-save-btn"
+										@onclick="SaveAllResults">
+									Save All Results
+								</button>
+							</div>
 
 						</div>
 
-						<div class="p-3">
+					</div>
 
+					<!-- Mobile Cards -->
+					<div class="d-block d-md-none">
+
+						@foreach (var item in resultEntries)
+						{
+							<div class="card mb-3">
+
+								<div class="card-header fw-bold">
+									@item.StudentName
+								</div>
+
+								<div class="card-body">
+
+									<div class="mb-3">
+										<label>Test 1</label>
+										<InputNumber class="form-control"
+													 @bind-Value="item.Test1" />
+									</div>
+
+									<div class="mb-3">
+										<label>Test 2</label>
+										<InputNumber class="form-control"
+													 @bind-Value="item.Test2" />
+									</div>
+
+									<div class="mb-3">
+										<label>Assignment</label>
+										<InputNumber class="form-control"
+													 @bind-Value="item.Assignment" />
+									</div>
+
+									<div class="mb-3">
+										<label>Exam</label>
+										<InputNumber class="form-control"
+													 @bind-Value="item.Exam" />
+									</div>
+
+									<div class="d-flex justify-content-between">
+										<strong>Total</strong>
+										<span>
+											@(item.Test1 +
+																					item.Test2 +
+																					item.Assignment +
+																					item.Exam)
+										</span>
+									</div>
+
+									<div class="d-flex justify-content-between mt-2">
+										<strong>Grade</strong>
+										<span>
+											@GetGrade(
+																				item.Test1 +
+																				item.Test2 +
+																				item.Assignment +
+																				item.Exam)
+										</span>
+									</div>
+
+								</div>
+
+							</div>
+						}
+
+						<div class="text-center mb-3">
 							<button class="class-save-btn"
 									@onclick="SaveAllResults">
-
 								Save All Results
-
 							</button>
-
 						</div>
 
 					</div>
