@@ -21,7 +21,6 @@
 					<h3 class="page-title"><i class="fas fa-people-group"></i>Parents</h3>
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header"></div>
                @*  @if (!AllParents.Any())
                 {
                     <p><em>Loading Parents...</em></p>
@@ -53,7 +52,7 @@
 														<!-- Mobile -->
 														<td class="d-table-cell d-md-none">
 															<div class="student-mobile">
-																<div class="student-name">@parent.FullName</div>
+																<div class="student-name">@parent.FirstName @parent.LastName</div>
 																<div class="student-admission">@parent.PhoneNumber</div>
 															</div>
 														</td>

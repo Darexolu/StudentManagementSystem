@@ -146,7 +146,7 @@
 
 						<a href="#"
 						   class="nav-link @(isAcademicMenuOpen ? "active" : "")"
-						   @onclick="ToggleAcademicMenu">
+						   @onclick="ToggleAcademicMenu" @onclick:preventDefault="true">
 
 							<i class="nav-icon fas fa-book"></i>
 
@@ -187,7 +187,7 @@
 
 						<a href="#"
 						   class="nav-link @(isExamOpen ? "active" : "")"
-						   @onclick="ToggleExam">
+						   @onclick="ToggleExam" @onclick:preventDefault="true">
 
 							<i class="nav-icon fas fa-file-alt"></i>
 
@@ -226,7 +226,7 @@
 
 						<a href="#"
 						   class="nav-link @(isTimetableOpen ? "active" : "")"
-						   @onclick="ToggleTimetable">
+						   @onclick="ToggleTimetable" @onclick:preventDefault="true">
 
 							<i class="fas fa-calendar-plus"></i>
 
@@ -268,7 +268,7 @@
 
 						<a href="#"
 						   class="nav-link @(isAttendanceOpen ? "active" : "")"
-						   @onclick="ToggleAttendance">
+						   @onclick="ToggleAttendance" @onclick:preventDefault="true">
 
 							<i class="fas fa-user-check"></i>
 
@@ -302,8 +302,8 @@
 					<li class="nav-item">
 
 						<a href="#"
-						   class="nav-link @(isAttendanceOpen ? "active" : "")"
-						   @onclick="ToggleSettingsMenu">
+						   class="nav-link @(isSettingsOpen ? "active" : "")"
+						   @onclick="ToggleSettingsMenu" @onclick:preventDefault="true">
 
 							<i class="fas fa-user-check"></i>
 

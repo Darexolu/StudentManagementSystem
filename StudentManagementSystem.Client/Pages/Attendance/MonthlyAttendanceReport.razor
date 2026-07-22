@@ -8,7 +8,7 @@
 @rendermode InteractiveServer
 
 <div class="class-list-header">
-	<h3 class="card-title"><i class="fas fa-calendar-check"></i> Monthly Attendance Report</h3>
+	<h3 class="page-title"><i class="fas fa-calendar-check"></i> Monthly Attendance Report</h3>
 </div>
 <EditForm Model="@this" OnValidSubmit="LoadReport">
 	<DataAnnotationsValidator />
@@ -32,14 +32,14 @@
 
 		</div>
 
-		<div class="class-form-group" style="width: 687px">
+		<div class="class-form-group">
 			<label>Month</label>
 
 			<InputNumber class="form-control"
 						 @bind-Value="month" />
 		</div>
 
-		<div class="class-form-group" style="width: 687px">
+		<div class="class-form-group">
 			<label>Year</label>
 
 			<InputNumber class="form-control"

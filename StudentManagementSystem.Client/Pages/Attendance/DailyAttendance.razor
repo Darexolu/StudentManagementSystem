@@ -13,9 +13,9 @@
 
 
 <div class="class-list-header">
-	<h2 class="card-title">
+	<h3 class="page-title">
 		<i class="fas fa-user-check"></i> Daily Attendance
-	</h2>
+	</h3>
 </div>
 @* <hr /> *@
 
@@ -44,7 +44,7 @@
 
 		<label>Date</label>
 
-		<InputDate class="form-control" style="width: 690px"
+		<InputDate class="form-control" 
 				   @bind-Value="attendanceDate"
 				   @bind-Value:after="LoadStudents" />
 

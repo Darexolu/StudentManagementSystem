@@ -706,7 +706,9 @@ td:nth-last-child(2) {
 .table {
 	white-space: nowrap;
 }
-
+.card-title {
+	color: #1e3a8a;
+}
 /* Tablet */
 @media (max-width: 768px) {
 	.page-title,.card-title h3 {
