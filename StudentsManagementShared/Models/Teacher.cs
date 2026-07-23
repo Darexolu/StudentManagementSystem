@@ -19,7 +19,7 @@ namespace StudentManagementSystemShared.Models
         [Required]
         public string LastName { get; set; }
 		public string FullName => $"{FirstName} {MiddleName} {LastName}";
-		public string EmailAddress { get; set; }
+		public string? EmailAddress { get; set; }
 
 		public Gender? Gender { get; set; }
 
@@ -28,14 +28,14 @@ namespace StudentManagementSystemShared.Models
 		public string? Designation { get; set; }
 		public string? OtherDesignation { get; set; }
 
-		public string PhoneNumber { get; set; }
-        public string Address { get; set; }
+		public string? PhoneNumber { get; set; }
+        public string? Address { get; set; }
 
        
         public DateTime DOB {  get; set; }
-        public string FacebookLink { get; set; }
-        public string TwitterLink { get; set; }
-        public string LinkedInLink { get; set; }
+        public string? FacebookLink { get; set; }
+        public string? TwitterLink { get; set; }
+        public string? LinkedInLink { get; set; }
         
         
     }

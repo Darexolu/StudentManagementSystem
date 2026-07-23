@@ -93,7 +93,17 @@
 				}
 
 				<tr>
-					<td>@student.FullName</td>
+					<td>
+						<!-- Desktop -->
+						<span class="d-none d-md-inline">
+							@student.FullName
+						</span>
+
+						<!-- Mobile -->
+						<span class="d-inline d-md-none">
+							@student.FirstName @student.LastName
+						</span>
+					</td>
 
 					<td>
 						<div class="attendance-options">
@@ -117,7 +127,7 @@
 						</div>
 					</td>
 					<td>
-						<InputText class="form-control" style="width: 100px"
+						<InputText class="form-control"
 								   @bind-Value="entry.Remarks" />
 					</td>
 				</tr>

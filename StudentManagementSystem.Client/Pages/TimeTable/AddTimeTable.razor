@@ -77,12 +77,12 @@
 	@* <hr /> *@
 
 	<!-- GRID -->
-	<table class="table table-bordered text-center">
+	<table class="table table-bordered text-center addtimetable">
 
 		<thead class="table-dark">
 			<tr>
 				<th>Day</th>
-				<th>Period</th>
+				<th class="d-none d-md-table-cell">Period</th>
 				<th>Subject</th>
 				<th class="d-none d-md-table-cell">Teacher</th>
 				<th>Start</th>
@@ -96,11 +96,15 @@
 {
     <tr id="row-@item.Day-@item.PeriodNumber">
 
-        <td>@item.Day</td>
+					<td class="day-column">
+						<span class="d-none d-md-inline">@item.Day.ToString().Substring(0, 3)</span>
+		<span class="d-inline d-md-none">
+							@item.Day.ToString().Substring(0, 3)
+		</span></td>
 
-        <td>@item.PeriodNumber</td>
+					<td class="d-none d-md-table-cell">@item.PeriodNumber</td>
 
-        <td>
+					<td class="subject-column">
             <InputSelect class="form-control"
                          @bind-Value="item.SubjectId"
                          @bind-Value:after="() => OnSubjectChanged(item)">
@@ -120,16 +124,16 @@
                    disabled />
         </td>
 
-        <td>
+			<td class="time-column">
             <input type="time"
-                   class="form-control"
+							   class="form-control  time-input"
                    value="@GetStartTime(item)"
                    @onchange="e => SetStartTime(item, e.Value?.ToString())" />
         </td>
 
-        <td>
+			<td class="time-column">
             <input type="time"
-                   class="form-control"
+							   class="form-control  time-input"
                    value="@GetEndTime(item)"
                    @onchange="e => SetEndTime(item, e.Value?.ToString())" />
         </td>

@@ -762,26 +762,35 @@ td:nth-last-child(2) {
 	.page-actions {
 		margin-bottom: 12px;
 	}
-	.timetable-table th,
-	.timetable-table td {
-		padding: 4px 4px;
+	.addtimetable {
+		table-layout: fixed;
+		width: 100%;
 	}
 
-	.timetable-table td {
-		line-height: 1.2;
-		min-width: 40px;
-	}
-
-		.timetable-table td div {
-			font-size: 11px;
+		.addtimetable .day-column {
+			width: 40px;
+			padding: 2px !important;
 		}
-	.timetable-table td:first-child {
-		font-size: 9px;
-		min-width: 60px;
-	}
-	.timetable-table small {
-		font-size: 9px;
-	}
+
+		.addtimetable .subject-column {
+			width: calc(100% - 180px);
+		}
+
+		.addtimetable .time-column {
+			width: 70px;
+			padding: 2px !important;
+		}
+
+		.addtimetable td,
+		.addtimetable th {
+			padding: 2px !important;
+		}
+
+		.addtimetable .form-control {
+			font-size: 12px;
+			padding: 2px 4px;
+			height: 32px;
+		}
 	.page-title, .card-title h3  {
 		font-size: 16px;
 		margin-bottom: 15px;

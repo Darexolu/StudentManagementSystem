@@ -20,19 +20,19 @@ namespace StudentManagementSystemShared.Models
         public string LastName { get; set; }
 
 		public string FullName => $"{FirstName} {MiddleName} {LastName}";
-		public string EmailAddress { get; set; }
+		public string? EmailAddress { get; set; }
 
 		public Gender? Gender { get; set; }
 
 		public MaritalStatus? MaritalStatus { get; set; }
-		public string PhoneNumber { get; set; }
-        public string Address { get; set; }
+		public string? PhoneNumber { get; set; }
+        public string? Address { get; set; }
 
         public Guid StudentId { get; set; }
 
         public Student Student { get; set; }
 
-		public string Relationship { get; set; }
+		public string? Relationship { get; set; }
 
 		public DateTime DOB { get; set; }
     }

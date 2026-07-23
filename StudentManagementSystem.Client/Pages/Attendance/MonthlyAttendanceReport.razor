@@ -70,7 +70,10 @@
 				<th>Present</th>
 				<th>Absent</th>
 				<th>Total Days</th>
-				<th>Attendance %</th>
+				<th>
+					<span class="d-none d-md-inline">Attendance %</span>
+					<span class="d-inline d-md-none">%</span>
+				</th>
 			</tr>
 		</thead>
 
@@ -80,7 +83,15 @@
 			{
 				<tr>
 
-					<td>@item.StudentName</td>
+					<td>
+						<span class="d-none d-md-inline">
+							@item.StudentName
+						</span>
+
+						<span class="d-inline d-md-none">
+							@(string.Join(" ", item.StudentName.Split(' ').Take(2)))
+						</span>
+					</td>
 
 					<td>@item.PresentDays</td>
 

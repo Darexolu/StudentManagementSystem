@@ -135,7 +135,18 @@ else
 							@if (item != null)
 							{
 								<div class="timetable-cell">
-									<strong>@item.Subject?.Name</strong><br />
+
+									<!-- Desktop -->
+									<strong class="d-none d-md-inline">
+										@item.Subject?.Name
+									</strong>
+
+									<!-- Mobile -->
+									<strong class="d-md-none">
+										@item.Subject?.Code
+									</strong>
+
+									<br />
 
 									<!-- Desktop -->
 									<span class="d-none d-md-inline">
@@ -146,6 +157,7 @@ else
 									<span class="d-md-none">
 										@item.Teacher?.FirstName
 									</span>
+
 								</div>
 							}
 							else

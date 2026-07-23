@@ -29,7 +29,7 @@
                      
                         <div class="form-group">
                             <label class="control-label">Middle Name</label>
-                            <InputText for="MiddleName" class="form-control" @bind-Value="@teacherobj.MiddleName" />
+                            <InputText required for="MiddleName" class="form-control" @bind-Value="@teacherobj.MiddleName" />
                             <ValidationMessage For="()=>teacherobj.MiddleName" />
                         </div>
                    
@@ -56,7 +56,7 @@
                     
                         <div class="form-group">
                             <label class="control-label">Phone Number</label>
-                            <InputText for="PhoneNumber" class="form-control" @bind-Value="@teacherobj.PhoneNumber" />
+                            <InputText required for="PhoneNumber" class="form-control" @bind-Value="@teacherobj.PhoneNumber" />
                             <ValidationMessage For="()=>teacherobj.PhoneNumber" />
                         </div>
                    

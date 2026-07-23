@@ -22,14 +22,14 @@
 			<div class="student-form-wrapper">
 				<div class="student-form-card">
                         <EditForm Model="studobj" OnValidSubmit="UpdateStudent" FormName="updatestudent">
-                            <DataAnnotationsValidator />
-                            <ValidationSummary />
+                           @*  <DataAnnotationsValidator />
+                            <ValidationSummary /> *@
 							<div class="student-form-grid">
 
 								<!-- First Name -->
 								<div class="form-group">
 									<label class="control-label">First Name</label>
-									<InputText class="form-control"
+									<InputText required class="form-control"
 											   @bind-Value="studobj.FirstName" />
 									<ValidationMessage For="()=>studobj.FirstName" />
 								</div>
@@ -37,7 +37,7 @@
 								<!-- Middle Name -->
 								<div class="form-group">
 									<label class="control-label">Middle Name</label>
-									<InputText class="form-control"
+									<InputText required class="form-control"
 											   @bind-Value="studobj.MiddleName" />
 									<ValidationMessage For="()=>studobj.MiddleName" />
 								</div>
@@ -45,7 +45,7 @@
 								<!-- Last Name -->
 								<div class="form-group">
 									<label class="control-label">Last Name</label>
-									<InputText class="form-control"
+									<InputText required class="form-control"
 											   @bind-Value="studobj.LastName" />
 									<ValidationMessage For="()=>studobj.LastName" />
 								</div>
@@ -53,7 +53,7 @@
 								<!-- Admission Number -->
 								<div class="form-group">
 									<label class="control-label">Admission Number</label>
-									<InputText class="form-control"
+									<InputText required class="form-control required"
 											   @bind-Value="studobj.AdmissionNumber" />
 									<ValidationMessage For="()=>studobj.AdmissionNumber" />
 								</div>

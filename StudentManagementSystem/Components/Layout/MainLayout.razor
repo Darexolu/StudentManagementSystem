@@ -26,9 +26,13 @@
 
 							<!-- School Name + Address (Desktop) -->
 							<div class="d-md-flex align-items-center">
-								<h3 class="mb-0 text-break me-md-3">
-									@(AppSettings.Settings?.SchoolName ?? "School Management System")
-								</h3>
+								<NavLink href="/dashboard" class="text-decoration-none text-reset">
+									<div class="d-md-flex align-items-center">
+										<h3 class="mb-0 text-break me-md-3">
+											@(AppSettings.Settings?.SchoolName ?? "School Management System")
+										</h3>
+									</div>
+								</NavLink>
 
 								@if (!string.IsNullOrWhiteSpace(AppSettings.Settings?.SchoolAddress))
 								{
@@ -59,7 +63,7 @@
 					</div>
 
 					<!-- Right Side -->
-					<div class="mt-2 mt-md-0">
+					<div class="mt-md-0 ms-auto">
 						<AuthorizeView>
 							<Authorized>
 								<form action="/Account/Logout" method="post" class="mb-0">

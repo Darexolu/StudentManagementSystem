@@ -361,9 +361,8 @@ button.nav-link {
   /* Top Bar*/
 
 .topbar {
-	height: 70px;
 	background: white;
-	padding: 0 25px;
+	padding: 12px 25px;
 	display: flex;
 	align-items: center;
 	border-bottom: 1px solid #e2e8f0;
@@ -440,7 +439,8 @@ button.nav-link {
 /* Phones */
 @media (max-width: 576px) {
 	.topbar {
-		padding: 0 10px;
+		padding: 0px 20px;
+		margin-top: 10px;
 	}
 
 	.school-header h3 {
@@ -453,6 +453,9 @@ button.nav-link {
 		padding: 6px 8px;
 		font-size: 12px;
 		gap: 4px;
+		flex-shrink: 0;
+		margin-right: 0px;
+		margin-bottom: 8px;
 	}
 
 		/* Optional: show only the icon on very small screens */
