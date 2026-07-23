@@ -69,7 +69,7 @@
 			<tr>
 				<th>Student</th>
 				<th>Status</th>
-				<th>Remarks</th>
+				<th class="d-none d-md-table-cell">Remarks</th>
 			</tr>
 		</thead>
 
@@ -126,10 +126,10 @@
 
 						</div>
 					</td>
-					<td>
-						<InputText class="form-control"
-								   @bind-Value="entry.Remarks" />
-					</td>
+					<td class="d-none d-md-table-cell">
+                        <InputText class="form-control"
+                        @bind-Value="entry.Remarks" />
+                     </td>
 				</tr>
 			}
 

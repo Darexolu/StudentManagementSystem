@@ -69,10 +69,10 @@
 				<th>Student</th>
 				<th>Present</th>
 				<th>Absent</th>
-				<th>Total Days</th>
-				<th>
-					<span class="d-none d-md-inline">Attendance %</span>
-					<span class="d-inline d-md-none">%</span>
+				<th class="d-none d-md-table-cell">Total Days</th>
+
+				<th class="d-none d-md-table-cell">
+					Attendance %
 				</th>
 			</tr>
 		</thead>
@@ -97,9 +97,11 @@
 
 					<td>@item.AbsentDays</td>
 
-					<td>@item.TotalDays</td>
+					<td class="d-none d-md-table-cell">
+						@item.TotalDays
+					</td>
 
-					<td>
+					<td class="d-none d-md-table-cell">
 						@item.AttendancePercentage.ToString("0.00")%
 					</td>
 
