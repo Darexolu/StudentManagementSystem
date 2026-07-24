@@ -70,8 +70,18 @@
 
     protected async Task Delete()
     {
-        var result = await TeacherService.DeleteAsync(id);
-        navigation.NavigateTo("/teachers-list");
+		try
+		{
+			await TeacherService.DeleteAsync(id);
+
+			await JS.InvokeVoidAsync("toast.error", "Teacher deleted successfully.");
+
+			navigation.NavigateTo("/teachers-list");
+		}
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while deleting the teacher.");
+		}
     }
     public void Cancel()
     {

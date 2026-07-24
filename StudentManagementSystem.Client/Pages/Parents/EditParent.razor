@@ -166,9 +166,19 @@
 
     }
     protected async Task UpdateParent()
-    {
-        var result = await ParentService.UpdateAsync(parentobj);
-        navigation.NavigateTo("/parents-list");
+	{
+		try
+		{
+			await ParentService.UpdateAsync(parentobj);
+
+			await JS.InvokeVoidAsync("toast.success", "Parent updated successfully.");
+
+			navigation.NavigateTo("/parents-list");
+		}
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while updating the parent.");
+		}
     }
     public void Cancel()
     {

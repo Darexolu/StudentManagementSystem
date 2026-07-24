@@ -69,8 +69,18 @@
 
     protected async Task Delete()
     {
-        var result = await StudentService.DeleteStudentAsync(id);
-        navigation.NavigateTo("/students-list");
+		try
+		{
+			await StudentService.DeleteStudentAsync(id);
+
+			await JS.InvokeVoidAsync("toast.error", "Student deleted successfully.");
+
+			navigation.NavigateTo("/students-list");
+		}
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while deleting the student.");
+		}
     }
     public void Cancel()
     {

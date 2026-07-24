@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using StudentManagementSystemShared.Models
 @rendermode InteractiveServer
-
+@inject IJSRuntime JS
 @attribute [Authorize(Roles = "Admin,Super Admin")]
 
 @inject ISubjectRepository SubjectRepository
@@ -69,7 +69,7 @@
 						@if (isEdit)
 						{
 							<button type="button"
-									class="class-cancel-btn"
+											class="class-cancel-btn"
 									@onclick="ResetForm">
 								Cancel
 							</button>
@@ -170,13 +170,26 @@
 
 	private async Task SaveSubject()
 	{
-		if (isEdit)
-			await SubjectRepository.UpdateAsync(model);
-		else
-			await SubjectRepository.AddAsync(model);
+		try
+		{
+			if (isEdit)
+			{
+				await SubjectRepository.UpdateAsync(model);
+				await JS.InvokeVoidAsync("toast.success", "Updated successfully.");
+			}
+			else
+			{
+				await SubjectRepository.AddAsync(model);
+				await JS.InvokeVoidAsync("toast.success", "Saved successfully.");
+			}
 
-		await LoadData();
-		ResetForm();
+			await LoadData();
+			ResetForm();
+		}
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while saving the subject.");
+		}
 	}
 
 	private void EditSubject(Subject item)

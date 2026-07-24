@@ -159,11 +159,21 @@
 
     }
 
-    protected async Task CreateStudent()
+   protected async Task CreateStudent()
+{
+    try
     {
-        var result = await StudentService.AddStudentAsync(studobj);
+        await StudentService.AddStudentAsync(studobj);
+
+        await JS.InvokeVoidAsync("toast.success", "Student saved successfully.");
+
         navigation.NavigateTo("/students-list");
     }
+    catch (Exception)
+    {
+        await JS.InvokeVoidAsync("toast.error", "An error occurred while saving the student.");
+    }
+}
     private void Cancel()
     {
         navigation.NavigateTo("/students-list");

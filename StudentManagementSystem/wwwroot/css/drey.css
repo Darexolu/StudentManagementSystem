@@ -1263,6 +1263,15 @@ td:nth-last-child(2) {
 	padding: 10px 22px;
 	font-weight: 600;
 }
+.class-cancel-btn {
+	background: #64748b;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	padding: 10px 22px;
+	font-weight: 600;
+	margin-left: 3px;
+}
 /* Tablets */
 @media (max-width: 768px) {
 	.class-save-btn {

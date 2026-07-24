@@ -171,8 +171,18 @@
 
     protected async Task UpdateStudent()
     {
-        var result = await StudentService.UpdateStudentAsync(studobj);
-        navigation.NavigateTo("/students-list");
+		try
+		{
+			await StudentService.UpdateStudentAsync(studobj);
+
+			await JS.InvokeVoidAsync("toast.success", "Student updated successfully.");
+
+			navigation.NavigateTo("/students-list");
+		}
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while updating the student.");
+		}
     }
     public void Cancel()
     {

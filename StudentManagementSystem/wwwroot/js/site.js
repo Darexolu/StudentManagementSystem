@@ -21,3 +21,22 @@ window.downloadFile = (fileName, byteArray) => {
 
 	document.body.removeChild(link);
 };
+window.toast = {
+
+	success: function (message) {
+		toastr.success(message);
+	},
+
+	error: function (message) {
+		toastr.error(message);
+	},
+
+	warning: function (message) {
+		toastr.warning(message);
+	},
+
+	info: function (message) {
+		toastr.info(message);
+	}
+
+};

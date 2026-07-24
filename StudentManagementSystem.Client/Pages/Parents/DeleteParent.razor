@@ -69,8 +69,18 @@
 
     protected async Task Delete()
     {
-        var result = await ParentService.DeleteAsync(id);
-        navigation.NavigateTo("/parents-list");
+		try
+		{
+			await ParentService.DeleteAsync(id);
+
+			await JS.InvokeVoidAsync("toast.error", "Parent deleted successfully.");
+
+			navigation.NavigateTo("/parents-list");
+		}
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while deleting the parent.");
+		}
     }
     public void Cancel()
     {

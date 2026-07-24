@@ -156,8 +156,18 @@
     //Episode 10
     protected async Task CreateParent()
     {
+         try
+    {
         var result = await ParentService.AddParentAsync(parentobj);
+
+        await JS.InvokeVoidAsync("toast.success", "Parent saved successfully.");
+
         navigation.NavigateTo("/parents-list");
+    }
+    catch (Exception)
+    {
+        await JS.InvokeVoidAsync("toast.error", "An error occurred while saving the parent.");
+    }
     }
     public void Cancel()
     {

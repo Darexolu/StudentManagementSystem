@@ -168,8 +168,18 @@
     
     protected async Task CreateTeacher()
     {
-        var result = await TeacherService.AddTeacherAsync(teacherobj);
+       try
+    {
+        await TeacherService.AddTeacherAsync(teacherobj);
+
+        await JS.InvokeVoidAsync("toast.success", "Teacher saved successfully.");
+
         navigation.NavigateTo("/teachers-list");
+    }
+    catch (Exception)
+    {
+        await JS.InvokeVoidAsync("toast.error", "An error occurred while saving the teacher.");
+    }
     }
     public void Cancel()
     {
