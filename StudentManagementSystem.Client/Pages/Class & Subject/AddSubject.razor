@@ -48,7 +48,7 @@
 
 						<div class="class-form-group">
 							<label>Code</label>
-							<InputText class="form-control" @bind-Value="model.Code" />
+							<InputText required class="form-control" @bind-Value="model.Code" />
 						</div>
 
 						<div class="class-form-group">
@@ -207,8 +207,18 @@
 
 	private async Task DeleteSubject(Guid id)
 	{
-		await SubjectRepository.DeleteAsync(id);
-		await LoadData();
+		try
+		{
+			await SubjectRepository.DeleteAsync(id);
+
+			await JS.InvokeVoidAsync("toast.error", "Subject deleted successfully.");
+
+			await LoadData();
+		}
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while deleting the subject.");
+		}
 	}
 
 	private void ResetForm()

@@ -333,53 +333,71 @@
 			.ToList();
 	}
 	private async Task Load()
-	{
-		results = await ResultRepository.GetAllAsync();
+	{		
+			results = await ResultRepository.GetAllAsync();
+
 	}
 
-	private async Task SaveResult()
-	{
-		model.Total = GetTotal();
-		model.Grade = GetGrade();
+	// private async Task SaveResult()
+	// {
+	// 	try
+	// 	{
+	// 		model.Total = GetTotal();
+	// 		model.Grade = GetGrade();
 
-		if (isEdit)
-		{
-			await ResultRepository.UpdateAsync(model);
-		}
-		else
-		{
-			await ResultRepository.AddAsync(model);
-		}
+	// 		if (isEdit)
+	// 		{
+	// 			await ResultRepository.UpdateAsync(model);
+	// 			await JS.InvokeVoidAsync("toast.success", "Result updated successfully.");
+	// 		}
+	// 		else
+	// 		{
+	// 			await ResultRepository.AddAsync(model);
+	// 			await JS.InvokeVoidAsync("toast.success", "Result saved successfully.");
+	// 		}
 
-		await Load();
+	// 		await Load();
+	// 		ResetForm();
+	// 	}
+	// 	catch (Exception)
+	// 	{
+	// 		await JS.InvokeVoidAsync("toast.error", "An error occurred while saving the result.");
+	// 	}
+	// }
 
-		ResetForm();
-	}
+	// private void EditResult(Result item)
+	// {
+	// 	model = new Result
+	// 		{
+	// 			Id = item.Id,
+	// 			StudentId = item.StudentId,
+	// 			SubjectId = item.SubjectId,
+	// 			SchoolClassId = item.SchoolClassId,
+	// 			Test1 = item.Test1,
+	// 			Test2 = item.Test2,
+	// 			Assignment = item.Assignment,
+	// 			Exam = item.Exam,
+	// 			TeacherRemark = item.TeacherRemark,
+	// 			PrincipalComment = item.PrincipalComment
+	// 		};
 
-	private void EditResult(Result item)
-	{
-		model = new Result
-			{
-				Id = item.Id,
-				StudentId = item.StudentId,
-				SubjectId = item.SubjectId,
-				SchoolClassId = item.SchoolClassId,
-				Test1 = item.Test1,
-				Test2 = item.Test2,
-				Assignment = item.Assignment,
-				Exam = item.Exam,
-				TeacherRemark = item.TeacherRemark,
-				PrincipalComment = item.PrincipalComment
-			};
-
-		isEdit = true;
-	}
+	// 	isEdit = true;
+	// }
 
 	private async Task DeleteResult(Guid id)
 	{
-		await ResultRepository.DeleteAsync(id);
+		try
+		{
+			await ResultRepository.DeleteAsync(id);
 
-		await Load();
+			await JS.InvokeVoidAsync("toast.error", "Result deleted successfully.");
+
+			await Load();
+		}
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while deleting the result.");
+		}
 	}
 
 	private decimal GetTotal()
@@ -436,85 +454,102 @@
 
 	private async Task LoadStudentsForEntry()
 	{
-		var classStudents =
-			await StudentRepository.GetByClassIdAsync(selectedClassId);
+		try
+		{
+			var classStudents =
+				await StudentRepository.GetByClassIdAsync(selectedClassId);
 
-		var existingResults =
-			await ResultRepository.GetByClassSubjectTermSessionAsync(
-				selectedClassId,
-				selectedSubjectId,
-				selectedTerm,
-				selectedSession);
+			var existingResults =
+				await ResultRepository.GetByClassSubjectTermSessionAsync(
+					selectedClassId,
+					selectedSubjectId,
+					selectedTerm,
+					selectedSession);
 
-		resultEntries = classStudents
-			.Select(student =>
-			{
-				var existing = existingResults
-					.FirstOrDefault(x => x.StudentId == student.Id);
+			resultEntries = classStudents
+				.Select(student =>
+				{
+					var existing = existingResults
+						.FirstOrDefault(x => x.StudentId == student.Id);
 
-				return new BulkResultEntry
-					{
-						StudentId = student.Id,
-						StudentName = student.FullName,
+					return new BulkResultEntry
+						{
+							StudentId = student.Id,
+							StudentName = student.FullName,
+							Test1 = existing?.Test1 ?? 0,
+							Test2 = existing?.Test2 ?? 0,
+							Assignment = existing?.Assignment ?? 0,
+							Exam = existing?.Exam ?? 0
+						};
+				})
+				.ToList();
 
-						Test1 = existing?.Test1 ?? 0,
-						Test2 = existing?.Test2 ?? 0,
-						Assignment = existing?.Assignment ?? 0,
-						Exam = existing?.Exam ?? 0
-					};
-			})
-			.ToList();
+			await JS.InvokeVoidAsync("toast.success", "Students loaded successfully.");
+		}
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while loading students.");
+		}
 	}
 	private async Task SaveAllResults()
 	{
-		foreach (var item in resultEntries)
+		try
 		{
-			var total =
-				item.Test1 +
-				item.Test2 +
-				item.Assignment +
-				item.Exam;
-
-			var existing = await ResultRepository.GetStudentResultAsync(
-				item.StudentId,
-				selectedClassId,
-				selectedSubjectId,
-				selectedTerm,
-				selectedSession);
-
-			if (existing == null)
+			foreach (var item in resultEntries)
 			{
-				var result = new Result
-					{
-						StudentId = item.StudentId,
-						SchoolClassId = selectedClassId,
-						SubjectId = selectedSubjectId,
-						Test1 = item.Test1,
-						Test2 = item.Test2,
-						Assignment = item.Assignment,
-						Exam = item.Exam,
-						Total = total,
-						Grade = GetGrade(total),
-						Term = selectedTerm,
-						Session = selectedSession
-					};
+				var total =
+					item.Test1 +
+					item.Test2 +
+					item.Assignment +
+					item.Exam;
 
-				await ResultRepository.AddAsync(result);
-			}
-			else
-			{
-				existing.Test1 = item.Test1;
-				existing.Test2 = item.Test2;
-				existing.Assignment = item.Assignment;
-				existing.Exam = item.Exam;
-				existing.Total = total;
-				existing.Grade = GetGrade(total);
+				var existing = await ResultRepository.GetStudentResultAsync(
+					item.StudentId,
+					selectedClassId,
+					selectedSubjectId,
+					selectedTerm,
+					selectedSession);
 
-				await ResultRepository.UpdateAsync(existing);
+				if (existing == null)
+				{
+					var result = new Result
+						{
+							StudentId = item.StudentId,
+							SchoolClassId = selectedClassId,
+							SubjectId = selectedSubjectId,
+							Test1 = item.Test1,
+							Test2 = item.Test2,
+							Assignment = item.Assignment,
+							Exam = item.Exam,
+							Total = total,
+							Grade = GetGrade(total),
+							Term = selectedTerm,
+							Session = selectedSession
+						};
+
+					await ResultRepository.AddAsync(result);
+				}
+				else
+				{
+					existing.Test1 = item.Test1;
+					existing.Test2 = item.Test2;
+					existing.Assignment = item.Assignment;
+					existing.Exam = item.Exam;
+					existing.Total = total;
+					existing.Grade = GetGrade(total);
+
+					await ResultRepository.UpdateAsync(existing);
+				}
 			}
+
+			await Load();
+
+			await JS.InvokeVoidAsync("toast.success", "Results saved successfully.");
 		}
-
-		await Load();
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while saving the results.");
+		}
 	}
 
 	private string GetGrade(decimal total)

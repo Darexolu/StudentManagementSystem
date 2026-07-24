@@ -240,9 +240,11 @@ else
 	}
 	private async Task LoadClassTimetable()
 	{
-		if (selectedClassId == null)
-			return;
-
+		 if (selectedClassId == null || selectedClassId == Guid.Empty)
+        {
+            await JS.InvokeVoidAsync("toast.warning", "Please select a class first.");
+            return;
+        }
 		isLoading = true;
 		slots.Clear();
 		classTimetable.Clear();
@@ -255,7 +257,7 @@ else
         selectedTimeTableType);
 
 		BuildSlots();
-
+		await JS.InvokeVoidAsync("toast.success", "Timetable loaded successfully.");
 		isLoading = false;
 
 		StateHasChanged();

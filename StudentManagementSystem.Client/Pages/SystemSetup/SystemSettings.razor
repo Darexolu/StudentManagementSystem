@@ -140,6 +140,6 @@
 	{
 		await SettingsRepository.SaveAsync(model);
 		AppSettings.Update(model);
-		successMessage = "Settings saved successfully.";
+		await JS.InvokeVoidAsync("toast.success", "Settings saved successfully.");
 	}
 }

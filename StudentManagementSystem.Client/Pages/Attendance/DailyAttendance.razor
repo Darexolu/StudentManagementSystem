@@ -178,12 +178,22 @@
 
 	private async Task LoadStudents()
 	{
-		if (selectedClassId == null)
-			return;
+		if (selectedClassId == null || selectedClassId == Guid.Empty)
+			 {
+            await JS.InvokeVoidAsync("toast.warning", "Please select a class first.");
+            return;
+        }
 
 		students = await StudentRepository
 			.GetByClassIdAsync(selectedClassId.Value);
 
+		if (students == null || !students.Any())
+		{
+			attendanceEntries.Clear();
+			await JS.InvokeVoidAsync("toast.warning", "No students found for the selected class.");
+			StateHasChanged();
+			return;
+		}
 		attendanceEntries.Clear();
 
 		foreach (var student in students)
@@ -203,7 +213,7 @@
 						Status = AttendanceStatus.Present
 					};
 		}
-
+		await JS.InvokeVoidAsync("toast.success", "Students loaded successfully.");
 		StateHasChanged();
 	}
 	private async Task SaveAttendance()
@@ -229,8 +239,7 @@
 				await AttendanceRepository.UpdateAsync(existing);
 			}
 		}
-
-		successMessage = "Attendance saved successfully.";
+		await JS.InvokeVoidAsync("toast.success", "Attendance saved successfully.");
 	}
 
 }

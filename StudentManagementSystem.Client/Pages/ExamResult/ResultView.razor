@@ -218,13 +218,25 @@ else
 	}
 	private async Task LoadResults()
 	{
-		if (selectedClassId == null || selectedSubjectId == null)
-			return;
+		try
+		{
+			if (selectedClassId == null || selectedSubjectId == null)
+			{
+				await JS.InvokeVoidAsync("toast.error", "Please select a class and subject first.");
+				return;
+			}
 
-		results = await ResultRepository.GetByFiltersAsync(
-			selectedClassId.Value,
-			selectedSubjectId.Value,
-			selectedTerm,
-			selectedSession);
+			results = await ResultRepository.GetByFiltersAsync(
+				selectedClassId.Value,
+				selectedSubjectId.Value,
+				selectedTerm,
+				selectedSession);
+
+			await JS.InvokeVoidAsync("toast.success", "Results loaded successfully.");
+		}
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while loading the results.");
+		}
 	}
 }

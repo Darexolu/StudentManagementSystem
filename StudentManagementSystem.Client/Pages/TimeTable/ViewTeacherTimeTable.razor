@@ -203,8 +203,11 @@ else
 
 	private async Task LoadTeacherTimetable()
 	{
-		if (selectedTeacherId == null)
-			return;
+		if (selectedTeacherId == null || selectedTeacherId == Guid.Empty)
+        {
+            await JS.InvokeVoidAsync("toast.warning", "Please select a class first.");
+            return;
+        }
 
 		isLoading = true;
 
@@ -218,7 +221,7 @@ else
 			.GetTeacherTimeTable(selectedTeacherId.Value);
 
 		BuildSlots();
-
+		  await JS.InvokeVoidAsync("toast.success", "Timetable loaded successfully.");
 		isLoading = false;
 
 		StateHasChanged();

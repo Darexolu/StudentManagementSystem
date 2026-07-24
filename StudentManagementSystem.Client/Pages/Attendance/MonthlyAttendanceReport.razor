@@ -138,7 +138,12 @@
 					selectedClassId,
 					year,
 					month);
-		successMessage = "Monthly attendance report loaded successfully.";
+					 if (records == null || !records.Any())
+           {
+        await JS.InvokeVoidAsync("toast.warning", "No attendance records found for the selected period.");
+          return;
+           }
+		await JS.InvokeVoidAsync("toast.success", "Attendance report loaded successfully.");
 		}
 	
 }

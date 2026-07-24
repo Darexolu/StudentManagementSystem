@@ -195,18 +195,26 @@
 
 	private async Task SaveClass()
 	{
-		if (isEdit)
+		try
 		{
-			await SchoolClassRepository.UpdateAsync(model);
+			if (isEdit)
+			{
+				await SchoolClassRepository.UpdateAsync(model);
+				await JS.InvokeVoidAsync("toast.success", "Class updated successfully.");
+			}
+			else
+			{
+				await SchoolClassRepository.AddAsync(model);
+				await JS.InvokeVoidAsync("toast.success", "Class saved successfully.");
+			}
+
+			await LoadData();
+			ResetForm();
 		}
-		else
+		catch (Exception)
 		{
-			await SchoolClassRepository.AddAsync(model);
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while saving the class.");
 		}
-
-		await LoadData();
-
-		ResetForm();
 	}
 
 	private void EditClass(SchoolClass item)
@@ -224,9 +232,18 @@
 
 	private async Task DeleteClass(Guid id)
 	{
-		await SchoolClassRepository.DeleteAsync(id);
+		try
+		{
+			await SchoolClassRepository.DeleteAsync(id);
 
-		await LoadData();
+			await JS.InvokeVoidAsync("toast.error", "Class deleted successfully.");
+
+			await LoadData();
+		}
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while deleting the class.");
+		}
 	}
 
 	private void ResetForm()

@@ -167,14 +167,25 @@
 
 	private async Task LoadResults()
 	{
-		if (selectedStudentId == null)
-			return;
+		try
+		{
+			if (selectedStudentId == Guid.Empty)
+			{
+				await JS.InvokeVoidAsync("toast.error", "Please select a student first.");
+				return;
+			}
 
-		results = await ResultRepository
-				.GetStudentResultSheetAsync(
-					selectedStudentId,
-					term,
-					session);
+			results = await ResultRepository.GetStudentResultSheetAsync(
+				selectedStudentId,
+				term,
+				session);
+
+			await JS.InvokeVoidAsync("toast.success", "Student results loaded successfully.");
+		}
+		catch (Exception)
+		{
+			await JS.InvokeVoidAsync("toast.error", "An error occurred while loading the student's results.");
+		}
 	}
 	
 
