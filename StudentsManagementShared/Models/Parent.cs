@@ -28,11 +28,13 @@ namespace StudentManagementSystemShared.Models
 		public string? PhoneNumber { get; set; }
         public string? Address { get; set; }
 
-        public Guid StudentId { get; set; }
+		//      public Guid StudentId { get; set; }
 
-        public Student Student { get; set; }
+		//      public Student Student { get; set; }
 
-		public string? Relationship { get; set; }
+		//public string? Relationship { get; set; }
+		public ICollection<ParentStudent> ParentStudents { get; set; }
+	     = new List<ParentStudent>();
 
 		public DateTime DOB { get; set; }
     }

@@ -36,8 +36,12 @@ namespace StudentManagementSystemShared.Models
 
         public DateTime DOB { get; set; }
 
+		public string DisplayName => $"{FullName} ({AdmissionNumber})";
+		public ICollection<ParentStudent> ParentStudents { get; set; }
+	   = new List<ParentStudent>();
 
-      
-    }
+
+
+	}
     
 }

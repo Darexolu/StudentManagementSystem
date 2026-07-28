@@ -73,7 +73,7 @@
 		{
 			await StudentService.DeleteStudentAsync(id);
 
-			await JS.InvokeVoidAsync("toast.error", "Student deleted successfully.");
+			await JS.InvokeVoidAsync("toast.success", "Student deleted successfully.");
 
 			navigation.NavigateTo("/students-list");
 		}

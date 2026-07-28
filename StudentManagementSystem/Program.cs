@@ -60,6 +60,7 @@ builder.Services.AddScoped<IResultRepository, ResultRepository>();
 builder.Services.AddScoped<ITimeTableRepository, TimeTableRepository>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 builder.Services.AddScoped<ISystemSettingsRepository, SettingsRepository>();
+builder.Services.AddScoped<IParentStudentRepository, ParentStudentRepository>();
 builder.Services.AddScoped<ReportCardPdfService>();
 builder.Services.AddSingleton<AppSettingsService>();
 builder.Services.AddScoped<SidebarService>();

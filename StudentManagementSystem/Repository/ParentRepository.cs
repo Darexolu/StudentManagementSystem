@@ -37,9 +37,11 @@ namespace StudentManagementSystem.Repository
 
         public async Task<List<Parent>> GetAllAsync()
         {
-            var data = await _context.Parents.Include(x=>x.Student).
-                ToListAsync();
-            return data;
+            var data = await _context.Parents
+		.Include(x => x.ParentStudents)
+			.ThenInclude(x => x.Student)
+		.ToListAsync();
+			return data;
         }
 
         public async Task<Parent> GetByIdAsync(Guid id)
@@ -69,8 +71,8 @@ namespace StudentManagementSystem.Repository
 			parent.Gender = mod.Gender;
 			parent.MaritalStatus = mod.MaritalStatus;
 			parent.DOB = mod.DOB;
-			parent.StudentId = mod.StudentId;
-			parent.Relationship = mod.Relationship;
+			//parent.StudentId = mod.StudentId;
+			//parent.Relationship = mod.Relationship;
 
 			await _context.SaveChangesAsync();
 

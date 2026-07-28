@@ -1,8 +1,11 @@
 ﻿@page "/parent/edit/{id:guid}"
+@using StudentManagementSystem.Client.Pages.ReusableComponents
 @using StudentManagementSystemShared.Models;
 @inject NavigationManager navigation;
 @using Microsoft.AspNetCore.Authorization;
 @using StudentManagementSystem.Utility;
+@inject IParentStudentRepository ParentStudentRepository
+
 @attribute [Authorize(Roles = "Admin,Super Admin")]
 
 
@@ -64,14 +67,14 @@
 					<InputDate for="DOB" class="form-control" @bind-Value="@parentobj.DOB" />
 					<ValidationMessage For="()=>parentobj.DOB" />
 				</div>
-				<div class="form-group">
+				@* <div class="form-group">
 					<label class="control-label">Relationship with student</label>
-					<InputText required for="Relationship" class="form-control" @bind-Value="@parentobj.Relationship">
+					<InputText class="form-control"
+							   @bind-Value="relationship" />
 
-					</InputText>
+					<ValidationMessage For="() => relationship" />
 
-					<ValidationMessage For="()=>parentobj.Relationship" />
-				</div>
+				</div> *@
 
 				<div class="form-group">
 
@@ -110,19 +113,63 @@
 
 				</div>
 
-				<div class="form-group">
-					<label class="control-label">Student</label>
-					<InputSelect required for="StudentId" class="form-select" @bind-Value="@parentobj.StudentId">
-						<option value="">Select Student</option>
+				          <div class="form-group student">
 
-						@foreach (var student in Students)
-						{
-							<option value="@student.Id">@student.FullName</option>
-						}
-					</InputSelect>
+    <label class="control-label">Select Student</label>
 
-					<ValidationMessage For="()=>parentobj.StudentId" />
-				</div>
+    <SearchableSelect TItem="Student"
+                      Items="Students"
+                      TextField="x => x.FullName"
+                      ValueField="x => x.Id"
+                      @bind-Value="SelectedStudentId" />
+
+</div>
+@if (SelectedStudents.Any())
+{
+    <div class="selected-students mt-4">
+
+        <h5>
+            Linked Students
+        </h5>
+
+        @foreach (var student in SelectedStudents)
+        {
+            <div class="selected-student-card">
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <strong>
+                            @student.StudentName
+                        </strong>
+
+                        <br />
+
+                        <small>
+                            Admission No:
+                            @student.AdmissionNumber
+                        </small>
+
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-danger btn-sm"
+                            @onclick="() => RemoveStudent(student.StudentId)">
+                        Remove
+                    </button>
+
+                </div>
+
+                <InputText required class="form-control mt-3"
+                           placeholder="Relationship (Father, Mother, Guardian...)"
+                           @bind-Value="student.Relationship" />
+
+            </div>
+        }
+
+    </div>
+}
 			</div>
 			<div class="student-form-actions">
 				<button type="submit" class="student-btn-save">Update Parent</button>
@@ -137,6 +184,48 @@
 
     [SupplyParameterFromForm]
     public Parent parentobj { get; set; } = new();
+
+	
+	private Guid _selectedStudentId;
+
+	private Guid SelectedStudentId
+	{
+		get => _selectedStudentId;
+		set
+		{
+			_selectedStudentId = value;
+
+			if (value == Guid.Empty)
+				return;
+
+			var student = Students.FirstOrDefault(x => x.Id == value);
+
+			if (student == null)
+				return;
+
+			if (SelectedStudents.Any(x => x.StudentId == value))
+				return;
+
+			SelectedStudents.Add(new ParentStudentSelection
+				{
+					StudentId = student.Id,
+					StudentName = student.FullName,
+					AdmissionNumber = student.AdmissionNumber,
+					Relationship = ""
+				});
+
+			_selectedStudentId = Guid.Empty;
+		}
+	}
+	private void RemoveStudent(Guid id)
+	{
+		var item = SelectedStudents
+			.FirstOrDefault(x => x.StudentId == id);
+
+		if (item != null)
+			SelectedStudents.Remove(item);
+	}
+	private List<ParentStudentSelection> SelectedStudents = new();
 
     [Parameter]
     public Guid id { get; set; }
@@ -163,23 +252,51 @@
 		}  
         // ParentType = await SystemCodeDetailsService.GetByCodeAsync("Parent Type");
         Students = await StudentService.GetAllStudentsAsync();
+		var links = await ParentStudentRepository
+	.GetByParentIdAsync(parentobj.Id);
+
+		SelectedStudents = links
+			.Select(x => new ParentStudentSelection
+				{
+					StudentId = x.StudentId,
+					StudentName = x.Student.FullName,
+					AdmissionNumber = x.Student.AdmissionNumber,
+					Relationship = x.Relationship
+				})
+			.ToList();
 
     }
-    protected async Task UpdateParent()
+	protected async Task UpdateParent()
 	{
 		try
 		{
 			await ParentService.UpdateAsync(parentobj);
 
-			await JS.InvokeVoidAsync("toast.success", "Parent updated successfully.");
+			await ParentStudentRepository.DeleteByParentIdAsync(parentobj.Id);
+
+			foreach (var student in SelectedStudents)
+			{
+				await ParentStudentRepository.AddAsync(new ParentStudent
+					{
+						ParentId = parentobj.Id,
+						StudentId = student.StudentId,
+						Relationship = student.Relationship
+					});
+			}
+
+			await JS.InvokeVoidAsync(
+				"toast.success",
+				"Parent updated successfully.");
 
 			navigation.NavigateTo("/parents-list");
 		}
-		catch (Exception)
+		catch
 		{
-			await JS.InvokeVoidAsync("toast.error", "An error occurred while updating the parent.");
+			await JS.InvokeVoidAsync(
+				"toast.error",
+				"An error occurred while updating the parent.");
 		}
-    }
+	}
     public void Cancel()
     {
         navigation.NavigateTo("/parents-list");

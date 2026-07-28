@@ -20,6 +20,8 @@ namespace StudentManagementSystem.Data
 		public DbSet<StudentAttendance> StudentAttendances { get; set; }
 		public DbSet<SystemSetting> SystemSettings { get; set; }
 
+		public DbSet<ParentStudent> ParentStudents { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder builder)
         {
             foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
@@ -27,11 +29,23 @@ namespace StudentManagementSystem.Data
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
             base.OnModelCreating(builder);
-            builder.Entity<Parent>()
-                        .HasOne(f => f.Student)
-                        .WithMany()
-                        .HasForeignKey(f => f.StudentId)
-                        .OnDelete(DeleteBehavior.Restrict);
+
+			builder.Entity<ParentStudent>()
+	       .HasOne(x => x.Parent)
+	       .WithMany(x => x.ParentStudents)
+	      .HasForeignKey(x => x.ParentId)
+	      .OnDelete(DeleteBehavior.Cascade);
+
+			builder.Entity<ParentStudent>()
+				.HasOne(x => x.Student)
+				.WithMany(x => x.ParentStudents)
+				.HasForeignKey(x => x.StudentId)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			builder.Entity<ParentStudent>()
+				.HasIndex(x => new { x.ParentId, x.StudentId })
+				.IsUnique();
+
 			builder.Entity<Teacher>()
 	.Property(x => x.Gender)
 	.HasConversion<string>();

@@ -60,7 +60,7 @@
 														<td class="d-none d-md-table-cell">@parent.FullName</td>
 														<td class="d-none d-md-table-cell">@parent.EmailAddress</td>
 												<td class="d-none d-md-table-cell">@parent.PhoneNumber</td>
-														<td class="d-none d-md-table-cell">@parent.Student.FullName</td>
+														<td class="d-none d-md-table-cell"> @parent.ParentStudents.FirstOrDefault()?.Student.FullName</td>
 														<td style="white-space: nowrap;" class="d-none d-md-table-cell">
 										    @parent.Gender?.ToString().Replace("NonBinary", "Non-binary")
 										</td>
