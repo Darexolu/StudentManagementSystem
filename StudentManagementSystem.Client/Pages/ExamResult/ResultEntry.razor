@@ -140,10 +140,10 @@
 									<thead>
 										<tr>
 											<th>Student</th>
-											<th>Test 1</th>
-											<th>Test 2</th>
-											<th>Assignment</th>
-											<th>Exam</th>
+											<th>Test 1 (10mks)</th>
+											<th>Test 2 (10mks)</th>
+											<th>Assignment (10mks)</th>
+											<th>Exam (70mks)</th>
 											<th>Total</th>
 											<th>Grade</th>
 										</tr>
@@ -159,22 +159,25 @@
 
 												<td>
 													<InputNumber class="form-control"
-																 @bind-Value="item.Test1" />
+																 @bind-Value="item.Test1" @bind-Value:after="() => LimitTest(item)" />
 												</td>
 
 												<td>
 													<InputNumber class="form-control"
-																 @bind-Value="item.Test2" />
+																 @bind-Value="item.Test2"
+																 @bind-Value:after="() => LimitTest(item)" />
 												</td>
 
 												<td>
 													<InputNumber class="form-control"
-																 @bind-Value="item.Assignment" />
+																 @bind-Value="item.Assignment"
+																 @bind-Value:after="() => LimitTest(item)" />
 												</td>
 
 												<td>
 													<InputNumber class="form-control"
-																 @bind-Value="item.Exam" />
+																 @bind-Value="item.Exam"
+																 @bind-Value:after="() => LimitExam(item)" />
 												</td>
 
 												<td>
@@ -226,25 +229,25 @@
 								<div class="card-body">
 
 									<div class="mb-3">
-										<label>Test 1</label>
+										<label>Test 1 (10mks)</label>
 										<InputNumber class="form-control"
 													 @bind-Value="item.Test1" />
 									</div>
 
 									<div class="mb-3">
-										<label>Test 2</label>
+										<label>Test 2 (10mks)</label>
 										<InputNumber class="form-control"
 													 @bind-Value="item.Test2" />
 									</div>
 
 									<div class="mb-3">
-										<label>Assignment</label>
+										<label>Assignment (10mks)</label>
 										<InputNumber class="form-control"
 													 @bind-Value="item.Assignment" />
 									</div>
 
 									<div class="mb-3">
-										<label>Exam</label>
+										<label>Exam (70mks)</label>
 										<InputNumber class="form-control"
 													 @bind-Value="item.Exam" />
 									</div>
@@ -336,6 +339,38 @@
 	{		
 			results = await ResultRepository.GetAllAsync();
 
+	}
+	private void LimitTest(BulkResultEntry item)
+	{
+		if (item.Test1 > 10)
+			item.Test1 = 10;
+
+		if (item.Test1 < 0)
+			item.Test1 = 0;
+
+
+		if (item.Test2 > 10)
+			item.Test2 = 10;
+
+		if (item.Test2 < 0)
+			item.Test2 = 0;
+
+
+		if (item.Assignment > 10)
+			item.Assignment = 10;
+
+		if (item.Assignment < 0)
+			item.Assignment = 0;
+	}
+	
+
+	private void LimitExam(BulkResultEntry item)
+	{
+		if (item.Exam > 70)
+			item.Exam = 70;
+
+		if (item.Exam < 0)
+			item.Exam = 0;
 	}
 
 	// private async Task SaveResult()
