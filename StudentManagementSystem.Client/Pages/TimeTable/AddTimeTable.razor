@@ -13,253 +13,264 @@
 @inject ITeacherRepository TeacherRepository
 @inject IClassSubjectRepository ClassSubjectRepository
 @inject IJSRuntime JS
-<div class="class-list-header">
-	<h3 class="page-title"><i class="fas fa-calendar-plus"></i> @(isEdit ? "Update Timetable" : "Create Timetable")</h3>
-</div>
-
-
-<EditForm Model="this" OnValidSubmit="SaveAll" FormName="addtimetable">
-
-	@* <DataAnnotationsValidator />
-	<ValidationSummary /> *@
-
-	@if (!string.IsNullOrEmpty(validationMessage))
-	{
-		<div class="alert alert-danger">
-			@validationMessage
-		</div>
-	}
-	@if (!string.IsNullOrEmpty(successMessage))
-	{
-		<div class="alert alert-success">
-			@successMessage
-		</div>
-	}
-
-	<!-- CLASS -->
-	<div class="row mb-3">
-
-		<div class="class-form-group">
-			<label>Select Class</label>
-
-			<InputSelect required class="form-control"
-						 @bind-Value="selectedClassId"
-						 @bind-Value:after="OnClassChanged">
-
-				<option value="">Select Class</option>
-
-				@foreach (var c in classes)
-				{
-					<option value="@c.Id">@c.Name</option>
-				}
-
-			</InputSelect>
-		</div>
-
-		<div class="class-form-group">
-
-			<label>Timetable Type</label>
-
-			<InputSelect class="form-control"
-						 @bind-Value="selectedTimeTableType">
-
-				@foreach (var type in Enum.GetValues<TimeTableType>())
-				{
-					<option value="@type">@type</option>
-				}
-
-			</InputSelect>
-
-		</div>
-
-	</div>
-
-	@* <hr /> *@
-
-	<!-- GRID -->
-	<table class="table table-bordered text-center addtimetable">
-
-		<thead class="table-dark">
-			<tr>
-				<th>Day</th>
-				<th class="d-none d-md-table-cell">Period</th>
-				<th>Subject</th>
-				<th class="d-none d-md-table-cell">Teacher</th>
-				<th>Start</th>
-				<th>End</th>
-				<th class="d-none d-md-table-cell">Room</th>
-			</tr>
-		</thead>
-		<tbody>
-
-			@foreach (var item in entries)
-{
-    <tr id="row-@item.Day-@item.PeriodNumber">
-
-					<td class="day-column">
-						<span class="d-none d-md-inline">@item.Day.ToString().Substring(0, 3)</span>
-		<span class="d-inline d-md-none">
-							@item.Day.ToString().Substring(0, 3)
-		</span></td>
-
-					<td class="d-none d-md-table-cell">@item.PeriodNumber</td>
-
-					<td class="subject-column">
-            <InputSelect class="form-control"
-                         @bind-Value="item.SubjectId"
-                         @bind-Value:after="() => OnSubjectChanged(item)">
-                <option value="">Select</option>
-
-                @foreach (var s in classSubjects)
-                {
-                    <option value="@s.Id">@s.Name</option>
-                }
-            </InputSelect>
-        </td>
-
-        <td class="d-none d-md-table-cell">
-            <input type="text"
-                   class="form-control"
-                   value="@GetTeacherName(item.TeacherId)"
-                   disabled />
-        </td>
-
-			<td class="time-column">
-            <input type="time"
-							   class="form-control  time-input"
-                   value="@GetStartTime(item)"
-                   @onchange="e => SetStartTime(item, e.Value?.ToString())" />
-        </td>
-
-			<td class="time-column">
-            <input type="time"
-							   class="form-control  time-input"
-                   value="@GetEndTime(item)"
-                   @onchange="e => SetEndTime(item, e.Value?.ToString())" />
-        </td>
-
-        <td class="d-none d-md-table-cell">
-            <InputText class="form-control"
-                       @bind-Value="item.Room" />
-        </td>
-
-    </tr>
-}
-
-		</tbody>
-
-	</table>
-
-	<button class=" class-save-btn mb-4" type="submit">
-		@(isEdit ? "Update Timetable" : "Save Timetable")
-	</button>
-	@if (isEdit)
-	{
-		<button type="button"
-				class="class-cancel-btn"
-				@onclick="ResetForm">
-
-			Cancel
-		</button>
-	}
-</EditForm>
-
-
+<!-- Desktop / Laptop -->
+<div class="d-none d-lg-block">
 
 	<div class="class-list-header">
-	<h6 class="page-title mb-0">Timetable List</h6>
+		<h3 class="page-title">
+			<i class="fas fa-calendar-plus"></i>
+			@(isEdit ? "Update Timetable" : "Create Timetable")
+		</h3>
 	</div>
-@if (list.Any())
-{
-	<div class="table-responsive">
-	<table class="table table-bordered table-striped">
 
-		<thead>
-			<tr>
-				<th>Class</th>
-				<th>Subject</th>
+	<EditForm Model="this" OnValidSubmit="SaveAll" FormName="addtimetable">
 
-				<th class="d-none d-md-table-cell">Teacher</th>
+		@if (!string.IsNullOrEmpty(validationMessage))
+		{
+			<div class="alert alert-danger">
+				@validationMessage
+			</div>
+		}
 
-				<th>Day</th>
-				<th>Start</th>
-				<th>End</th>
-				<th>Type</th>
+		@if (!string.IsNullOrEmpty(successMessage))
+		{
+			<div class="alert alert-success">
+				@successMessage
+			</div>
+		}
 
-				<th class="d-none d-md-table-cell">Room</th>
+		<!-- CLASS -->
+		<div class="row mb-3">
 
-				<th>Action</th>
-			</tr>
-		</thead>
+			<div class="class-form-group">
+				<label>Select Class</label>
 
-		<tbody>
+				<InputSelect required class="form-control"
+							 @bind-Value="selectedClassId"
+							 @bind-Value:after="OnClassChanged">
 
-			@foreach (var item in list)
-			{
+					<option value="">Select Class</option>
+
+					@foreach (var c in classes)
+					{
+						<option value="@c.Id">@c.Name</option>
+					}
+
+				</InputSelect>
+			</div>
+
+			<div class="class-form-group">
+
+				<label>Timetable Type</label>
+
+				<InputSelect class="form-control"
+							 @bind-Value="selectedTimeTableType">
+
+					@foreach (var type in Enum.GetValues<TimeTableType>())
+					{
+						<option value="@type">@type</option>
+					}
+
+				</InputSelect>
+
+			</div>
+
+		</div>
+
+		<!-- GRID -->
+		<table class="table table-bordered text-center addtimetable">
+
+			<thead class="table-dark">
 				<tr>
-					<td>@item.SchoolClass?.Name</td>
-
-					<td>
-						@item.Subject?.Name
-						<br />
-						<small>Period: @item.PeriodNumber</small>
-					</td>
-
-					<td class="d-none d-md-table-cell">
-						@item.Teacher?.FullName
-					</td>
-
-					<td>@item.Day</td>
-
-					<td>
-						@(item.StartTime.HasValue
-										? DateTime.Today.Add(item.StartTime.Value).ToString("hh:mm tt")
-										: "")
-					</td>
-
-					<td>
-						@(item.EndTime.HasValue
-										? DateTime.Today.Add(item.EndTime.Value).ToString("hh:mm tt")
-										: "")
-					</td>
-
-					<td>@item.TimeTableType</td>
-
-					<td class="d-none d-md-table-cell">
-						@item.Room
-					</td>
-
-					<td>
-
-						<button type="button"
-								class="btn-table btn-edit"
-								@onclick="() => Edit(item)">
-								<i class="fas fa-edit"></i><span>Edit</span>
-						</button>
-
-						<button type="button"
-								class="btn-table btn-delete"
-								@onclick="() => Delete(item.Id)">
-								<i class="fas fa-trash"></i><span>Delete</span>
-						</button>
-
-					</td>
-
+					<th>Day</th>
+					<th>Period</th>
+					<th>Subject</th>
+					<th>Teacher</th>
+					<th>Start</th>
+					<th>End</th>
+					<th>Room</th>
 				</tr>
-			}
+			</thead>
 
-		</tbody>
+			<tbody>
 
-	</table></div>
-	
-}
-else
-{
-	<div class="alert alert-info">
-		No timetable records found.
+				@foreach (var item in entries)
+				{
+					<tr id="row-@item.Day-@item.PeriodNumber">
+
+						<td>@item.Day.ToString().Substring(0, 3)</td>
+
+						<td>@item.PeriodNumber</td>
+
+						<td>
+							<InputSelect class="form-control"
+										 @bind-Value="item.SubjectId"
+										 @bind-Value:after="() => OnSubjectChanged(item)">
+
+								<option value="">Select</option>
+
+								@foreach (var s in classSubjects)
+								{
+									<option value="@s.Id">@s.Name</option>
+								}
+
+							</InputSelect>
+						</td>
+
+						<td>
+							<input class="form-control"
+								   value="@GetTeacherName(item.TeacherId)"
+								   disabled />
+						</td>
+
+						<td>
+							<input type="time"
+								   class="form-control time-input"
+								   value="@GetStartTime(item)"
+								   @onchange="e => SetStartTime(item, e.Value?.ToString())" />
+						</td>
+
+						<td>
+							<input type="time"
+								   class="form-control time-input"
+								   value="@GetEndTime(item)"
+								   @onchange="e => SetEndTime(item, e.Value?.ToString())" />
+						</td>
+
+						<td>
+							<InputText class="form-control"
+									   @bind-Value="item.Room" />
+						</td>
+
+					</tr>
+				}
+
+			</tbody>
+
+		</table>
+
+		<button class="class-save-btn mb-4" type="submit">
+			@(isEdit ? "Update Timetable" : "Save Timetable")
+		</button>
+
+		@if (isEdit)
+		{
+			<button type="button"
+					class="class-cancel-btn"
+					@onclick="ResetForm">
+				Cancel
+			</button>
+		}
+
+	</EditForm>
+
+	<div class="class-list-header">
+		<h6 class="page-title mb-0">Timetable List</h6>
 	</div>
-}
 
+	@if (list.Any())
+	{
+		<div class="table-responsive">
+			<table class="table table-bordered table-striped">
+
+				<thead>
+					<tr>
+						<th>Class</th>
+						<th>Subject</th>
+						<th>Teacher</th>
+						<th>Day</th>
+						<th>Start</th>
+						<th>End</th>
+						<th>Type</th>
+						<th>Room</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+					@foreach (var item in list)
+					{
+						<tr>
+
+							<td>@item.SchoolClass?.Name</td>
+
+							<td>
+								@item.Subject?.Name
+								<br />
+								<small>Period: @item.PeriodNumber</small>
+							</td>
+
+							<td>@item.Teacher?.FullName</td>
+
+							<td>@item.Day</td>
+
+							<td>
+								@(item.StartTime.HasValue
+															? DateTime.Today.Add(item.StartTime.Value).ToString("hh:mm tt")
+															: "")
+							</td>
+
+							<td>
+								@(item.EndTime.HasValue
+															? DateTime.Today.Add(item.EndTime.Value).ToString("hh:mm tt")
+															: "")
+							</td>
+
+							<td>@item.TimeTableType</td>
+
+							<td>@item.Room</td>
+
+							<td>
+
+								<button type="button"
+										class="btn-table btn-edit"
+										@onclick="() => Edit(item)">
+									<i class="fas fa-edit"></i><span>Edit</span>
+								</button>
+
+								<button type="button"
+										class="btn-table btn-delete"
+										@onclick="() => Delete(item.Id)">
+									<i class="fas fa-trash"></i><span>Delete</span>
+								</button>
+
+							</td>
+
+						</tr>
+					}
+
+				</tbody>
+
+			</table>
+		</div>
+	}
+	else
+	{
+		<div class="alert alert-info">
+			No timetable records found.
+		</div>
+	}
+
+</div>
+
+<!-- Mobile & Tablet -->
+<div class="d-block d-lg-none">
+
+	<div class="alert alert-warning text-center mt-5">
+
+		<i class="fas fa-desktop fa-3x mb-3"></i>
+
+		<h4>Desktop Required</h4>
+
+		<p class="mb-0">
+			Timetable management is available only on desktop or laptop devices.
+			Please use a larger screen to create, edit, or manage timetables.
+		</p>
+
+	</div>
+
+</div>
 @code {
 	private Guid selectedClassId;
 	private string? validationMessage;
@@ -460,6 +471,7 @@ else
 	{
 		selectedClassId = item.SchoolClassId;
 		selectedTimeTableType = item.TimeTableType;
+		await LoadSubjectsForClass();
 		var existing = entries.FirstOrDefault(x =>
 			x.Day == item.Day &&
 			x.PeriodNumber == item.PeriodNumber);

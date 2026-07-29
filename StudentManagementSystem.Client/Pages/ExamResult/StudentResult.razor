@@ -18,7 +18,7 @@
 					 @bind-Value="selectedStudentId"
 					 @bind-Value:after="LoadResults">
 
-			<option value="">Select Student</option>
+			<option value="@Guid.Empty">Select Student</option>
 
 			@foreach (var s in students)
 			{
@@ -171,7 +171,9 @@
 		{
 			if (selectedStudentId == Guid.Empty)
 			{
-				await JS.InvokeVoidAsync("toast.error", "Please select a student first.");
+				results.Clear();
+				StateHasChanged();
+				await JS.InvokeVoidAsync("toast.warning", "Please select a student first.");
 				return;
 			}
 

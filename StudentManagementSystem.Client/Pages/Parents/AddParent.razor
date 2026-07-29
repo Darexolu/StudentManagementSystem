@@ -116,53 +116,48 @@
                       @bind-Value="SelectedStudentId" />
 
 </div>
+</div>
 @if (SelectedStudents.Any())
 {
-    <div class="selected-students mt-4">
+    <div class="linked-students-section">
 
-        <h5>
+        <h5 class="linked-students-title">
+            <i class="fas fa-user-graduate"></i>
             Linked Students
         </h5>
 
-        @foreach (var student in SelectedStudents)
-        {
-            <div class="selected-student-card">
+        <div class="linked-students-grid">
 
-                <div class="d-flex justify-content-between">
-
-                    <div>
-
-                        <strong>
-                            @student.StudentName
-                        </strong>
-
-                        <br />
-
-                        <small>
-                            Admission No:
-                            @student.AdmissionNumber
-                        </small>
-
-                    </div>
+            @foreach (var student in SelectedStudents)
+            {
+                <div class="selected-student-card">
 
                     <button type="button"
-                            class="btn btn-danger btn-sm"
+                            class="remove-student-btn"
+                            title="Remove Student"
                             @onclick="() => RemoveStudent(student.StudentId)">
-                        Remove
+                        <i class="fas fa-trash"></i>
                     </button>
 
+                    <h6>@student.StudentName</h6>
+
+                    <p>
+                        Admission No:
+                        <strong>@student.AdmissionNumber</strong>
+                    </p>
+
+                    <InputText class="form-control"
+                               placeholder="Relationship (Father, Mother, Guardian)"
+                               @bind-Value="student.Relationship" />
+
                 </div>
+            }
 
-                <InputText class="form-control mt-3"
-                           placeholder="Relationship (Father, Mother, Guardian...)"
-                           @bind-Value="student.Relationship" />
-
-            </div>
-        }
+        </div>
 
     </div>
 }
-						 </div>
+
 
                     
                      <div class="student-form-actions">

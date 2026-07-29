@@ -1360,5 +1360,113 @@ td:nth-last-child(2) {
 	}
 }
 
-/*Results entry*/
+/* ==========================
+   Linked Students
+========================== */
+
+.linked-students-section {
+	margin-top: 30px;
+	border-top: 1px solid #e5e7eb;
+	padding-top: 20px;
+}
+
+.linked-students-title {
+	color: #1e3a8a;
+	font-size: 1rem;
+	font-weight: 600;
+	margin-bottom: 18px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.linked-students-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 16px;
+}
+
+.selected-student-card {
+	position: relative;
+	border: 1px solid #dbe3ef;
+	border-radius: 12px;
+	padding: 18px;
+	background: #fff;
+	transition: .2s;
+}
+
+	.selected-student-card:hover {
+		border-color: #1e3a8a;
+		box-shadow: 0 4px 12px rgba(0,0,0,.08);
+	}
+
+	.selected-student-card h6 {
+		margin: 0 0 8px;
+		color: #1e3a8a;
+		font-weight: 600;
+	}
+
+	.selected-student-card p {
+		margin-bottom: 14px;
+		color: #64748b;
+		font-size: .9rem;
+	}
+
+.remove-student-btn {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	width: 34px;
+	height: 34px;
+	border: 1px solid #dc3545;
+	border-radius: 50%;
+	background: transparent;
+	color: #dc3545;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: .2s;
+}
+
+	.remove-student-btn:hover {
+		background: #dc3545;
+		color: #fff;
+	}
+
+/* Tablets */
+
+@media (max-width:768px) {
+
+	.linked-students-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.selected-student-card {
+		padding: 16px;
+	}
+}
+
+/* Phones */
+
+@media (max-width:576px) {
+
+	.linked-students-section {
+		margin-top: 20px;
+	}
+
+	.linked-students-title {
+		font-size: .95rem;
+	}
+
+	.selected-student-card {
+		padding: 14px;
+	}
+
+	.remove-student-btn {
+		width: 30px;
+		height: 30px;
+		font-size: 12px;
+	}
+}
 

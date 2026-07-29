@@ -9,158 +9,151 @@
 @inject ITeacherRepository TeacherRepository
 @inject ITimeTableRepository TimeTableRepository
 
-<div class="class-list-header">
-	<h3 class="page-title"><i class="fas fa-calendar-plus"></i> Teacher Timetable</h3>
-</div>
-@* <hr /> *@
+<!-- Desktop/Laptop Only -->
+<div class="d-none d-lg-block">
 
-<div class="row mb-4">
+	<div class="class-list-header">
+		<h3 class="page-title">
+			<i class="fas fa-calendar-plus"></i> Teacher Timetable
+		</h3>
+	</div>
 
-	<div class="class-form-group">
+	<div class="row mb-4">
 
-		<label>Select Teacher</label>
+		<div class="class-form-group">
 
-		<InputSelect class="form-control"
-					 @bind-Value="selectedTeacherId">
+			<label>Select Teacher</label>
 
-			<option value="">Select Teacher</option>
+			<InputSelect class="form-control"
+						 @bind-Value="selectedTeacherId">
 
-			@foreach (var teacher in teachers)
-			{
-				<option value="@teacher.Id">
-					@teacher.FullName
-				</option>
-			}
+				<option value="">Select Teacher</option>
 
-		</InputSelect>
+				@foreach (var teacher in teachers)
+				{
+					<option value="@teacher.Id">
+						@teacher.FullName
+					</option>
+				}
+
+			</InputSelect>
+
+		</div>
 
 	</div>
 
-</div>
+	@if (isLoading)
+	{
+		<div class="alert alert-info">
+			Loading timetable...
+		</div>
+	}
+	else if (selectedTeacherId == null)
+	{
+		<div class="alert alert-info">
+			Please select a teacher.
+		</div>
+	}
+	else if (!slots.Any())
+	{
+		<div class="alert alert-warning">
+			No timetable found for this teacher.
+		</div>
+	}
+	else
+	{
+		<table class="table table-bordered text-center timetable-table">
 
-@if (isLoading)
-{
-	<div class="alert alert-info">
-		Loading timetable...
-	</div>
-}
-else if (selectedTeacherId == null)
-{
-	<div class="alert alert-info">
-		Please select a teacher.
-	</div>
-}
-else if (!slots.Any())
-{
-	<div class="alert alert-warning">
-		No timetable found for this teacher.
-	</div>
-}
-else
-{
-	<table class="table table-bordered text-center timetable-table">
+			<thead class="table-dark">
 
-		<thead class="table-dark">
-
-			<tr>
-				<th>Time</th>
-				<th>
-					<span class="d-none d-md-inline">Monday</span>
-					<span class="d-md-none">Mon</span>
-				</th>
-
-				<th>
-					<span class="d-none d-md-inline">Tuesday</span>
-					<span class="d-md-none">Tue</span>
-				</th>
-
-				<th>
-					<span class="d-none d-md-inline">Wednesday</span>
-					<span class="d-md-none">Wed</span>
-				</th>
-
-				<th>
-					<span class="d-none d-md-inline">Thursday</span>
-					<span class="d-md-none">Thu</span>
-				</th>
-
-				<th>
-					<span class="d-none d-md-inline">Friday</span>
-					<span class="d-md-none">Fri</span>
-				</th>
-			</tr>
-
-		</thead>
-
-		<tbody>
-
-			@foreach (var slot in slots)
-			{
 				<tr>
+					<th>Time</th>
+					<th>Monday</th>
+					<th>Tuesday</th>
+					<th>Wednesday</th>
+					<th>Thursday</th>
+					<th>Friday</th>
+				</tr>
 
-					<!-- TIME -->
-					<td>
-						@{
-							var period = teacherTimetable.FirstOrDefault(x =>
-							x.StartTime == slot.Start &&
-							x.EndTime == slot.End)?.PeriodNumber;
-						}
+			</thead>
 
-						<b>
-							@DateTime.Today.Add(slot.Start).ToString("hh:mm tt")
-							-
-							@DateTime.Today.Add(slot.End).ToString("hh:mm tt")
-						</b>
-						<br />
-						@if (period != null)
-						{
-							<small>
-								Period: @period
-							</small>
-						}
-					</td>
+			<tbody>
 
-					<!-- DAYS -->
-					@foreach (var day in weekdays)
-					{
+				@foreach (var slot in slots)
+				{
+					<tr>
+
 						<td>
-
 							@{
-								var item = GetCell(day, slot.Start, slot.End);
+								var period = teacherTimetable.FirstOrDefault(x =>
+								x.StartTime == slot.Start &&
+								x.EndTime == slot.End)?.PeriodNumber;
 							}
 
-							@if (item != null)
+							<b>
+								@DateTime.Today.Add(slot.Start).ToString("hh:mm tt")
+								-
+								@DateTime.Today.Add(slot.End).ToString("hh:mm tt")
+							</b>
+
+							<br />
+
+							@if (period != null)
 							{
-								
+								<small>
+									Period: @period
+								</small>
+							}
 
+						</td>
+
+						@foreach (var day in weekdays)
+						{
+							<td>
+
+								@{
+									var item = GetCell(day, slot.Start, slot.End);
+								}
+
+								@if (item != null)
+								{
 									<div>
-										<b class="d-none d-md-inline">
-											@item.Subject?.Name
-										</b>
-
-										<b class="d-md-none">
-											@item.Subject?.Code
-										</b>
+										<b>@item.Subject?.Name</b>
 									</div>
 
 									<div>
 										@item.SchoolClass?.Name
 									</div>
+								}
 
-								
-							}
+							</td>
+						}
 
-						</td>
-					}
+					</tr>
+				}
 
-				</tr>
-			}
+			</tbody>
 
-		</tbody>
+		</table>
+	}
 
-	</table>
-}
+</div>
 
+<!-- Mobile & Tablet Message -->
+<div class="d-block d-lg-none">
+
+	<div class="alert alert-warning text-center mt-5">
+		<i class="fas fa-desktop fa-3x mb-3"></i>
+
+		<h4>Desktop Required</h4>
+
+		<p class="mb-0">
+			The Teacher Timetable page is available only on desktop or laptop devices.
+			Please use a larger screen to view and manage the timetable.
+		</p>
+	</div>
+
+</div>
 @code {
 
 	private Guid? _selectedTeacherId;
