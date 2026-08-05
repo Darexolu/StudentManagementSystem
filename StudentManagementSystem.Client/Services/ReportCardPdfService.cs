@@ -109,7 +109,7 @@ public class ReportCardPdfService
 				.Element(x => BuildSubjectsTable(x, data));
 
 			column.Item()
-				.PaddingTop(10);
+				.PaddingTop(2);
 
 			column.Item()
 				.Element(x => BuildSummarySection(x, data));
@@ -124,28 +124,46 @@ public class ReportCardPdfService
 				.Element(BuildPsychomotorSection);
 
 			column.Item()
-				.PaddingTop(8);
+				.PaddingTop(2);
 
 			column.Item()
 				.Element(BuildAffectiveSection);
 
 			column.Item()
-				.PaddingTop(8);
+				.PaddingTop(2);
 
 			column.Item()
 				.Element(BuildGradeLegend);
 
 			column.Item()
-				.PaddingTop(8);
+				.PaddingTop(2);
 
 			column.Item()
 				.Element(BuildAttendanceSection);
 
 			column.Item()
-				.PaddingTop(8);
+				.PaddingTop(2);
+
+			column.Item()
+				.Element(BuildPunctualityScale);
+
+			column.Item()
+				.PaddingTop(2);
+
+			column.Item()
+				.Element(BuildTermSection);
+
+			column.Item()
+				.PaddingTop(2);
 
 			column.Item()
 				.Element(BuildCommentSection);
+
+			column.Item()
+				.PaddingTop(2);
+
+			column.Item()
+				.Element(BuildStampSection);
 		});
 	}
 
@@ -367,42 +385,49 @@ public class ReportCardPdfService
 
 	private void BuildGradeLegend(IContainer container)
 	{
-		container.Border(1).Padding(5).Column(column =>
+		container.Column(column =>
 		{
 			column.Item()
-				.Text("3. GRADES")
+				.Text("3.   GRADES")
 				.Bold()
 				.FontSize(8);
 
-			GradeRow(column, "0 - 39", "F9", "Fail");
-			GradeRow(column, "40 - 44", "F9", "Poor");
-			GradeRow(column, "45 - 49", "P7", "Fair");
-			GradeRow(column, "50 - 54", "C4", "Pass");
-			GradeRow(column, "55 - 59", "C5", "Good");
-			GradeRow(column, "60 - 64", "C4", "Good");
-			GradeRow(column, "65 - 69", "A1", "Very Good");
-			GradeRow(column, "70 - 74", "A1", "Excellent");
-			GradeRow(column, "75 Above", "A1", "Excellent");
+			GradeRow(column, "0", "39", "F9", "Fail");
+			GradeRow(column, "40", "44", "F9", "Poor");
+			GradeRow(column, "45", "49", "P7", "Fair");
+			GradeRow(column, "50", "54", "C4", "Pass");
+			GradeRow(column, "55", "59", "C5", "Good");
+			GradeRow(column, "60", "64", "C4", "Good");
+			GradeRow(column, "65", "69", "A1", "Very Good");
+			GradeRow(column, "70", "74", "A1", "Excellent");
+			GradeRow(column, "75", "Above", "A1", "Excellent");
 		});
 	}
 
-	private void GradeRow(ColumnDescriptor column,
-						  string score,
-						  string grade,
-						  string remark)
+	private void GradeRow(
+		ColumnDescriptor column,
+		string from,
+		string to,
+		string grade,
+		string remark)
 	{
 		column.Item().Row(row =>
 		{
-			row.RelativeItem(2)
-				.Text(score)
+			row.ConstantItem(20).Text(from).FontSize(7);
+
+			row.ConstantItem(10)
+				.AlignCenter()
+				.Text("-")
 				.FontSize(7);
 
-			row.RelativeItem(1)
+			row.ConstantItem(30).Text(to).FontSize(7);
+
+			row.ConstantItem(25)
 				.AlignCenter()
 				.Text(grade)
 				.FontSize(7);
 
-			row.RelativeItem(2)
+			row.RelativeItem()
 				.AlignRight()
 				.Text(remark)
 				.FontSize(7);
@@ -413,43 +438,116 @@ public class ReportCardPdfService
 	{
 		container
 			.Border(1)
-			.Padding(5)
+			.Padding(4)
 			.Column(column =>
 			{
 				column.Item()
-					.AlignCenter()
-					.Text("ATTENDANCE")
-					.Bold();
+					.Text("4.   PUNCTUALITY AND REGULARITY")
+					.Bold()
+					.FontSize(8);
 
-				SummaryRow(column, "School Opened", " ");
-				SummaryRow(column, "Present", " ");
-				SummaryRow(column, "Absent", " ");
+				AttendanceLine(column, "No of Times Schools Opened");
+				AttendanceLine(column, "No of Times Present");
+				AttendanceLine(column, "No of Times Punctual");
+				AttendanceLine(column, "No in Class");
+				AttendanceLine(column, "Class Av. ATT");
+				AttendanceLine(column, "TERM ATT");
 			});
 	}
 
+	private void AttendanceLine(ColumnDescriptor column, string text)
+	{
+		column.Item()
+			.PaddingTop(3)
+			.Row(row =>
+			{
+				row.RelativeItem()
+					.Text($"{text} __________________")
+					.FontSize(7);
+			});
+	}
+	private void BuildPunctualityScale(IContainer container)
+	{
+		container.Column(column =>
+		{
+			column.Item()
+				.Text("5.   PUNCTUALITY AND REGULARITY")
+				.Bold()
+				.FontSize(8);
+
+			column.Item().Text("5. Excellent").FontSize(7);
+
+			column.Item().Text("4. Good").FontSize(7);
+
+			column.Item().Text("3. Fair").FontSize(7);
+
+			column.Item().Text("2. Poor").FontSize(7);
+
+			column.Item().Text("1. Very Poor").FontSize(7);
+		});
+	}
+	private void BuildTermSection(IContainer container)
+	{
+		container.Column(column =>
+		{
+			column.Item()
+				.Border(1)
+				.Padding(5)
+				.Text("Term Ending")
+				.FontSize(8);
+
+			column.Item()
+				.Border(1)
+				.Padding(5)
+				.Text("Next Term Begins")
+				.FontSize(8);
+		});
+	}
 	private void BuildCommentSection(IContainer container)
 	{
-		container
-			.Border(1)
-			.Padding(5)
-			.Column(column =>
-			{
-				column.Item().Text("Principal's Comment").Bold();
+		container.Column(column =>
+		{
+			column.Item()
+				.PaddingTop(5)
+				.Text("HEAD TEACHER'S COMMENTS")
+				.Bold()
+				.FontSize(8);
 
-				column.Item()
-					.Height(40)
-					.Border(1);
+			column.Item()
+				.BorderBottom(1)
+				.Height(20);
 
-				column.Item().PaddingTop(8);
+			column.Item()
+				.BorderBottom(1)
+				.Height(20);
 
-				column.Item().Text("Next Term Begins");
+			column.Item()
+				.PaddingTop(8)
+				.Text("H/M'S SIGNATURE / DATE")
+				.Bold()
+				.FontSize(8);
 
-				column.Item()
-					.Height(20)
-					.BorderBottom(1);
-			});
+			column.Item()
+				.BorderBottom(1)
+				.Height(20);
+		});
 	}
 
+	private void BuildStampSection(IContainer container)
+	{
+		container.Column(column =>
+		{
+			column.Item()
+				.PaddingTop(10)
+				.Text("SCHOOL'S STAMP AND SIGNATURE")
+				.Bold()
+				.FontSize(8);
+
+			column.Item()
+				.BorderBottom(1)
+				.Height(35);
+		});
+	}
 	//helper methods
 	private static IContainer HeaderStyle(IContainer container)
 	{
