@@ -371,7 +371,7 @@ public class ReportCardPdfService
 
 	private void BuildGradeLegend(IContainer container)
 	{
-		container.Column(column =>
+		container.PaddingLeft(5).Column(column =>
 		{
 			column.Item()
 				.Text("3.   GRADES")
