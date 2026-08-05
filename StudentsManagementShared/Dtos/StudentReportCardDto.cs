@@ -19,6 +19,8 @@ namespace StudentManagementSystemShared.Dtos
 		public string? Department { get; set; }
 
 		public decimal OverallTotal { get; set; }
+
+		public decimal TotalScored { get; set; }
 		public decimal Percentage { get; set; }
 		public string? Position { get; set; }
 		public int NumberOfStudents { get; set; }
