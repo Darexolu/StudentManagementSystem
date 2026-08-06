@@ -37,5 +37,7 @@ namespace StudentManagementSystemShared.Models
 	     = new List<ParentStudent>();
 
 		public DateTime DOB { get; set; }
-    }
+
+		public bool Deleted { get; set; }
+	}
 }

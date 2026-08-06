@@ -30,8 +30,9 @@ namespace StudentManagementSystem.Repository
             var data = await _context.Parents.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (data == null) return null;
 
-            _context.Parents.Remove(data);
-            await _context.SaveChangesAsync();
+			//_context.Parents.Remove(data);
+			data.Deleted = true;
+			await _context.SaveChangesAsync();
             return data;
         }
 
@@ -40,13 +41,14 @@ namespace StudentManagementSystem.Repository
             var data = await _context.Parents
 		.Include(x => x.ParentStudents)
 			.ThenInclude(x => x.Student)
+			.Where(x => !x.Deleted)
 		.ToListAsync();
 			return data;
         }
 
         public async Task<Parent> GetByIdAsync(Guid id)
         {
-            var data = await _context.Parents.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var data = await _context.Parents.Where(x => x.Id == id && !x.Deleted).FirstOrDefaultAsync();
             if (data == null) return null;
             return data;
         }

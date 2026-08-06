@@ -36,8 +36,9 @@ namespace StudentManagementSystemShared.Models
         public string? FacebookLink { get; set; }
         public string? TwitterLink { get; set; }
         public string? LinkedInLink { get; set; }
-        
-        
-    }
+
+		public bool Deleted { get; set; }
+
+	}
 
 }

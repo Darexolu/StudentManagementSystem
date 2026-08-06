@@ -40,6 +40,8 @@ namespace StudentManagementSystemShared.Models
 		public ICollection<ParentStudent> ParentStudents { get; set; }
 	   = new List<ParentStudent>();
 
+		public bool Deleted { get; set; }
+
 
 
 	}

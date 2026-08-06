@@ -26,20 +26,23 @@ namespace StudentManagementSystem.Repository
             var student = await _context.Students.Where(x => x.Id == studentId).FirstOrDefaultAsync();
             if (student == null) return null;
 
-            _context.Students.Remove(student);
-            await _context.SaveChangesAsync();
+			//_context.Students.Remove(student);
+			student.Deleted = true;
+			await _context.SaveChangesAsync();
             return student;
         }
 
         public async Task<List<Student>> GetAllStudentsAsync()
         {
-            var students = await _context.Students.ToListAsync();
-            return students;
+            var students = await _context.Students
+	    	.Where(x => !x.Deleted)
+		    .ToListAsync();
+			return students;
         }
 
         public async Task<Student> GetStudentByIdAsync(Guid studentId)
         {
-            var singlestudent = await _context.Students.SingleOrDefaultAsync(x => x.Id == studentId);
+            var singlestudent = await _context.Students.SingleOrDefaultAsync(x => x.Id == studentId && !x.Deleted);
             if (singlestudent == null) return null;
         return singlestudent;
         }

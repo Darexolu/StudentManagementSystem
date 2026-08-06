@@ -29,20 +29,21 @@ namespace StudentManagementSystem.Repository
             var data = await _context.Teachers.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (data == null) return null;
 
-            _context.Teachers.Remove(data);
-            await _context.SaveChangesAsync();
+			//_context.Teachers.Remove(data);
+			data.Deleted = true;
+			await _context.SaveChangesAsync();
             return data;
         }
 
         public async Task<List<Teacher>> GetAllAsync()
         {
-            var data = await _context.Teachers.ToListAsync();
+            var data = await _context.Teachers.Where(x => !x.Deleted).ToListAsync();
             return data;
         }
 
         public async Task<Teacher> GetTeacherByIdAsync(Guid id)
         {
-            var data = await _context.Teachers.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var data = await _context.Teachers.Where(x => x.Id == id && !x.Deleted).FirstOrDefaultAsync();
             if (data == null) return null;
             return data;
         }
