@@ -4,20 +4,22 @@ using StudentManagementSystemShared.StudentRepository;
 
 namespace StudentManagementSystem.Controllers
 {
-	
 	[Route("api/[controller]")]
 	[ApiController]
 	public class ReportCardController : ControllerBase
 	{
 		private readonly IResultRepository _repo;
 		private readonly ReportCardPdfService _pdfService;
+		private readonly AppSettingsService _appSettings;
 
 		public ReportCardController(
 			IResultRepository repo,
-			ReportCardPdfService pdfService)
+			ReportCardPdfService pdfService,
+			AppSettingsService appSettings)
 		{
 			_repo = repo;
 			_pdfService = pdfService;
+			_appSettings = appSettings;
 		}
 
 		[HttpGet("report-card/{studentId}")]
@@ -34,9 +36,15 @@ namespace StudentManagementSystem.Controllers
 			if (data == null)
 				return NotFound("No result found.");
 
-			var pdf = _pdfService.Generate(data);
+			var pdf = _pdfService.Generate(
+				data,
+				_appSettings.Settings?.SchoolName,
+				_appSettings.Settings?.SchoolAddress);
 
-			return File(pdf, "application/pdf", "ReportCard.pdf");
+			return File(
+				pdf,
+				"application/pdf",
+				"ReportCard.pdf");
 		}
 	}
 }

@@ -201,7 +201,10 @@
 		if (data == null)
 			return;
 
-		var bytes = PdfService.Generate(data);
+		var bytes = PdfService.Generate(
+	data,
+	AppSettings.Settings?.SchoolName,
+	AppSettings.Settings?.SchoolAddress);
 
 		await JS.InvokeVoidAsync(
 	"downloadFile",

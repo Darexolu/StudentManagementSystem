@@ -8,6 +8,7 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
 @using StudentManagementSystem.Client
+@using StudentManagementSystem.Client.Services
 @using StudentManagementSystemShared.StudentRepository
 @inject IJSRuntime JS
 
@@ -18,4 +19,4 @@
 @inject ISystemCodeRepository SystemCodeService
 @inject IParentRepository ParentService
 @inject ITeacherRepository TeacherService
-
+@inject AppSettingsService AppSettings
