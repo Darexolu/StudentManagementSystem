@@ -515,9 +515,9 @@ public class ReportCardPdfService
 				.FontSize(8);
 
 			column.Item()
-	     .Width(220)
-	    .BorderBottom(1)
-	     .Height(20);
+	              .Width(220)
+	              .BorderBottom(1)
+	              .Height(20);
 
 
 			column.Item()
@@ -527,21 +527,20 @@ public class ReportCardPdfService
 				.FontSize(8);
 
 			column.Item()
-	.Width(220)
-	.BorderBottom(1)
-	.Height(20);
+	            .Width(220)
+	            .BorderBottom(1)
+	            .Height(20);
 
 			column.Item().PaddingTop(40)
-	.Width(220)
-	.BorderBottom(1)
-	.Height(20);
+	            .Width(220)
+	            .BorderBottom(1)
+	            .Height(20);
 
 			column.Item()
 				.PaddingTop(10)
 				.Text("PARENT'S/GUARDIAN'S SIGNATURE")
 				.Bold()
 				.FontSize(8);
-
 
 		});
 	}
