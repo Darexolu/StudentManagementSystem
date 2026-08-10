@@ -14,12 +14,18 @@
 
 		public void Close()
 		{
+			if (!IsOpen)
+				return;
+
 			IsOpen = false;
 			OnChange?.Invoke();
 		}
 
 		public void Open()
 		{
+			if (IsOpen)
+				return;
+
 			IsOpen = true;
 			OnChange?.Invoke();
 		}

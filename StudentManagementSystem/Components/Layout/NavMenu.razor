@@ -347,21 +347,25 @@
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
-		SidebarService.OnChange += StateHasChanged;
+		SidebarService.OnChange += OnSidebarChanged;
 		
     }
-
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
+	private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+	{
 		SidebarService.Close();
-        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
-        StateHasChanged();
-    }
 
+		currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+
+		InvokeAsync(StateHasChanged);
+	}
+	private void OnSidebarChanged()
+	{
+		InvokeAsync(StateHasChanged);
+	}
     public void Dispose()
     {
         NavigationManager.LocationChanged -= OnLocationChanged;
-		SidebarService.OnChange -= StateHasChanged;
+		SidebarService.OnChange -= OnSidebarChanged;
     }
 	private bool isAcademicMenuOpen = false;
 	private bool isTimetableOpen = false;
